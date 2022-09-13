@@ -43,10 +43,15 @@
         formatUpdated: '{YYYY}-{MM}-{DD} {HH}:{mm}',
         plugins: [
             function (hook, vm) {
-                hook.beforeEach(function(html) {
-                    var hash = window.location.hash.substr(1, window.location.hash.length)
+                hook.beforeEach(function (html) {
+                    var page
+                    if (window.location.hash.indexOf('?') > 0) {
+                        page = window.location.hash.substr(2, window.location.hash.indexOf('?') - 2);
+                    } else {
+                        page = window.location.hash.substr(1, window.location.hash.length)
+                    }
                     var issue =
-                        '📝 更新时间：{docsify-updated} ' + '，[修改](https://github.com/swoole/docs/edit/main/zh-ch/' + hash + '.md)\n';
+                        '📝 更新时间：{docsify-updated} ' + '，[修改](https://github.com/swoole/docs/edit/main/zh-ch/' + page + '.md)\n';
                     return issue + html
                 })
 
