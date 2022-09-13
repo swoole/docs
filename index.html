@@ -46,8 +46,7 @@
                 hook.beforeEach(function(html) {
                     var hash = window.location.hash.substr(1, window.location.hash.length)
                     var issue =
-                        '📝 修改于 {docsify-updated} ' + '[反馈](https://github.com/swoole-inc/report/issues/new?body=From%20wiki%20page:%20https://wiki.swoole.com/%23' + hash + '%0A%0A--- "有问题？立即反馈")\n';
-
+                        '📝 更新时间：{docsify-updated} ' + '，[修改](https://github.com/swoole/docs/edit/main/zh-ch/' + hash + '.md)\n';
                     return issue + html
                 })
 
