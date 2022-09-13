@@ -1,3 +1,7 @@
+<a href="https://code-galaxy.net/" target="_blank" rel="nofollow" title="CodeGalaxy">
+    <img src="https://code-galaxy-1252906962.cos.ap-shanghai.myqcloud.com/uploads/code-galaxy-ad.jpg" alt="CodeGalaxy" style="margin-left: 15px;" />
+</a>
+
 * 安装
     * [安装Swoole](environment.md)
     * [扩展冲突](getting_started/extension.md)
