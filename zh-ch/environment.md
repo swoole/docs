@@ -5,15 +5,17 @@
 * **如无特殊需求, 请务必编译安装`Swoole`的最新 [release](https://github.com/swoole/swoole-src/releases/latest) 版本或 [v4.4LTS](https://github.com/swoole/swoole-src/tree/v4.4.x)**
 * 如果当前用户不是`root`，可能没有`PHP`安装目录的写权限，安装时需要`sudo`或者`su`
 * 如果是在`git`分支上直接`git pull`更新代码，重新编译前务必要执行`make clean`
-* 仅支持 `Linux`(2.3.32 以上内核)、`FreeBSD`、`MacOS` 三种操作系统，低版本Linux系统（如`CentOS 6`）可以使用`RedHat`提供的`devtools`编译，[参考文档](https://blog.csdn.net/ppdouble/article/details/52894271)，
-在`Windows`平台，可使用`WSL(Windows Subsystem for Linux)`或`CygWin`
+* 仅支持 `Linux`(2.3.32 以上内核)、`FreeBSD`、`MacOS` 三种操作系统
+* 低版本Linux系统（如`CentOS 6`）可以使用`RedHat`提供的`devtools`编译，[参考文档](https://blog.csdn.net/ppdouble/article/details/52894271)  
+* 在`Windows`平台，可使用`WSL(Windows Subsystem for Linux)`或`CygWin`
 * 部分扩展与`Swoole`扩展不兼容，参考[扩展冲突](/getting_started/extension)
 
 ## 安装准备
 
 安装前必须保证系统已经安装了下列软件
 
-- `php-7.2` 或更高版本
+- `4.8`版本需要`php-7.2` 或更高版本
+- `5.0`版本需要`php-8.0` 或更高版本
 - `gcc-4.8` 或更高版本
 - `make`
 - `autoconf`

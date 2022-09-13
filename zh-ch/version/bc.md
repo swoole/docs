@@ -1,9 +1,17 @@
 # 向下不兼容改动
 
+## v5.0.0
+* 修改`Server`默认运行模式为`SWOOLE_BASE`
+* 最低`PHP`版本要求提高到`8.0`
+* 所有类方法和函数均增加了类型限定，改变为强类型模式
+* 移除了下划线`PSR-0`的类别名，仅保留命名空间风格类名，如`swoole_server`必须修改为`Swoole\Server`
+* `Swoole\Coroutine\Redis`和`Swoole\Coroutine\MySQL`标记为已废弃，请使用`Runtime Hook`+原生`Redis`/`MySQL`客户端
+
+
 ## v4.8.0
 
-- 在 base 模式下，onStart 回调将始终在第一个工作进程 (worker id 为 0) 启动时回调，先于 onWorkerStart 执行。在 onStart 函数中始终可以使用协程 API，Worker-0 出现致命错误重启时，会再次回调 onStart。  
-在之前的版本中，onStart 在只有一个工作进程时，会在 Worker-0 中回调。有多个工作进程时，在 Manager 进程中执行。
+- 在 `BASE` 模式下，`onStart` 回调将始终在第一个工作进程 (`workerId` 为 `0`) 启动时回调，先于 `onWorkerStart` 执行。在 `onStart` 函数中始终可以使用协程 `API`，`Worker-0` 出现致命错误重启时，会再次回调 `onStart` 
+在之前的版本中，`onStart` 在只有一个工作进程时，会在 `Worker-0` 中回调。有多个工作进程时，在 `Manager` 进程中执行。
 
 ## v4.7.0
 
