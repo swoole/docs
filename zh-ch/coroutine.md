@@ -10,15 +10,15 @@
 
 ## 什么是协程
 
-协程可以简单理解为线程，只不过这个线程是用户态的，不需要操作系统参与，创建销毁和切换的成本非常低，和线程不同的是协程没法利用多核cpu的，想利用多核cpu需要依赖`Swoole`的多进程模型。
+协程可以简单理解为线程，只不过这个线程是用户态的，不需要操作系统参与，创建销毁和切换的成本非常低，和线程不同的是协程没法利用多核CPU的，想利用多核CPU需要依赖`Swoole`的多进程模型。
 
-## 什么是channel
+## 什么是Channel
 
-`channel`可以理解为消息队列，只不过是协程间的消息队列，多个协程通过`push`和`pop`操作生产消息和消费消息，用来协程之间的通讯。需要注意的是`channel`是没法跨进程的，只能一个`Swoole`进程里的协程间通讯，最典型的应用是[连接池](/coroutine/conn_pool)和[并发调用](/coroutine/multi_call)。
+`Channel`可以理解为消息队列，只不过是协程间的消息队列，多个协程通过`push`和`pop`操作队列中的生产消息和消费消息，用来完成协程之间的通讯。需要注意的是`Channel`是没法跨进程的，只能一个`Swoole`进程里的协程间通讯，最典型的应用是[连接池](/coroutine/conn_pool)和[并发调用](/coroutine/multi_call)。
 
 ## 什么是协程容器
 
-使用`Coroutine::create`或`go`方法创建协程(参考[别名小节](/other/alias?id=协程短名称))，在创建的协程中才能使用协程`API`，而协程必须创建在协程容器里面，参考[协程容器](/coroutine/scheduler)。
+使用`Coroutine::create`或`go()`方法创建协程(参考[别名小节](/other/alias?id=协程短名称))，在创建的协程中才能使用协程`API`，而协程必须创建在协程容器里面，参考[协程容器](/coroutine/scheduler)。
 
 ## 协程调度
 
@@ -26,18 +26,18 @@
 
 用户的每个请求都会创建一个协程，请求结束后协程结束，如果同时有成千上万的并发请求，某一时刻某个进程内部会存在成千上万的协程，那么CPU资源是有限的，到底执行哪个协程的代码？
 
-决定到底让CPU执行哪个协程的代码决断过程就是`协程调度`，`Swoole`的调度策略又是怎么样的呢？
+决定到底让CPU执行哪个协程的代码的决断过程就是`协程调度`，`Swoole`的调度策略又是怎么样的呢？
 
-- 首先，在执行某个协程代码的过程中发现这行代码遇到了`Co::sleep()`或者产生了网络`IO`，例如`MySQL->query()`，这肯定是一个耗时的过程，`Swoole`就会把这个Mysql连接的Fd放到[EventLoop](/learn?id=什么是eventloop)中。
+- 首先，在执行某个协程代码的过程中发现这行代码遇到了`Co::sleep()`或者产生了网络`IO`，例如`MySQL->query()`，这肯定是一个耗时的过程，`Swoole`就会把这个MySQL连接的Fd放到[EventLoop](/learn?id=什么是eventloop)中。
       
     * 然后让出这个协程的CPU给其他协程使用：**即`yield`(挂起)**
-    * 等待MySQL数据返回后就继续执行这个协程：**即`resume`(恢复)**
+    * 等待MySQL数据返回后再继续执行这个协程：**即`resume`(恢复)**
 
 - 其次，如果协程的代码有CPU密集型代码，可以开启[enable_preemptive_scheduler](/other/config)，Swoole会强行让这个协程让出CPU。
 
 ## 父子协程优先级
 
-优先执行子协程(即`go()`里面的逻辑)，直到发生协程`yield`(co::sleep处)，然后[协程调度](/coroutine?id=协程调度)到外层协程
+优先执行子协程(即`go()`里面的逻辑)，直到发生协程`yield`(Co::sleep()处)，然后[协程调度](/coroutine?id=协程调度)到外层协程。
 
 ```php
 use Swoole\Coroutine;
@@ -74,9 +74,9 @@ end
 
 ### 全局变量
 
-协程使得原有的异步逻辑同步化，但是在协程的切换是隐式发生的，所以在协程切换的前后不能保证全局变量以及`static`变量的一致性。
+协程使得原有的异步逻辑同步化，但是在协程间的切换是隐式发生的，所以在协程切换的前后不能保证全局变量以及`static`变量的一致性。
 
-在 `PHP-FPM` 下可以通过全局变量获取到请求的参数，服务器的参数等，在 `Swoole` 内，**无法** 通过 `$_GET/$_POST/$_REQUEST/$_SESSION/$_COOKIE/$_SERVER`等`$_`开头的变量获取到任何属性参数。
+在 `PHP-FPM` 下可以通过全局变量获取到的请求参数，服务器的参数等，在 `Swoole` 内，**无法** 通过 `$_GET/$_POST/$_REQUEST/$_SESSION/$_COOKIE/$_SERVER`等以`$_`开头的变量获取到任何属性参数。
 
 可以使用[context](/coroutine/coroutine?id=getcontext)用协程id做隔离，实现全局变量的隔离。
 
