@@ -14,7 +14,7 @@
 
 ## 什么是Channel
 
-`Channel`可以理解为消息队列，只不过是协程间的消息队列，多个协程通过`push`和`pop`操作队列中的生产消息和消费消息，用来完成协程之间的通讯。需要注意的是`Channel`是没法跨进程的，只能一个`Swoole`进程里的协程间通讯，最典型的应用是[连接池](/coroutine/conn_pool)和[并发调用](/coroutine/multi_call)。
+`Channel`可以理解为消息队列，只不过是协程间的消息队列，多个协程通过`push`和`pop`操作队列中的生产消息和消费消息，用来发送或者接收数据进行协程之间的通讯。需要注意的是`Channel`是没法跨进程的，只能一个`Swoole`进程里的协程间通讯，最典型的应用是[连接池](/coroutine/conn_pool)和[并发调用](/coroutine/multi_call)。
 
 ## 什么是协程容器
 
