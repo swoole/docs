@@ -244,7 +244,7 @@ new WebSocketTest();
 
 ### onDisconnect
 
-?> **用于在连接关闭时区分连接是否为 WebSocket 连接。**
+?> **只有非 WebSocket 连接关闭时才会触发该事件。**
 
 !> Swoole 版本 >= `v4.7.0` 可用
 
