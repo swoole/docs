@@ -182,7 +182,7 @@ run(function () {
     $conn = $pg->connect("host=127.0.0.1 port=5432 dbname=test user=wuzhenyu password=112");
     $stmt = $pg->prepare("select * from test where id > $1 and id < $2");
     $res = $stmt->execute(array(1, 3));
-    $arr = $stmt->fetchAll($res);
+    $arr = $stmt->fetchAll();
     var_dump($arr);
 });
 ```
