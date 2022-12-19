@@ -11,7 +11,7 @@
 ### 实现原理
 
 * 在`onRequest`中需要并发两个`HTTP`请求，可使用`go`函数创建`2`个子协程，并发地请求多个`URL`
-* 并创建了一个`chan`，使用`use`闭包引用语法，传递给子协程
+* 并创建了一个`channel`，使用`use`闭包引用语法，传递给子协程
 * 主协程循环调用`chan->pop`，等待子协程完成任务，`yield`进入挂起状态
 * 并发的两个子协程其中某个完成请求时，调用`chan->push`将数据推送给主协程
 * 子协程完成`URL`请求后退出，主协程从挂起状态中恢复，继续向下执行调用`$resp->end`发送响应结果
@@ -22,7 +22,7 @@
 $serv = new Swoole\Http\Server("127.0.0.1", 9503, SWOOLE_BASE);
 
 $serv->on('request', function ($req, $resp) {
-	$chan = new chan(2);
+	$chan = new Channel(2);
 	go(function () use ($chan) {
 		$cli = new Swoole\Coroutine\Http\Client('www.qq.com', 80);
 			$cli->set(['timeout' => 10]);
