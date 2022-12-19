@@ -40,6 +40,10 @@
             '/process_pool': '/process/process_pool.md',
             '/.*/_sidebar.md': '/_sidebar.md',
         },
+        ad: {
+            'image': 'https://wenda-1252906962.file.myqcloud.com/images/ad/crmeb-3.jpg',
+            'link': 'https://github.crmeb.net/u/Swoole'
+        },
         formatUpdated: '{YYYY}-{MM}-{DD} {HH}:{mm}',
         plugins: [
             function (hook, vm) {
@@ -50,24 +54,29 @@
                     } else {
                         page = window.location.hash.substr(1, window.location.hash.length)
                     }
-                    var issue =
+                    if (page === '/') {
+                        page = 'README'
+                    }
+                    const issue =
                         '📝 更新时间：{docsify-updated} ' + '，[修改](https://github.com/swoole/docs/edit/main/zh-ch/' + page + '.md)\n';
                     return issue + html
                 })
 
                 hook.afterEach(function (html) {
-                    var top = [
+                    const top = [
                         '<div class="wiki-resource" style="padding: 0px 0px 20px;">' +
-                        '<a href="//www.swoole.com/url/NGT8ei" target="_blank"><img src="//www.swoole.com/images/api-post-1.png"><span style="position: absolute;right: 15px;"><img src="/_images/ico.png"></span></a>' +
+                        '<a href="' + window.$docsify.ad.link + '" target="_blank">' +
+                        '<img src="' + window.$docsify.ad.image + '"><span style="position: absolute;right: 15px;"><img src="/_images/ico.png"></span></a>' +
                         '</div>'
-                    ].join('')
+                    ].join('');
 
-                    var bottom = [
+                    const bottom = [
                         '<br/>',
                         '<div class="wiki-resource">' +
-                        '<a href="//www.swoole.com/url/NGT8ei" target="_blank"><img src="//www.swoole.com/images/api-post-1.png"><span style="position: absolute;right: 15px;"><img src="/_images/ico.png"></span></a>' +
+                        '<a href="' + window.$docsify.ad.link + '" target="_blank">' +
+                        '<img src="' + window.$docsify.ad.image + '"><span style="position: absolute;right: 15px;"><img src="/_images/ico.png"></span></a>' +
                         '</div>'
-                    ].join('')
+                    ].join('');
 
                     return top + html + bottom
                 })
