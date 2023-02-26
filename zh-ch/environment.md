@@ -168,6 +168,10 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 > 依赖`c-ares`库，`v4.7.0`版本可用。如果编译报错`ares.h: No such file or directory`，请查看[安装问题](/question/install?id=libcares)
 
+#### --with-jemalloc-dir
+
+启用对 `jemalloc` 的支持
+
 ### 特殊参数
 
 !> **如无历史原因不建议启用**
