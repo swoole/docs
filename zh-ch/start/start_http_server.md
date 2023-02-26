@@ -2,7 +2,7 @@
 
 ## 程序代码
 
-http_server.php
+请将以下代码写入httpServer.php。
 
 ```php
 $http = new Swoole\Http\Server('0.0.0.0', 9501);
@@ -25,10 +25,10 @@ $http->start();
 ## 启动服务
 
 ```shell
-php http_server.php
+php httpServer.php
 ```
 * 可以打开浏览器，访问`http://127.0.0.1:9501`查看程序的结果。
-* 也可以使用Apache `ab`工具对服务器进行压力测试
+* 也可以使用Apache `ab`工具对服务器进行压力测试。
 
 ## Chrome 请求两次问题
 
@@ -53,7 +53,7 @@ $http->on('Request', function ($request, $response) {
 ```php
 $http->on('Request', function ($request, $response) {
     list($controller, $action) = explode('/', trim($request->server['request_uri'], '/'));
-	//根据 $controller, $action 映射到不同的控制器类和方法
+	//根据 $controller, $action 映射到不同的控制器类和方法。
 	(new $controller)->$action($request, $response);
 });
 ```

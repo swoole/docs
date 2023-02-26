@@ -2,7 +2,7 @@
 
 [Server->set()](/server/methods?id=set) 函数用于设置`Server`运行时的各项参数。本节所有的子页面均为配置数组的元素。
 
-!> 从 [v4.5.5](/version/log?id=v455) 版本起，底层会检测设置的配置项是否正确，如果设置了不是Swoole提供的配置项，则会产生一个Warning。
+!> 从 [v4.5.5](/version/log?id=v455) 版本起，底层会检测设置的配置项是否正确，如果设置了不是`Swoole`提供的配置项，则会产生一个Warning。
 
 ```shell
 PHP Warning:  unsupported option [foo] in @swoole-src/library/core/Server/Helper.php 

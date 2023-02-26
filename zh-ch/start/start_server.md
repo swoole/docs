@@ -1,6 +1,6 @@
 # 快速启动
 
-`Swoole`的绝大部分功能只能用于`cli`命令行环境，请首先准备好`Linux Shell`环境。可使用`Vim`、`Emacs`、`PhpStorm`或其他编辑器编写代码，并在命令行中通过如下指令执行程序
+`Swoole`的绝大部分功能只能用于`cli`命令行环境，请首先准备好`Linux Shell`环境。可使用`Vim`、`Emacs`、`PhpStorm`或其他编辑器编写代码，并在命令行中通过如下指令执行程序。
 
 ```shell
 php /path/to/your_file.php
@@ -10,7 +10,7 @@ php /path/to/your_file.php
 
 #### 进程管理
 
-默认情况下，启动`Swoole`的服务后，通过启动的窗口`CTRL+C`就可以结束服务，但此时如果窗口退出会有问题，需要后台启动，详情参考[守护进程化](/server/setting?id=daemonize)
+默认情况下，启动`Swoole`的服务后，通过启动的窗口`CTRL+C`就可以结束服务，但此时如果窗口退出会有问题，需要后台启动，详情参考[守护进程化](/server/setting?id=daemonize)。
 
 !> 快速启动中的示例大部分都是异步风格的编程模式，用协程风格同样可以做到示例中的功能，参见[服务端 (协程风格)](coroutine/server.md)。
 

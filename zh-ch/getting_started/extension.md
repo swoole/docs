@@ -2,7 +2,7 @@
 
 由于某些跟踪调试的`PHP`扩展大量使用了全局变量，可能会导致`Swoole`协程发生崩溃。请关闭以下相关扩展：
 
-* xdebug
+* xdebug，`Swoole5`开始支持xdebug，
 * phptrace
 * aop
 * molten

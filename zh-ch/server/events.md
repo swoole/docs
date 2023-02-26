@@ -1,4 +1,6 @@
-# 事件
+# 事件和回调对象
+
+## 事件
 
 此节将介绍所有的Swoole的回调函数，每个回调函数都是一个PHP函数，对应一个事件。
 
@@ -41,6 +43,8 @@ function onStart(Swoole\Server $server);
 * **安全提示**
 
 在`onStart`回调中可以使用异步和协程的API，但需要注意这可能会与`dispatch_func`和`package_length_func`存在冲突，**请勿同时使用**。
+
+请不要在`onStart`中启动定时器，如果在代码中执行了`Swoole\Server::shutdown()`操作，会因为始终有一个定时器在执行导致程序无法退出。
 
 `onStart`回调在`return`之前服务器程序不会接受任何客户端连接，因此可以安全地使用同步阻塞的函数。
 
@@ -605,7 +609,7 @@ function onAfterReload(Swoole\Server $server);
 
 启用[event_object](/server/setting?id=event_object)后，以下事件回调将使用对象风格
 
-#### Swoole\Server\Event
+#### [Swoole\Server\Event](/server/event_class)
 
 * [onConnect](/server/events?id=onconnect)
 * [onReceive](/server/events?id=onreceive)
@@ -615,9 +619,17 @@ function onAfterReload(Swoole\Server $server);
 $server->on('Connect', function (Swoole\Server $serv, Swoole\Server\Event $object) {
     var_dump($object);
 });
+
+$server->on('Receive', function (Swoole\Server $serv, Swoole\Server\Event $object) {
+    var_dump($object);
+});
+
+$server->on('Close', function (Swoole\Server $serv, Swoole\Server\Event $object) {
+    var_dump($object);
+});
 ```
 
-#### Swoole\Server\Packet
+#### [Swoole\Server\Packet](/server/packet_class)
 
 * [onPacket](/server/events?id=onpacket)
 
@@ -627,7 +639,7 @@ $server->on('Packet', function (Swoole\Server $serv, Swoole\Server\Packet $objec
 });
 ```
 
-#### Swoole\Server\PipeMessage
+#### [Swoole\Server\PipeMessage](/server/pipemessage_class)
 
 * [onPipeMessage](/server/events?id=onpipemessage)
 
@@ -639,7 +651,7 @@ $server->on('PipeMessage', function (Swoole\Server $serv, Swoole\Server\PipeMess
 });
 ```
 
-#### Swoole\Server\StatusInfo
+#### [Swoole\Server\StatusInfo](/server/statusinfo_class)
 
 * [onWorkerError](/server/events?id=onworkererror)
 
@@ -649,7 +661,7 @@ $serv->on('WorkerError', function (Swoole\Server $serv, Swoole\Server\StatusInfo
 });
 ```
 
-#### Swoole\Server\Task
+#### [Swoole\Server\Task](/server/task_class)
 
 * [onTask](/server/events?id=ontask)
 
@@ -659,7 +671,7 @@ $server->on('Task', function (Swoole\Server $serv, Swoole\Server\Task $task) {
 });
 ```
 
-#### Swoole\Server\TaskResult
+#### [Swoole\Server\TaskResult](/server/taskresult_class)
 
 * [onFinish](/server/events?id=onfinish)
 
