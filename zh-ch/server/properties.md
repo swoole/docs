@@ -2,7 +2,7 @@
 
 ### $setting
 
-[Server->set()](/server/methods?id=set)函数所设置的参数会保存到`Server->$setting`属性上。在回调函数中可以访问运行参数的值。
+[Server->set()](/server/methods?id=set)函数所设置的参数会保存到`Server->$setting`属性上。在回调函数中可以访问运行参数的值。该属性是一个`array`类型的数组。
 
 ```php
 Swoole\Server->setting
@@ -15,6 +15,98 @@ $server = new Swoole\Server('127.0.0.1', 9501);
 $server->set(array('worker_num' => 4));
 
 echo $server->setting['worker_num'];
+```
+
+### $connections
+
+`TCP`连接迭代器，可以使用`foreach`遍历服务器当前所有的连接，此属性的功能与[Server->getClientList](/server/methods?id=getclientlist)是一致的，但是更加友好。
+
+遍历的元素为单个连接的`fd`。
+
+```php
+Swoole\Server->connections
+```
+
+!> `$connections`属性是一个迭代器对象，不是PHP数组，所以不能用`var_dump`或者数组下标来访问，只能通过`foreach`进行遍历操作
+
+  * **Base 模式**
+
+    * [SWOOLE_BASE](/learn?id=swoole_base) 模式下不支持跨进程操作`TCP`连接，因此在`BASE`模式中，只能在当前进程内使用`$connections`迭代器
+
+  * **示例**
+
+```php
+foreach ($server->connections as $fd) {
+  var_dump($fd);
+}
+echo "当前服务器共有 " . count($server->connections) . " 个连接\n";
+```
+
+### $host
+
+返回当前服务器监听的主机地址的`host`，该属性是一个`string`类型的字符串。
+
+```php
+Swoole\Server->host
+```
+
+### $port
+
+返回当前服务器监听的端口的`port`，该属性是一个`int`类型的整数。。
+
+```php
+Swoole\Server->port
+```
+
+### $type
+
+返回当前Server 的类型`type`，该属性是一个`int`类型的整数。
+
+```php
+Swoole\Server->type
+```
+!> 该属性返回会返回下列的值的其中一个
+- `SWOOLE_SOCK_TCP` tcp ipv4 socket
+- `SWOOLE_SOCK_TCP6` tcp ipv6 socket
+- `SWOOLE_SOCK_UDP` udp ipv4 socket
+- `SWOOLE_SOCK_UDP6` udp ipv6 socket
+- `SWOOLE_SOCK_UNIX_DGRAM` unix socket dgram
+- `SWOOLE_SOCK_UNIX_STREAM` unix socket stream 
+
+### $ssl
+
+返回当前服务器是否启动`ssl`，该属性是一个`bool`类型。
+
+```php
+Swoole\Server->ssl
+```
+
+### $mode
+
+返回当前服务器的进程模式`mode`，该属性是一个`int`类型的整数。
+
+```php
+Swoole\Server->mode
+```
+
+!> 该属性返回会返回下列的值的其中一个
+- `SWOOLE_BASE` 单进程模式
+- `SWOOLE_PROCESS` 多进程模式
+
+### $ports
+
+监听端口数组，如果服务器监听了多个端口可以遍历`Server::$ports`得到所有`Swoole\Server\Port`对象。
+
+其中`swoole_server::$ports[0]`为构造方法所设置的主服务器端口。
+
+  * **示例**
+
+```php
+$ports = $server->ports;
+$ports[0]->set($settings);
+$ports[1]->on('Receive', function () {
+    //callback
+});
 ```
 
 ### $master_pid
@@ -43,7 +135,7 @@ $server->start();
 
 ### $manager_pid
 
-返回当前服务器管理进程的`PID`。
+返回当前服务器管理进程的`PID`，该属性是一个`int`类型的整数。。
 
 ```php
 Swoole\Server->manager_pid
@@ -67,10 +159,10 @@ $server->start();
     
 ### $worker_id
 
-得到当前`Worker`进程的编号，包括 [Task进程](/learn?id=taskworker进程)。
+得到当前`Worker`进程的编号，包括 [Task进程](/learn?id=taskworker进程)，该属性是一个`int`类型的整数。
 
 ```php
-Swoole\Server->worker_id: int
+Swoole\Server->worker_id
 ```
   * **示例**
 
@@ -104,20 +196,12 @@ $server->start();
 
 !> 工作进程重启后`worker_id`的值是不变的
 
-### $worker_pid
-
-得到当前`Worker`进程的操作系统进程`ID`。与`posix_getpid()`的返回值相同。
-
-```php
-Swoole\Server->worker_pid: int
-```
-
 ### $taskworker
 
-当前进程是否是 `Task` 进程。
+当前进程是否是 `Task` 进程，该属性是一个`bool`类型。
 
 ```php
-Swoole\Server->taskworker: bool
+Swoole\Server->taskworker
 ```
 
   * **返回值**
@@ -125,43 +209,11 @@ Swoole\Server->taskworker: bool
     * `true`表示当前的进程是`Task`工作进程
     * `false`表示当前的进程是`Worker`进程
 
-### $connections
 
-`TCP`连接迭代器，可以使用`foreach`遍历服务器当前所有的连接，此属性的功能与[Server->getClientList](/server/methods?id=getclientlist)是一致的，但是更加友好。
+### $worker_pid
 
-遍历的元素为单个连接的`fd`。
-
-```php
-Swoole\Server->connections
-```
-
-!> `$connections`属性是一个迭代器对象，不是PHP数组，所以不能用`var_dump`或者数组下标来访问，只能通过`foreach`进行遍历操作
-
-  * **Base 模式**
-
-    * [SWOOLE_BASE](/learn?id=swoole_base) 模式下不支持跨进程操作`TCP`连接，因此在`BASE`模式中，只能在当前进程内使用`$connections`迭代器
-
-  * **示例**
+得到当前`Worker`进程的操作系统进程`ID`。与`posix_getpid()`的返回值相同，该属性是一个`int`类型的整数。
 
 ```php
-foreach ($server->connections as $fd) {
-  var_dump($fd);
-}
-echo "当前服务器共有 " . count($server->connections) . " 个连接\n";
-```
-
-### $ports
-
-监听端口数组，如果服务器监听了多个端口可以遍历`Server::$ports`得到所有`Swoole\Server\Port`对象。
-
-其中`swoole_server::$ports[0]`为构造方法所设置的主服务器端口。
-
-  * **示例**
-
-```php
-$ports = $server->ports;
-$ports[0]->set($settings);
-$ports[1]->on('Receive', function () {
-    //callback
-});
+Swoole\Server->worker_pid
 ```

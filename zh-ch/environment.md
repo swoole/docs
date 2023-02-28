@@ -2,13 +2,13 @@
 
 `Swoole`扩展是按照`PHP`标准扩展构建的。使用`phpize`来生成编译检测脚本，`./configure`来做编译配置检测，`make`进行编译，`make install`进行安装。
 
-* **如无特殊需求, 请务必编译安装`Swoole`的最新 [release](https://github.com/swoole/swoole-src/releases/latest) 版本或 [v4.4LTS](https://github.com/swoole/swoole-src/tree/v4.4.x)**
-* 如果当前用户不是`root`，可能没有`PHP`安装目录的写权限，安装时需要`sudo`或者`su`
-* 如果是在`git`分支上直接`git pull`更新代码，重新编译前务必要执行`make clean`
-* 仅支持 `Linux`(2.3.32 以上内核)、`FreeBSD`、`MacOS` 三种操作系统
-* 低版本Linux系统（如`CentOS 6`）可以使用`RedHat`提供的`devtools`编译，[参考文档](https://blog.csdn.net/ppdouble/article/details/52894271)  
-* 在`Windows`平台，可使用`WSL(Windows Subsystem for Linux)`或`CygWin`
-* 部分扩展与`Swoole`扩展不兼容，参考[扩展冲突](/getting_started/extension)
+* 如无特殊需求, 请务必编译安装`Swoole`的最新 [Swoole5.0.2](https://github.com/swoole/swoole-src/releases/tag/v5.0.2) 版本或 [Swoole4.8.13](https://github.com/swoole/swoole-src/releases/tag/v4.8.13)。
+* 如果当前用户不是`root`，可能没有`PHP`安装目录的写权限，安装时需要`sudo`或者`su`。
+* 如果是在`git`分支上直接`git pull`更新代码，重新编译前务必要执行`make clean`。
+* 仅支持 `Linux`(2.3.32 以上内核)、`FreeBSD`、`MacOS` 三种操作系统。
+* 低版本Linux系统（如`CentOS 6`）可以使用`RedHat`提供的`devtools`编译，[参考文档](https://blog.csdn.net/ppdouble/article/details/52894271)  。
+* 在`Windows`平台，可使用`WSL(Windows Subsystem for Linux)`或`CygWin`。
+* 部分扩展与`Swoole`扩展不兼容，参考[扩展冲突](/getting_started/extension)。
 
 ## 安装准备
 
@@ -38,7 +38,7 @@
 cd swoole-src && \
 phpize && \
 ./configure && \
-make && sudo make install
+sudo make && sudo make install
 ```
 
 > 3.启用扩展
@@ -49,7 +49,7 @@ make && sudo make install
 
 !> 初次接触Swoole的开发者请先尝试上方的简单编译，如果有进一步的需要，可以根据具体的需求和版本，调整以下示例中的编译参数。[编译参数参考](/environment?id=编译选项)
 
-以下脚本会下载并编译`master`分支的源码, 需保证你已安装所有依赖, 否则会遇到各种依赖错误
+以下脚本会下载并编译`master`分支的源码, 需保证你已安装所有依赖, 否则会遇到各种依赖错误。
 
 ```shell
 mkdir -p ~/build && \
@@ -61,9 +61,8 @@ mv swoole-src* swoole-src && \
 cd swoole-src && \
 phpize && \
 ./configure \
---enable-openssl \
---enable-http2 && \
-make && sudo make install
+--enable-openssl --enable-sockets --enable-mysqlnd --enable-swoole-curl --enable-cares --enable-swoole-pgsql && \
+sudo make && sudo make install
 ```
 
 ## PECL
@@ -149,11 +148,11 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 开启对`HTTP2`的支持
 
-> 依赖`nghttp2`库。在`v4.3.0`版本后不再需要安装依赖, 改为内置, 但仍需要增加该编译参数来开启`http2`支持
+> 依赖`nghttp2`库。在`V4.3.0`版本后不再需要安装依赖, 改为内置, 但仍需要增加该编译参数来开启`http2`支持，`Swoole5`默认启用该参数。
 
 #### --enable-swoole-json
 
-启用对[swoole_substr_json_decode](/functions?id=swoole_substr_json_decode)的支持
+启用对[swoole_substr_json_decode](/functions?id=swoole_substr_json_decode)的支持，`Swoole5`开始默认启用该参数
 
 > 依赖`json`扩展，`v4.5.7`版本可用
 
@@ -169,6 +168,10 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 > 依赖`c-ares`库，`v4.7.0`版本可用。如果编译报错`ares.h: No such file or directory`，请查看[安装问题](/question/install?id=libcares)
 
+#### --with-jemalloc-dir
+
+启用对 `jemalloc` 的支持
+
 ### 特殊参数
 
 !> **如无历史原因不建议启用**
@@ -183,7 +186,7 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 增加对PHP的`sockets`资源的支持。开启此参数，[Swoole\Event::add](/event?id=add)就可以添加`sockets`扩展创建的连接到`Swoole`的[事件循环](/learn?id=什么是eventloop)中。  
 `Server`和`Client`的 [getSocket()](/server/methods?id=getsocket)方法也需要依赖此编译参数。
- 
+
 > 依赖`sockets`扩展, `v4.3.2`版本后该参数的作用被削弱了, 因为Swoole内置的[Coroutine\Socket](/coroutine_client/socket)可以完成大部分事情
 
 ### Debug参数
@@ -202,17 +205,24 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 打开追踪日志，开启此选项后swoole将打印各类细节的调试日志，仅内核开发时使用
 
+#### --enable-swoole-coro-time
+
+启用对协程运行时间计算，此选项开启后，可以使用Swoole\Coroutine::getExecuteTime()计算协程执行时间，不包括I\O等待时间。
+
 ### PHP编译参数
 
 #### --enable-swoole
 
-静态编译 Swoole 扩展到 PHP 中
+静态编译 Swoole 扩展到 PHP 中，根据下面的操作，就能出现`--enable-swoole`这个选项。
+
+```shell
+cp -r /home/swoole-src /home/php-src/ext
+cd /home/php-src
+./buildconf --force
+./configure --help | grep swoole
+```
 
 !> 此选项是在编译 PHP 而不是 Swoole 时使用的
-
-## 视频教程
-
-* [Swoole安装视频教程](https://course.swoole-cloud.com/course-video/23)
 
 ## 常见问题
 

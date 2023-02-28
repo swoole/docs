@@ -15,11 +15,11 @@ use Swoole\Runtime;
 use Swoole\Coroutine;
 use function Swoole\Coroutine\run;
 
-// 此行代码后，文件操作，sleep，Mysqli，PDO，streams等都变成异步IO，见'一键协程化'章节
+// 此行代码后，文件操作，sleep，Mysqli，PDO，streams等都变成异步IO，见'一键协程化'章节。
 Runtime::enableCoroutine();
 $s = microtime(true);
 
-// Swoole\Coroutine\run()见'协程容器'章节
+// Swoole\Coroutine\run()见'协程容器'章节。
 run(function() {
     // i just want to sleep...
     for ($c = 100; $c--;) {
