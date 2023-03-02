@@ -804,7 +804,7 @@ $server->set([
 ]);
 ```
 
-目前支持`gzip`、`br`、`deflate` 三种压缩格式，底层会根据浏览器客户端传入的`Accept-Encoding`头自动选择压缩方式。
+目前支持`gzip`、`br`、`deflate` 三种压缩格式，底层会根据浏览器客户端传入的`Accept-Encoding`头自动选择压缩方式（压缩算法优先级：`br` > `gzip` > `deflate` ）。
 
 **依赖：**
 
