@@ -35,7 +35,7 @@ Swoole\Server::__construct(string $host = '0.0.0.0', int $port = 0, int $mode = 
       * 默认值：[SWOOLE_PROCESS](/learn?id=swoole_process) 多进程模式（默认）。
       * 其它值：[SWOOLE_BASE](/learn?id=swoole_base) 基本模式。
 
-      !> 从Swoole5开始，运行模式的默认值为`SWOOLE_PROCESS`。
+      !> 从Swoole5开始，运行模式的默认值为`SWOOLE_BASE`。
 
     * `int $sockType`
 
