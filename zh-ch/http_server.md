@@ -278,7 +278,7 @@ Swoole\Http\Request->create(array $options): Swoole\Http\Request
 | 参数                                              | 默认值 | 说明                                                                |
 | ------------------------------------------------- | ------ | ----------------------------------------------------------------- |
 | [parse_cookie](/http_server?id=http_parse_cookie) | true   | 设置是否解析`Cookie`                                                |
-| [parse_body](/http_server?id=http_parse_bpdy)      | true   | 设置是否解析`Http Body`                                             |
+| [parse_body](/http_server?id=http_parse_body)      | true   | 设置是否解析`Http Body`                                             |
 | [parse_files](/http_server?id=http_parse_files)   | true   | 设置上传文件解析开关                                                 |
 | enable_compression                                | true，如果服务器不支持压缩报文，默认值为false   | 设置是否启用压缩                                                    |
 | compression_level                                 | 1      | 设置压缩级别，范围是 1-9，等级越高压缩后的尺寸越小，但 CPU 消耗更多        |
