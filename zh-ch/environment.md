@@ -172,6 +172,14 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 启用对 `jemalloc` 的支持
 
+#### --enable-brotli
+
+启用对 `libbrotli` 压缩支持
+
+#### --with-brotli-dir
+
+启用`libbrotli`压缩支持并指定`libbrotli`库的路径, 需跟上路径参数，如: `--with-brotli-dir=/opt/brotli/`
+
 ### 特殊参数
 
 !> **如无历史原因不建议启用**
