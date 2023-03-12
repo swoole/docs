@@ -822,14 +822,20 @@ Swoole\Http\Response->detach(): bool
 !> 使用此方法前请务必调用`detach`方法将旧的`$response`对象分离，否则可能会造成对同一个请求发送两次响应内容。
 
 ```php
-Swoole\Http\Response::create(int $fd): Swoole\Http\Response
+Swoole\Http\Response::create(object|array|int $server = -1, int $fd = -1): Swoole\Http\Response
 ```
 
   * **参数** 
 
+    * **`int $server`**
+      * **功能**：`Swoole\Server`或者`Swoole\Coroutine\Socket`对象，数组（数组只能有两个参数，第一个是`Swoole\Server`对象，第二个是`Swoole\Http\Request`对象），或者文件描述符
+      * **默认值**：-1
+      * **其它值**：无
+
     * **`int $fd`**
-      * **功能**：文件描述符
-      * **默认值**：无
+      * **功能**：文件描述符。如果参数`$server`是`Swoole\Server`对象，`$fd`是必填的
+      * **默认值**：-1
+      * 
       * **其它值**：无
 
   * **返回值** 
@@ -843,7 +849,16 @@ $http = new Swoole\Http\Server('0.0.0.0', 9501);
 
 $http->on('request', function ($req, Swoole\Http\Response $resp) use ($http) {
     $resp->detach();
+    // 示例1
     $resp2 = Swoole\Http\Response::create($req->fd);
+    // 示例2
+    $resp2 = Swoole\Http\Response::create($http, $req->fd);
+    // 示例3
+    $resp2 = Swoole\Http\Response::create([$http, $req]);
+    // 示例4
+    $socket = new Swoole\Coroutine\Socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+    $socket->connect('127.0.0.1', 9501)
+    $resp2 = Swoole\Http\Response::create($socket);
     $resp2->end("hello world");
 });
 
@@ -1046,26 +1061,6 @@ $server->set([
 
 !> 需要编译时启用 [--enable-http2](/environment?id=编译选项) 选项，`Swoole5`开始默认编译http2。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### document_root
 
 ?> **配置静态文件根目录，与`enable_static_handler`配合使用。** 
@@ -1081,10 +1076,3 @@ $server->set([
 
 * 设置`document_root`并设置`enable_static_handler`为`true`后，底层收到`Http`请求会先判断document_root路径下是否存在此文件，如果存在会直接发送文件内容给客户端，不再触发[onRequest](/http_server?id=on)回调。
 * 使用静态文件处理特性时，应当将动态PHP代码和静态文件进行隔离，静态文件存放到特定的目录
-
-
-
-
-
-
-
