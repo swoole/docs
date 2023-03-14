@@ -1958,8 +1958,7 @@ Swoole\Server->addCommand(string $name, int $accepted_process_types, Callable $c
 Swoole\Server->command(string $name, int $process_id, int $process_type, mixed $data, bool $json_decode = true): false|string|array
 ```
 
-!> -Swoole版本 >= `v4.8.0` 可用
-  -`SWOOLE_PROCESS`和`SWOOLE_BASE`模式下，该函数只能用于`master`进程。
+!>Swoole版本 >= `v4.8.0` 可用，`SWOOLE_PROCESS`和`SWOOLE_BASE`模式下，该函数只能用于`master`进程。  
 
 
 * **参数**
