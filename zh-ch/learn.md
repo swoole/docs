@@ -301,6 +301,7 @@ SWOOLE_PROCESS模式的`Server`所有客户端的TCP连接都是和[主进程](/
 #### 进程模式的缺点：
 
 * 存在`2`次`IPC`的开销，`master`进程与`worker`进程需要使用[unixSocket](/learn?id=什么是IPC)进行通信
+* `SWOOLE_PROCESS`不支持PHP ZTS，在这种情况下只能使用`SWOOLE_BASE`或者设置[single_thread](/server/setting?id=single_thread)为true
 
 ### SWOOLE_BASE
 
