@@ -239,7 +239,7 @@ $server->start();
 1 | 轮循模式 | 收到会轮循分配给每一个`Worker`进程
 2 | 固定模式 | 根据连接的文件描述符分配`Worker`。这样可以保证同一个连接发来的数据只会被同一个`Worker`处理
 3 | 抢占模式 | 主进程会根据`Worker`的忙闲状态选择投递，只会投递给处于闲置状态的`Worker`
-4 | IP分配 | 根据客户端`IP`进行取模`hash`，分配给一个固定的`Worker`进程。<br>可以保证同一个来源IP的连接数据总会被分配到同一个`Worker`进程。算法为 `ip2long(ClientIP) % worker_num`
+4 | IP分配 | 根据客户端`IP`进行取模`hash`，分配给一个固定的`Worker`进程。<br>可以保证同一个来源IP的连接数据总会被分配到同一个`Worker`进程。算法为 `inet_addr_mod(ClientIP, worker_num)`
 5 | UID分配 | 需要用户代码中调用 [Server->bind()](/server/methods?id=bind) 将一个连接绑定`1`个`uid`。然后底层根据`UID`的值分配到不同的`Worker`进程。<br>算法为 `UID % worker_num`，如果需要使用字符串作为`UID`，可以使用`crc32(UID_STRING)`
 7 | stream模式 | 空闲的`Worker`会`accept`连接，并接受[Reactor](/learn?id=reactor线程)的新请求
 
@@ -252,8 +252,27 @@ $server->start();
       
     * **UDP协议**
 
-      * `dispatch_mode=2/4/5`时为固定分配，底层使用客户端`IP`取模散列到不同的`Worker`进程，算法为 `ip2long(ClientIP) % worker_num`
+      * `dispatch_mode=2/4/5`时为固定分配，底层使用客户端`IP`取模散列到不同的`Worker`进程
       * `dispatch_mode=1/3`时随机分配到不同的`Worker`进程
+      * `inet_addr_mod`函数
+
+```
+    function inet_addr_mod($ip, $worker_num) {
+        $ip_parts = explode('.', $ip);
+        if (count($ip_parts) != 4) {
+            return false;
+        }
+        $ip_parts = array_reverse($ip_parts);
+    
+        $ip_long = 0;
+        foreach ($ip_parts as $part) {
+            $ip_long <<= 8;
+            $ip_long |= (int) $part;
+        }
+    
+        return $ip_long % $worker_num;
+    }
+```
 
     * **BASE模式**
 
