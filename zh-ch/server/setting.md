@@ -1374,6 +1374,7 @@ $server->set([
 
 * 当`enable_coroutine`设置为`true`时，底层自动在[onRequest](/http_server?id=on)回调中创建协程，开发者无需自行使用`go`函数[创建协程](/coroutine/coroutine?id=create)
 * 当`enable_coroutine`设置为`false`时，底层不会自动创建协程，开发者如果要使用协程，必须使用`go`自行创建协程，如果不需要使用协程特性，则处理方式与`Swoole1.x`是100%一致的
+* 注意，这个开启只是说明Swoole会通过协程去处理请求，如果事件中含有阻塞函数，那需要提前开启[一键协程化](/runtime)，将`sleep`，`mysqlnd`这些阻塞的函数或者扩展开启协程化
 
 ```php
 $server = new Swoole\Http\Server("127.0.0.1", 9501);
@@ -1556,7 +1557,7 @@ $server->set([
 
 ### single_thread
 
-?> **设置为单一线程。** 启用后 Reactor 线程将会和 Master 进程中的 Master 线程合并，由 Master 线程处理逻辑。
+?> **设置为单一线程。** 启用后 Reactor 线程将会和 Master 进程中的 Master 线程合并，由 Master 线程处理逻辑，在PHP ZTS下，如果使用`SWOOLE_PROCESS`模式，一定要设置该值为`true`。
 
 ```php
 $server->set([

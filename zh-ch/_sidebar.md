@@ -23,7 +23,7 @@
         * [事件和回调对象](server/events.md)
         * [Swoole\Server\Task](server/task_class.md)
         * [Swoole\Server\Packet](server/packet_class.md)
-        * [Swoole\Server\PipeMessage](server/pipeMessage_class.md)
+        * [Swoole\Server\PipeMessage](server/pipemessage_class.md)
         * [Swoole\Server\StatusInfo](server/statusinfo_class.md)
         * [Swoole\Server\TaskResult](server/taskresult_class.md)
         * [Swoole\Server\Event](server/event_class.md)

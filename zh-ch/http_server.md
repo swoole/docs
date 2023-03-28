@@ -1076,3 +1076,25 @@ $server->set([
 
 * 设置`document_root`并设置`enable_static_handler`为`true`后，底层收到`Http`请求会先判断document_root路径下是否存在此文件，如果存在会直接发送文件内容给客户端，不再触发[onRequest](/http_server?id=on)回调。
 * 使用静态文件处理特性时，应当将动态PHP代码和静态文件进行隔离，静态文件存放到特定的目录
+
+### max_concurrency
+
+?> **可限制 `HTTP1/2` 服务的最大并发请求数量，超过之后返回 `503` 错误，默认值为4294967295，即为无符号int的最大值**
+
+```php
+$server->set([
+    'max_concurrency' => 1000,
+]);
+```
+
+### worker_max_concurrency
+
+?> **开启一键协程化之后，`worker`进程会源源不断的接受请求，为了避免压力过大，我们可以设置`worker_max_concurrency`限制`worker`进程的请求执行数，当请求数超过该值时，`worker`进程会将多余的请求暂存于队列，默认值为4294967295，即为无符号int的最大值。如果没有设置`worker_max_concurrency`，但是设置了`max_concurrency`的话，底层会自动设置`worker_max_concurrency`等于`max_concurrency`**
+
+```php
+$server->set([
+    'worker_max_concurrency' => 1000,
+]);
+```
+
+!> Swoole版本 >= `v5.0.0` 可用
