@@ -21,6 +21,10 @@ UDP服务器与TCP服务器不同，UDP没有连接的概念。启动Server后�
 
 * `$clientInfo`是客户端的相关信息，是一个数组，有客户端的IP和端口等内容。
 * 调用 `$server->sendto` 方法向客户端发送数据。
+!> Docker 默认使用 TCP 协议来通信，如果你需要使用 UDP 协议，你需要通过配置 Docker 网络来实现。  
+```shell
+docker run -p 9502:9502/udp <image-name>
+```
 
 ## 启动服务
 
