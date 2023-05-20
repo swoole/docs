@@ -180,6 +180,24 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 启用`libbrotli`压缩支持并指定`libbrotli`库的路径, 需跟上路径参数，如: `--with-brotli-dir=/opt/brotli/`
 
+#### --enable-swoole-pgsql
+
+启用`PostgreSQL`数据库协程化。
+
+> `Swoole5.0`之前是使用协程客户端进行对`PostgreSQL`进行协程化，`Swoole5.1`之后，除了使用协程客户端进行协程化，也能够使用原生的`pdo_pgsql`协程化`PostgreSQL`了。
+
+#### --with-pdo-odbc
+
+启动对`pdo_odbc`协程化，该参数启用之后，所有支持`odbc`接口的数据库都能够协程化了。
+
+>`v5.1.0`版本后可用
+
+#### --with-swoole-oracle
+
+启用对`pdo_oci`的协程化，该参数启用之后，`oracle`数据库的增删改查都会触发写成操作。
+
+>`v5.1.0`版本后可用
+
 ### 特殊参数
 
 !> **如无历史原因不建议启用**
