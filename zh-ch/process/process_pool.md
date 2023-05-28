@@ -485,7 +485,7 @@ $pool->on("WorkerStart", function ($pool, $workerId) {
 
 ### stop()
 
-将当前进程移出事件循环
+将当前进程套接字移出事件循环，开启协程后，这个函数才有作用
 
 ```php
 Swoole\Process\Pool->stop(): bool
@@ -493,7 +493,7 @@ Swoole\Process\Pool->stop(): bool
 
 ### shutdown()
 
-终止当前工作进程。
+终止工作进程。
 
 ```php
 Swoole\Process\Pool->shutdown(): bool
