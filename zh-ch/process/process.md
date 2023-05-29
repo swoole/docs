@@ -1,4 +1,4 @@
-# Process
+# Swoole\Process
 
 Swoole提供的进程管理模块，用来替代PHP的`pcntl`  
 
@@ -44,21 +44,52 @@ echo 'Parent #' . getmypid() . ' exit' . PHP_EOL;
 
 ## 属性
 
-### pid
-
-子进程的`PID`。
-
-```php
-Swoole\Process->pid: int
-```
-
 ### pipe
 
 [unixSocket](/learn?id=什么是IPC)的文件描述符。
 
 ```php
-Swoole\Process->pipe;
+public int $pipe;
 ```
+
+### msgQueueId
+
+消息队列的`id`。
+
+```php
+public int $msgQueueId;
+```
+
+### msgQueueKey
+
+消息队列的`key`。
+
+```php
+public string $msgQueueKey;
+```
+
+### pid
+
+父进程的`id`。
+
+```php
+public int $pid;
+```
+
+### id
+
+当前进程`id`。
+
+```php
+public int $id;
+```
+
+## 常量
+参数 | 作用
+---|---
+Swoole\Process::MSGQUEUE_NOWAIT | 当消息队列没有数据时，立刻返回
+Swoole\Process::PIPE_READ | 关闭读套接字
+Swoole\Process::PIPE_WRITE | 关闭写套接字
 
 ## 方法
 
@@ -67,13 +98,13 @@ Swoole\Process->pipe;
 构造方法。
 
 ```php
-Swoole\Process::__construct(callable $function, bool $redirect_stdin_stdout = false, int $pipe_type = SOCK_DGRAM, bool $enable_coroutine = false);
+Swoole\Process->__construct(callable $function, bool $redirect_stdin_stdout = false, int $pipe_type = SOCK_DGRAM, bool $enable_coroutine = false)
 ```
 
 * **参数** 
 
   * **`callable $function`**
-    * **功能**：子进程创建成功后要执行的函数【底层会自动将函数保存到对象的`callback`属性上】
+    * **功能**：子进程创建成功后要执行的函数【底层会自动将函数保存到对象的`callback`属性上】,注意，该属性是`private`类私有的。
     * **默认值**：无
     * **其它值**：无
 
@@ -83,9 +114,9 @@ Swoole\Process::__construct(callable $function, bool $redirect_stdin_stdout = fa
     * **其它值**：无
 
   * **`int $pipe_type`**
-    * **功能**：[unixSocket](/learn?id=什么是IPC)类型【启用`$redirect_stdin_stdout`后，此选项将忽略用户参数，强制为`1`。如果子进程内没有进程间通信，可以设置为 `0`】
-    * **默认值**：`2`
-    * **其它值**：`0`、`1`
+    * **功能**：[unixSocket](/learn?id=什么是IPC)类型【启用`$redirect_stdin_stdout`后，此选项将忽略用户参数，强制为`SOCK_STREAM`。如果子进程内没有进程间通信，可以设置为 `0`】
+    * **默认值**：`SOCK_DGRAM`
+    * **其它值**：`0`、`SOCK_STREAM`
 
   * **`bool $enable_coroutine`**
     * **功能**：在`callback function`中启用协程，开启后可以直接在子进程的函数中使用协程API
@@ -101,12 +132,202 @@ unixSocket类型 | 说明
 1 | 创建[SOCK_STREAM](/learn?id=什么是IPC)类型的unixSocket
 2 | 创建[SOCK_DGRAM](/learn?id=什么是IPC)类型的unixSocket
 
+
+### useQueue()
+
+使用消息队列进行进程间通信。
+
+```php
+Swoole\Process->useQueue(int $key = 0, int $mode = SWOOLE_MSGQUEUE_BALANCE, int $capacity = -1): bool
+```
+
+* **参数** 
+
+  * **`int $key`**
+    * **功能**：消息队列的 key，如果传入一个小于等于0的值，底层会通过`ftok`函数，以当前执行文件的文件名作为参数，生成对应的key。
+    * **默认值**：`0`
+    * **其它值**：`无`
+
+  * **`int $mode`**
+    * **功能**：进程间通信模式，
+    * **默认值**：`SWOOLE_MSGQUEUE_BALANCE`，`Swoole\Process::pop()`会返回队列第一个消息，`Swoole\Process::push()`不会为消息添加特定类型。
+    * **其它值**：`SWOOLE_MSGQUEUE_ORIENT`，`Swoole\Process::pop()`会返回队列中消息类型为`进程id + 1`的特定数据，`Swoole\Process::push()`会为消息添加`进程id + 1`的类型。
+
+  * **`int $capacity`**
+    * **功能**：消息队列允许存储的消息数量最大值。
+    * **默认值**：`-1`
+    * **其它值**：`无`
+
+* **注意**
+
+  * 当消息队列没有数据时，`Swoole\Porcess->pop()`会一直阻塞，或者消息队列没有空间容纳新数据，`Swoole\Porcess->push()`也会一直阻塞。如果不想阻塞，`$mode`的值必须是 `SWOOLE_MSGQUEUE_BALANCE|Swoole\Process::MSGQUEUE_NOWAIT` 或者 `SWOOLE_MSGQUEUE_ORIENT|Swoole\Process::MSGQUEUE_NOWAIT`。
+
+### statQueue()
+
+获取消息队列状态
+
+```php
+Swoole\Process->statQueue(): array|false
+```
+
+* **返回值** 
+
+  * 返回数组表示成功，数组包含两个键值对，`queue_num`表示现在队列里面消息总数量，`queue_bytes`表示现在队列的消息总大小。
+  * 失败返回`false`。
+
+### freeQueue()
+
+销毁消息队列。
+
+```php
+Swoole\Process->freeQueue(): bool
+```
+
+* **返回值** 
+
+  * 成功返回`true`。
+  * 失败返回`false`。
+
+### pop()
+
+从消息队列获取数据。
+
+```php
+Swoole\Process->pop(int $size = 65536): string|false
+```
+
+* **参数** 
+
+  * **`int $size`**
+    * **功能**：获取的数据大小。
+    * **默认值**：`65536`
+    * **其它值**：`无`
+
+
+* **返回值** 
+
+  * 返回`string`表示成功。
+  * 失败返回`false`。
+
+* **注意**
+
+  * 当消息队列类型为`SW_MSGQUEUE_BALANCE`时，返回队列第一条信息。
+  * 当消息队列类型为`SW_MSGQUEUE_ORIENT`时，返回队列第一条类型为当前`进程id + 1`的信息。
+
+### push()
+
+往消息队列发送数据。
+
+```php
+Swoole\Process->push(string $data): bool
+```
+
+* **参数** 
+
+  * **`string $data`**
+    * **功能**：发送的数据。
+    * **默认值**：``
+    * **其它值**：`无`
+
+
+* **返回值** 
+
+  * 返回`true`表示成功。
+  * 失败返回`false`。
+
+* **注意**
+
+  * 当消息队列类型为`SW_MSGQUEUE_BALANCE`时，数据将直接插入消息队列。
+  * 当消息队列类型为`SW_MSGQUEUE_ORIENT`时，数据会被添加一个类型，为当前`进程id + 1`。
+
+### setTimeout()
+
+设置消息队列读写超时。
+
+```php
+Swoole\Process->setTimeout(float $seconds): bool
+```
+
+* **参数** 
+
+  * **`float $seconds`**
+    * **功能**：超时时间
+    * **默认值**：`无`
+    * **其它值**：`无`
+
+
+* **返回值** 
+
+  * 成功返回`true`。
+  * 失败返回`false`。
+
+### setBlocking()
+
+设置消息队列套接字是否阻塞。
+
+```php
+Swoole\Process->setBlocking(true $$blocking): void
+```
+
+* **参数** 
+
+  * **`bool $blocking`**
+    * **功能**：是否阻塞，`true`表示阻塞，`false`表示不阻塞
+    * **默认值**：`无`
+    * **其它值**：`无`
+
+* **注意**
+
+  * 新创建的进程套接字默认是阻塞的，所以在做UNIX域套接字通信时，发送或读取消息会使进程阻塞。
+
+### write()
+
+父子进程间消息写入（UNIX域套接字）。
+
+```php
+Swoole\Process->write(string $data): false|int
+```
+
+* **参数** 
+
+  * **`string $data`**
+    * **功能**：要写入的数据
+    * **默认值**：`无`
+    * **其它值**：`无`
+
+
+* **返回值** 
+
+  * 成功返回`int`，表示成功写入的字节数。
+  * 失败返回`false`。
+
+### read()
+
+父子进程间消息读取（UNIX域套接字）。
+
+```php
+Swoole\Process->read(int $size = 8192): false|string
+```
+
+* **参数** 
+
+  * **`int $size`**
+    * **功能**：要读取的数据大小
+    * **默认值**：`8192`
+    * **其它值**：`无`
+
+
+* **返回值** 
+
+  * 成功返回`string`。
+  * 失败返回`false`。
+
 ### set()
 
 设置参数。
 
 ```php
-Swoole\Process->set(array $settings)
+Swoole\Process->set(array $settings): void
 ```
 
 可以使用`enable_coroutine`来控制是否启用协程，和构造函数的第四个参数作用一致。
@@ -171,7 +392,7 @@ $p->start();
 
 ### exportSocket()
 
-将`unixSocket`导出为`Coroutine\Socket`对象，然后利用`Coroutine\socket`对象的方法进程间通讯，具体用法请参考[Coroutine\socket](/coroutine_client/socket)和[IPC通讯](/learn?id=什么是IPC)。
+将`unixSocket`导出为`Swoole\Coroutine\Socket`对象，然后利用`Swoole\Coroutine\socket`对象的方法进程间通讯，具体用法请参考[Coroutine\socket](/coroutine_client/socket)和[IPC通讯](/learn?id=什么是IPC)。
 
 ```php
 Swoole\Process->exportSocket(): Swoole\Coroutine\Socket|false
@@ -179,8 +400,8 @@ Swoole\Process->exportSocket(): Swoole\Coroutine\Socket|false
 
 !> 多次调用此方法，返回的对象是同一个；  
 `exportSocket()`导出的`socket`是一个新的`fd`，当关闭导出的`socket`时不会影响进程原有的管道。  
-由于是`Coroutine\Socket`对象，必须在[协程容器](/coroutine/scheduler)中使用，所以Swoole\Process构造函数`$enable_coroutine`参数必须为true。  
-同样的父进程想用`Coroutine\Socket`对象，需要手动`Coroutine\run()`以创建协程容器。
+由于是`Swoole\Coroutine\Socket`对象，必须在[协程容器](/coroutine/scheduler)中使用，所以Swoole\Process构造函数`$enable_coroutine`参数必须为true。  
+同样的父进程想用`Swoole\Coroutine\Socket`对象，需要手动`Coroutine\run()`以创建协程容器。
 
 * **返回值**
 
@@ -386,8 +607,8 @@ Swoole\Process->close(int $which): bool
 
   * **`int $which`**
     * **功能**：由于unixSocket是全双工的，指定关闭哪一端【默认为`0`表示同时关闭读和写，`1`：关闭写，`2`关闭读】
-    * **默认值**：`0`
-    * **其它值**：无
+    * **默认值**：`0`，关闭读写套接字。
+    * **其它值**：`Swoole/Process::SW_PIPE_CLOSE_READ` 关闭读套接字，`Swoole/Process::SW_PIPE_CLOSE_WRITE` 关闭写套接字，
 
 !> 有一些特殊的情况`Process`对象无法释放，如果持续创建进程会导致连接泄漏。调用此函数就可以直接关闭`unixSocket`，释放资源。
 
@@ -549,7 +770,7 @@ Swoole\Process::daemon(bool $nochdir = true, bool $noclose = true): bool
 !> `alarm`不能和 [Timer](/timer) 同时使用
 
 ```php
-Swoole\Process::alarm(int $time, int $type = 0): bool
+Swoole\Process->alarm(int $time, int $type = 0): bool
 ```
 
 * **参数** 
@@ -609,7 +830,7 @@ run(function () {
 此函数的作用是让进程只在某几个`CPU`核上运行，让出某些`CPU`资源执行更重要的程序。
 
 ```php
-Swoole\Process::setAffinity(array $cpus): bool
+Swoole\Process->setAffinity(array $cpus): bool
 ```
 
 * **参数** 
@@ -621,6 +842,7 @@ Swoole\Process::setAffinity(array $cpus): bool
 
 !> -`$cpus`内的元素不能超过`CPU`核数；  
 -`CPU-ID`不得超过（`CPU`核数 - `1`）；  
+-该函数需要操作系统支持设置绑定`CPU`的功能；  
 -使用 [swoole_cpu_num()](/functions?id=swoole_cpu_num) 可以得到当前服务器的`CPU`核数。
 
 ### setPriority()
