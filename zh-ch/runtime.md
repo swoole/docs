@@ -12,11 +12,11 @@
 
 - 针对上述问题，Swoole开发组换了实现思路，采用`Hook`原生PHP函数的方式实现协程客户端，通过一行代码就可以让原来的同步IO的代码变成可以[协程调度](/coroutine?id=协程调度)的[异步IO](/learn?id=同步io异步io)，即`一键协程化`。
 
-!> 此特性在`v4.3`版本后开始稳定，能`Hook`的函数也越来越多，所以有些之前写的协程客户端已经不再推荐使用了，详情查看[协程客户端](/coroutine_client/init)，例如：在`v4.3+`支持了文件操作(`file_get_contents`、`fread`等)的`Hook`，如果使用的是`v4.3+`版本就可以直接使用`Hook`而不是使用Swoole提供的[协程文件操作](/coroutine/system)了。
+!> 此特性在`v4.3`版本后开始稳定，能`协程化`的函数也越来越多，所以有些之前写的协程客户端已经不再推荐使用了，详情查看[协程客户端](/coroutine_client/init)，例如：在`v4.3+`支持了文件操作(`file_get_contents`、`fread`等)的`协程化`，如果使用的是`v4.3+`版本就可以直接使用`协程化`而不是使用Swoole提供的[协程文件操作](/coroutine/system)了。
 
 ## 函数原型
 
-通过`flags`设置要`Hook`的函数的范围
+通过`flags`设置要`协程化`的函数的范围
 
 ```php
 Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]); // v4.4+版本使用此方法。
@@ -52,7 +52,7 @@ Co::set(['hook_flags'=> SWOOLE_HOOK_TCP | SWOOLE_HOOK_SLEEP]);
 
 ```php
 Co::set(['hook_flags' => SWOOLE_HOOK_ALL]); //不包括CURL
-Co::set(['hook_flags' => SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL]); //真正的hook所有类型，包括CURL
+Co::set(['hook_flags' => SWOOLE_HOOK_ALL | SWOOLE_HOOK_CURL]); //真正的协程化所有类型，包括CURL
 ```
 
 ### SWOOLE_HOOK_TCP
@@ -230,7 +230,7 @@ Co\run(function () {
 
 `v4.3`开始支持。
 
-* **文件操作的`Hook`，支持的函数有：**
+* **文件操作的`协程化处理`，支持的函数有：**
 
     * `fopen`
     * `fread`/`fgets`
@@ -292,7 +292,7 @@ Co\run(function () {
 
 ### SWOOLE_HOOK_PROC
 
-`v4.4`开始支持。Hook `proc*` 函数，包括了：`proc_open`、`proc_close`、`proc_get_status`、`proc_terminate`。
+`v4.4`开始支持。协程化 `proc*` 函数，包括了：`proc_open`、`proc_close`、`proc_get_status`、`proc_terminate`。
 
 示例：
 
@@ -355,7 +355,7 @@ Co\run(function () {
 
 ### SWOOLE_HOOK_NATIVE_CURL
 
-对原生CURL的`Hook`。
+对原生CURL的`协程化处理`。
 
 !> Swoole版本 >= `v4.6.0` 可用
 
@@ -387,7 +387,7 @@ Co\run(function () {
 
 ### SWOOLE_HOOK_SOCKETS
 
-对 sockets 扩展的`Hook`。
+对 sockets 扩展的`协程化处理`。
 
 !> Swoole版本 >= `v4.6.0` 可用
 
@@ -397,7 +397,7 @@ Co::set(['hook_flags' => SWOOLE_HOOK_SOCKETS]);
 
 ### SWOOLE_HOOK_STDIO
 
-对 STDIO 的`Hook`。
+对 STDIO 的`协程化处理`。
 
 !> Swoole版本 >= `v4.6.2` 可用
 
@@ -427,6 +427,118 @@ $proc->write('hello world'.PHP_EOL);
 echo $proc->read();
 echo $proc->read();
 Process::wait();
+```
+
+### SWOOLE_HOOK_PDO_PGSQL
+
+对 `pdo_pgsql` 的`协程化处理`。
+
+!> Swoole版本 >= `v5.1.0` 可用
+
+```php
+Co::set(['hook_flags' => SWOOLE_HOOK_PDO_PGSQL]);
+```
+
+示例：
+```php
+<?php
+function test()
+{
+    $dbname   = "test";
+    $username = "test";
+    $password = "test";
+    try {
+        $dbh = new PDO("pgsql:dbname=$dbname;host=127.0.0.1:5432", $username, $password);
+        $dbh->exec('create table test (id int)');
+        $dbh->exec('insert into test values(1)');
+        $dbh->exec('insert into test values(2)');
+        $res = $dbh->query("select * from test");
+        var_dump($res->fetchAll());
+        $dbh = null;
+    } catch (PDOException $exception) {
+        echo $exception->getMessage();
+        exit;
+    }
+}
+
+Co::set(['trace_flags' => SWOOLE_HOOK_PDO_PGSQL]);
+
+Co\run(function () {
+    test();
+});
+```
+
+### SWOOLE_HOOK_PDO_ODBC
+
+对 `pdo_odbc` 的`协程化处理`。
+
+!> Swoole版本 >= `v5.1.0` 可用
+
+```php
+Co::set(['hook_flags' => SWOOLE_HOOK_PDO_ODBC]);
+```
+
+示例：
+```php
+<?php
+function test()
+{
+    $username = "test";
+    $password = "test";
+    try {
+        $dbh = new PDO("odbc:mysql-test");
+        $res = $dbh->query("select sleep(1) s");
+        var_dump($res->fetchAll());
+        $dbh = null;
+    } catch (PDOException $exception) {
+        echo $exception->getMessage();
+        exit;
+    }
+}
+
+Co::set(['trace_flags' => SWOOLE_TRACE_CO_ODBC, 'log_level' => SWOOLE_LOG_DEBUG]);
+
+Co\run(function () {
+    test();
+});
+```
+
+### SWOOLE_HOOK_PDO_ORACLE
+
+对 `pdo_oci` 的`协程化处理`。
+
+!> Swoole版本 >= `v5.1.0` 可用
+
+```php
+Co::set(['hook_flags' => SWOOLE_HOOK_PDO_ORACLE]);
+```
+
+示例：
+```php
+<?php
+function test()
+{
+	$tsn = 'oci:dbname=127.0.0.1:1521/xe;charset=AL32UTF8';
+	$username = "test";
+	$password = "test";
+    try {
+        $dbh = new PDO($tsn, $username, $password);
+        $dbh->exec('create table test (id int)');
+        $dbh->exec('insert into test values(1)');
+        $dbh->exec('insert into test values(2)');
+        $res = $dbh->query("select * from test");
+        var_dump($res->fetchAll());
+        $dbh = null;
+    } catch (PDOException $exception) {
+        echo $exception->getMessage();
+        exit;
+    }
+}
+
+Co::set(['hook_flags' => SWOOLE_HOOK_PDO_ORACLE]);
+Co\run(function () {
+    test();
+});
 ```
 
 ## 方法
@@ -471,10 +583,10 @@ Swoole\Runtime::getHookFlags(): int
 !> **不支持协程化**表示会使协程降级为阻塞模式，此时使用协程无实际意义
 
   * `mysql`：底层使用`libmysqlclient`
-  * `mongo`：底层使用`mongo-c-client`
-  * `pdo_pgsql`
-  * `pdo_ori`
-  * `pdo_odbc`
+  * `mongo`：底层使用`mongo-c-client`，Swoole版本 >= `v5.1.0`之后，使用`pdo_odbc`可以协程化处理。
+  * `pdo_pgsql`，Swoole版本 >= `v5.1.0`之后，使用`pdo_pgsql`可以协程化处理。
+  * `pdo_oci`，Swoole版本 >= `v5.1.0`之后，使用`pdo_oci`可以协程化处理。
+  * `pdo_odbc`，Swoole版本 >= `v5.1.0`之后，使用`pdo_odbc`可以协程化处理。
   * `pdo_firebird`
   * `php-amqp`
 
@@ -486,7 +598,7 @@ Swoole\Runtime::getHookFlags(): int
 Swoole\Runtime::enableCoroutine(bool $enable = true, int $flags = SWOOLE_HOOK_ALL);
 ```
 
-- `$enable`：打开或关闭Hook。
-- `$flags`：选择要`Hook`的类型，可以多选，默认为全选。仅在`$enable = true`时有效。
+- `$enable`：打开或关闭协程化。
+- `$flags`：选择要`协程化`的类型，可以多选，默认为全选。仅在`$enable = true`时有效。
 
 !> `Runtime::enableCoroutine(false)`关闭上一次设置的所有选项协程`Hook`设置。
