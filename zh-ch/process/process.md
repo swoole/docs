@@ -70,7 +70,7 @@ public string $msgQueueKey;
 
 ### pid
 
-父进程的`id`。
+当前进程的`pid`。
 
 ```php
 public int $pid;
@@ -87,7 +87,7 @@ public int $id;
 ## 常量
 参数 | 作用
 ---|---
-Swoole\Process::MSGQUEUE_NOWAIT | 当消息队列没有数据时，立刻返回
+Swoole\Process::IPC_NOWAIT | 当消息队列没有数据时，立刻返回
 Swoole\Process::PIPE_READ | 关闭读套接字
 Swoole\Process::PIPE_WRITE | 关闭写套接字
 
@@ -160,7 +160,7 @@ Swoole\Process->useQueue(int $key = 0, int $mode = SWOOLE_MSGQUEUE_BALANCE, int 
 
 * **注意**
 
-  * 当消息队列没有数据时，`Swoole\Porcess->pop()`会一直阻塞，或者消息队列没有空间容纳新数据，`Swoole\Porcess->push()`也会一直阻塞。如果不想阻塞，`$mode`的值必须是 `SWOOLE_MSGQUEUE_BALANCE|Swoole\Process::MSGQUEUE_NOWAIT` 或者 `SWOOLE_MSGQUEUE_ORIENT|Swoole\Process::MSGQUEUE_NOWAIT`。
+  * 当消息队列没有数据时，`Swoole\Porcess->pop()`会一直阻塞，或者消息队列没有空间容纳新数据，`Swoole\Porcess->push()`也会一直阻塞。如果不想阻塞，`$mode`的值必须是 `SWOOLE_MSGQUEUE_BALANCE|Swoole\Process::IPC_NOWAIT` 或者 `SWOOLE_MSGQUEUE_ORIENT|Swoole\Process::IPC_NOWAIT`。
 
 ### statQueue()
 
