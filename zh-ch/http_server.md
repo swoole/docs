@@ -1098,3 +1098,63 @@ $server->set([
 ```
 
 !> Swoole版本 >= `v5.0.0` 可用
+
+### http2_header_table_size
+
+?> 定义HTTP/2网络连接的最大`header table`大小。
+
+```php
+$server->set([
+  'http2_header_table_size' => 0x1
+])
+```
+
+### http2_enable_push
+
+?> 该配置用于启用或禁用HTTP2推送。
+
+```php
+$server->set([
+  'http2_enable_push' => 0x2
+])
+```
+
+### http2_max_concurrent_streams
+
+?> 设置每个HTTP/2网络连接中接受的多路复用流的最大数量。
+
+```php
+$server->set([
+  'http2_max_concurrent_streams' => 0x3
+])
+```
+
+### http2_init_window_size
+
+?> 设置HTTP/2流量控制窗口的初始化大小。
+
+```php
+$server->set([
+  'http2_init_window_size' => 0x4
+])
+```
+
+### http2_max_frame_size
+
+?> 设置通过HTTP/2网络连接发送的单个HTTP/2协议帧的主体的最大大小。
+
+```php
+$server->set([
+  'http2_max_frame_size' => 0x5
+])
+```
+
+### http2_max_header_list_size
+
+?> 设置在HTTP/2流上的请求中可以发送的头的最大大小。 
+
+```php
+$server->set([
+  'http2_max_header_list_size' => 0x6
+])
+```
