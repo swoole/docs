@@ -317,6 +317,10 @@ Swoole\Coroutine\System::exec(string $cmd): array
     });
     ```
 
+  * **注意**
+
+  !>如果执行脚本命令时间过长，会引发超时退出，在这种情况下可以通过加大[socket_read_timeout](/coroutine_client/init?id=超时规则)解决这个问题。
+
 ### gethostbyname()
 
 将域名解析为IP。基于同步的线程池模拟实现，底层自动进行[协程调度](/coroutine?id=协程调度)。
