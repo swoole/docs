@@ -8,6 +8,228 @@
 PHP Warning:  unsupported option [foo] in @swoole-src/library/core/Server/Helper.php 
 ```
 
+### debug_mode
+
+?> 设置日志模式为`debug`调试模式，只有编译时开启了`--enable-debug`才有作用。
+
+```php
+$server->set([
+  'debug_mode' => true
+])
+```
+
+### trace_flags
+
+?> 设置跟踪日志的标签，仅打印部分跟踪日志。`trace_flags` 支持使用 `|` 或操作符设置多个跟踪项。，只有编译时开启了`--enable-trace-log`才有作用。
+
+底层支持以下跟踪项，可使用`SWOOLE_TRACE_ALL`表示跟踪所有项目：
+
+* `SWOOLE_TRACE_SERVER`
+* `SWOOLE_TRACE_CLIENT`
+* `SWOOLE_TRACE_BUFFER`
+* `SWOOLE_TRACE_CONN`
+* `SWOOLE_TRACE_EVENT`
+* `SWOOLE_TRACE_WORKER`
+* `SWOOLE_TRACE_REACTOR`
+* `SWOOLE_TRACE_PHP`
+* `SWOOLE_TRACE_HTTP2`
+* `SWOOLE_TRACE_EOF_PROTOCOL`
+* `SWOOLE_TRACE_LENGTH_PROTOCOL`
+* `SWOOLE_TRACE_CLOSE`
+* `SWOOLE_TRACE_HTTP_CLIENT`
+* `SWOOLE_TRACE_COROUTINE`
+* `SWOOLE_TRACE_REDIS_CLIENT`
+* `SWOOLE_TRACE_MYSQL_CLIENT`
+* `SWOOLE_TRACE_AIO`
+* `SWOOLE_TRACE_ALL`
+
+### log_file
+
+?> **指定`Swoole`错误日志文件**
+
+?> 在`Swoole`运行期发生的异常信息会记录到这个文件中，默认会打印到屏幕。  
+开启守护进程模式后`(daemonize => true)`，标准输出将会被重定向到`log_file`。在PHP代码中`echo/var_dump/print`等打印到屏幕的内容会写入到`log_file`文件。
+
+  * **提示**
+
+    * `log_file`中的日志仅仅是做运行时错误记录，没有长久存储的必要。
+
+    * **日志标号**
+
+      ?> 在日志信息中，进程ID前会加一些标号，表示日志产生的线程/进程类型。
+
+        * `#` Master进程
+        * `$` Manager进程
+        * `*` Worker进程
+        * `^` Task进程
+
+    * **重新打开日志文件**
+
+      ?> 在服务器程序运行期间日志文件被`mv`移动或`unlink`删除后，日志信息将无法正常写入，这时可以向`Server`发送`SIGRTMIN`信号实现重新打开日志文件。
+
+      * 仅支持`Linux`平台
+      * 不支持[UserProcess](/server/methods?id=addProcess)进程
+
+  * **注意**
+
+    !> `log_file`不会自动切分文件，所以需要定期清理此文件。观察`log_file`的输出，可以得到服务器的各类异常信息和警告。
+
+### log_level
+
+?> **设置`Server`错误日志打印的等级，范围是`0-6`。低于`log_level`设置的日志信息不会抛出。**【默认值：`SWOOLE_LOG_INFO`】
+
+对应级别常量参考[日志等级](/consts?id=日志等级)
+
+  * **注意**
+
+    !> `SWOOLE_LOG_DEBUG`和`SWOOLE_LOG_TRACE`仅在编译为[--enable-debug-log](/environment?id=debug参数)和[--enable-trace-log](/environment?id=debug参数)版本时可用；  
+    在开启`daemonize`守护进程时，底层将把程序中的所有打印屏幕的输出内容写入到[log_file](/server/setting?id=log_file)，这部分内容不受`log_level`控制。
+
+### log_date_format
+
+?> **设置`Server`日志时间格式**，格式参考 [strftime](https://www.php.net/manual/zh/function.strftime.php) 的`format`
+
+```php
+$server->set([
+    'log_date_format' => '%Y-%m-%d %H:%M:%S',
+]);
+```
+
+### log_date_with_microseconds
+
+?> **设置`Server`日志精度，是否带微秒**【默认值：`false`】
+
+### log_rotation
+
+?> **设置`Server`日志分割**【默认值：`SWOOLE_LOG_ROTATION_SINGLE`】
+
+| 常量                             | 说明   | 版本信息 |
+| -------------------------------- | ------ | -------- |
+| SWOOLE_LOG_ROTATION_SINGLE       | 不启用 | -        |
+| SWOOLE_LOG_ROTATION_MONTHLY      | 每月   | v4.5.8   |
+| SWOOLE_LOG_ROTATION_DAILY        | 每日   | v4.5.2   |
+| SWOOLE_LOG_ROTATION_HOURLY       | 每小时 | v4.5.8   |
+| SWOOLE_LOG_ROTATION_EVERY_MINUTE | 每分钟 | v4.5.8   |
+
+### display_errors
+
+?> 开启 / 关闭 `Swoole` 错误信息。
+
+```php
+$server->set([
+  'display_errors' => true
+])
+```
+
+### dns_server
+
+?> 设置`dns`查询的`ip`地址。
+
+### socket_dns_timeout
+
+?> 域名解析超时时间，如果在服务端启用协程客户端，该参数可以控制客户端的域名解析超时时间，单位为秒。
+
+### socket_connect_timeout
+
+?> 客户端连接超时时间，如果在服务端启用协程客户端，该参数可以控制客户端的连接超时时间，单位为秒。
+
+### socket_write_timeout / socket_send_timeout
+
+?> 客户端写超时时间，如果在服务端启用协程客户端，该参数可以控制客户端的写超时时间，单位为秒。   
+该配置也能用于控制`协程化`之后的`shell_exec`或者[Swoole\Coroutine\System::exec()](/coroutine/system?id=exec)的执行超时时间。   
+
+### socket_read_timeout / socket_recv_timeout
+
+?> 客户端读超时时间，如果在服务端启用协程客户端，该参数可以控制客户端的读超时时间，单位为秒。
+
+### max_coroutine/max_coro_num :id=max_coroutine
+
+?> **设置当前工作进程最大协程数量。**【默认值：`100000`，Swoole版本小于`v4.4.0-beta` 时默认值为`3000`】
+
+?> 超过`max_coroutine`底层将无法创建新的协程，服务端的Swoole会抛出`exceed max number of coroutine`错误，`TCP Server`会直接关闭连接，`Http Server`会返回Http的503状态码。
+
+?> 在`Server`程序中实际最大可创建协程数量等于 `worker_num * max_coroutine`，task进程和UserProcess进程的协程数量单独计算。
+
+```php
+$server->set(array(
+    'max_coroutine' => 3000,
+));
+```
+
+### enable_deadlock_check
+
+?> 打开协程死锁检测。
+
+```php
+$server->set([
+  'enable_deadlock_check' => true
+]);
+```
+
+### hook_flags
+
+?> **设置`一键协程化`Hook的函数范围。**【默认值：不hook】
+
+!> Swoole版本为 `v4.5+` 或 [4.4LTS](https://github.com/swoole/swoole-src/tree/v4.4.x) 可用，详情参考[一键协程化](/runtime)
+
+```php
+$server->set([
+    'hook_flags' => SWOOLE_HOOK_SLEEP,
+]);
+```
+底层支持以下协程化项，可使用`SWOOLE_HOOK_ALL`表示协程化全部：
+
+* `SWOOLE_HOOK_TCP`
+* `SWOOLE_HOOK_UNIX`
+* `SWOOLE_HOOK_UDP`
+* `SWOOLE_HOOK_UDG`
+* `SWOOLE_HOOK_SSL`
+* `SWOOLE_HOOK_TLS`
+* `SWOOLE_HOOK_SLEEP`
+* `SWOOLE_HOOK_FILE`
+* `SWOOLE_HOOK_STREAM_FUNCTION`
+* `SWOOLE_HOOK_BLOCKING_FUNCTION`
+* `SWOOLE_HOOK_PROC`
+* `SWOOLE_HOOK_CURL`
+* `SWOOLE_HOOK_NATIVE_CURL`
+* `SWOOLE_HOOK_SOCKETS`
+* `SWOOLE_HOOK_STDIO`
+* `SWOOLE_HOOK_PDO_PGSQL`
+* `SWOOLE_HOOK_PDO_ODBC`
+* `SWOOLE_HOOK_PDO_ORACLE`
+* `SWOOLE_HOOK_PDO_SQLITE`
+* `SWOOLE_HOOK_ALL`
+
+### enable_preemptive_scheduler
+
+?> 设置打开协程抢占式调度，避免其中一个协程执行时间过长导致其他协程饿死，协程最大执行时间为`10ms`。
+
+```php
+$server->set([
+  'enable_preemptive_scheduler' => true
+]);
+```
+
+### c_stack_size / stack_size
+
+?> 设置单个协程初始 C 栈的内存尺寸，默认为 2M。
+
+### aio_core_worker_num
+
+?> 设置`AIO`最小工作线程数，默认值为`cpu`核数。
+
+### aio_worker_num 
+
+?> 设置`AIO`最大工作线程数，默认值为`cpu`核数 * 8。
+
+### aio_max_wait_time
+
+?> 工作线程等待任务最大时间，单位为秒。
+
+### aio_max_idle_time
+
+?> 工作线程最大空闲时间，单位为秒。
+
 ### reactor_num
 
 ?> **设置启动的 [Reactor](/learn?id=reactor线程) 线程数。**【默认值：`CPU`核数】
@@ -401,74 +623,6 @@ ipcrm -Q [msgkey]
     * 注2:高版本内核调用的是`accept4`，为了节省一次`set no block`系统调用。
     * 注3:客户端收到`syn+ack`包就认为连接成功了，实际上服务端还处于半连接状态，有可能发送`rst`包给客户端，客户端的表现就是`Connection reset by peer`。
     * 注4:成功是通过TCP的重传机制，相关的配置有`tcp_synack_retries`和`tcp_abort_on_overflow`。想深入学习底层TCP机制可以看[Swoole官方视频教程](https://course.swoole-cloud.com/course-video/3)。
-
-### log_file
-
-?> **指定`Swoole`错误日志文件**
-
-?> 在`Swoole`运行期发生的异常信息会记录到这个文件中，默认会打印到屏幕。  
-开启守护进程模式后`(daemonize => true)`，标准输出将会被重定向到`log_file`。在PHP代码中`echo/var_dump/print`等打印到屏幕的内容会写入到`log_file`文件。
-
-  * **提示**
-
-    * `log_file`中的日志仅仅是做运行时错误记录，没有长久存储的必要。
-
-    * **日志标号**
-
-      ?> 在日志信息中，进程ID前会加一些标号，表示日志产生的线程/进程类型。
-
-        * `#` Master进程
-        * `$` Manager进程
-        * `*` Worker进程
-        * `^` Task进程
-
-    * **重新打开日志文件**
-
-      ?> 在服务器程序运行期间日志文件被`mv`移动或`unlink`删除后，日志信息将无法正常写入，这时可以向`Server`发送`SIGRTMIN`信号实现重新打开日志文件。
-
-      * 仅支持`Linux`平台
-      * 不支持[UserProcess](/server/methods?id=addProcess)进程
-
-  * **注意**
-
-    !> `log_file`不会自动切分文件，所以需要定期清理此文件。观察`log_file`的输出，可以得到服务器的各类异常信息和警告。
-
-### log_level
-
-?> **设置`Server`错误日志打印的等级，范围是`0-6`。低于`log_level`设置的日志信息不会抛出。**【默认值：`SWOOLE_LOG_INFO`】
-
-对应级别常量参考[日志等级](/consts?id=日志等级)
-
-  * **注意**
-
-    !> `SWOOLE_LOG_DEBUG`和`SWOOLE_LOG_TRACE`仅在编译为[--enable-debug-log](/environment?id=debug参数)和[--enable-trace-log](/environment?id=debug参数)版本时可用；  
-    在开启`daemonize`守护进程时，底层将把程序中的所有打印屏幕的输出内容写入到[log_file](/server/setting?id=log_file)，这部分内容不受`log_level`控制。
-
-### log_date_with_microseconds
-
-?> **设置`Server`日志精度，是否带微秒**【默认值：`false`】
-
-### log_rotation
-
-?> **设置`Server`日志分割**【默认值：`SWOOLE_LOG_ROTATION_SINGLE`】
-
-| 常量                             | 说明   | 版本信息 |
-| -------------------------------- | ------ | -------- |
-| SWOOLE_LOG_ROTATION_SINGLE       | 不启用 | -        |
-| SWOOLE_LOG_ROTATION_MONTHLY      | 每月   | v4.5.8   |
-| SWOOLE_LOG_ROTATION_DAILY        | 每日   | v4.5.2   |
-| SWOOLE_LOG_ROTATION_HOURLY       | 每小时 | v4.5.8   |
-| SWOOLE_LOG_ROTATION_EVERY_MINUTE | 每分钟 | v4.5.8   |
-
-### log_date_format
-
-?> **设置`Server`日志时间格式**，格式参考 [strftime](https://www.php.net/manual/zh/function.strftime.php) 的`format`
-
-```php
-$server->set([
-    'log_date_format' => '%Y-%m-%d %H:%M:%S',
-]);
-```
 
 ### open_tcp_keepalive
 
@@ -1398,20 +1552,6 @@ $server->on("request", function ($request, $response) {
 });
 
 $server->start();
-```
-
-### max_coroutine/max_coro_num :id=max_coroutine
-
-?> **设置当前工作进程最大协程数量。**【默认值：`100000`，Swoole版本小于`v4.4.0-beta` 时默认值为`3000`】
-
-?> 超过`max_coroutine`底层将无法创建新的协程，服务端的Swoole会抛出`exceed max number of coroutine`错误，`TCP Server`会直接关闭连接，`Http Server`会返回Http的503状态码。
-
-?> 在`Server`程序中实际最大可创建协程数量等于 `worker_num * max_coroutine`，task进程和UserProcess进程的协程数量单独计算。
-
-```php
-$server->set(array(
-    'max_coroutine' => 3000,
-));
 ```
 
 ### send_yield
