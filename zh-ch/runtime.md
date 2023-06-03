@@ -547,7 +547,7 @@ Co\run(function () {
 !> Swoole版本 >= `v5.1.0` 可用
 
 ```php
-Co::set(['hook_flags' => SWOOLE_HOOK_PDO_ORACLE]);
+Co::set(['hook_flags' => SWOOLE_HOOK_PDO_SQLITE]);
 ```
 
 * **注意**
