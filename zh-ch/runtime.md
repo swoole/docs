@@ -541,6 +541,42 @@ Co\run(function () {
 });
 ```
 
+### SWOOLE_HOOK_PDO_SQLITE
+对 `pdo_sqlite` 的`协程化处理`。
+
+!> Swoole版本 >= `v5.1.0` 可用
+
+```php
+Co::set(['hook_flags' => SWOOLE_HOOK_PDO_SQLITE]);
+```
+
+* **注意**
+
+!> 由于`swoole`在协程化`sqlite`数据库的时候，采用的是`串行化`模式保证[线程安全](https://www.sqlite.org/threadsafe.html)。  
+如果`sqlite`数据库编译时指定的线程模式是单线程模式的话，`swoole`无法协程化`sqlite`，并且抛出一个警告，但是不影响使用，只是在增删改查的过程中不会发生协程切换。这种情况下只能重新编译`sqlite`并且指定线程模式为`串行化`或者`多线程`，[原因](https://www.sqlite.org/compile.html#threadsafe)。     
+协程环境中创建的`sqlite`连接全部是`串行化的`，非协程环境中创建的`sqlite`连接默认与`sqlite`的线程模式一致。   
+如果`sqlite`的线程模式是`多线程`，那么非协程环境下创建的连接是不能给多个协程共享的，因为此时数据库连接是`多线程模式`的，在协程化环境下使用也不会升级成`串行化`。   
+`sqlite`默认线程模式就是`串行化`，[串行化说明](https://www.sqlite.org/c3ref/c_config_covering_index_scan.html#sqliteconfigserialized)，[默认线程模式](https://www.sqlite.org/compile.html#threadsafe)。      
+
+示例：
+```php
+<?php
+use function Swoole\Coroutine\run;
+use function Swoole\Coroutine\go;
+
+Co::set(['hook_flags'=> SWOOLE_HOOK_PDO_SQLITE]);
+
+run(function() {
+    for($i = 0; $i <= 5; $i++) {
+        go(function() use ($i) {
+            $db = new PDO('sqlite::memory:');
+            $db->query('select randomblob(99999999)');
+            var_dump($i);
+        });
+    }
+});
+```
+
 ## 方法
 
 ### setHookFlags()
