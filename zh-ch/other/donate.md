@@ -9,15 +9,15 @@
 
 ## 捐赠列表
 
-感谢以下企业和个人对`Swoole`项目开发组的捐赠。
+感谢以下企业和个人对 `Swoole` 项目开发组的捐赠。
 
-!> 如果您捐赠了Swoole开源项目但不在下面的列表中，或者希望修改相关信息，请联系Rango-韩天峰（QQ：12811247）或鲁飞（QQ：85464277）。
+!> 如果您捐赠了 `Swoole` 开源项目但不在下面的列表中，或者希望修改相关信息，请联系识沃科技客服。
 
 | 名称                                                                      | 金额     | LOGO                                                                                                                                                                   |
 | :------------------------------------------------------------------------ | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [SegmentFault](https://segmentfault.com/)                                 | 1024 元  | [![](https://cdn.jsdelivr.net/gh/sy-records/staticfile/images/swoole/segmentfault.svg "SegmentFault")](https://segmentfault.com/)                               |
 | [果酱社区](https://guojiang.club/?utm_source=swoole&utm_campaign=sponsor) | 3000 元  | [![](https://wiki.swoole.com/static/uploads/wiki/202001/19/273190976660.jpg "果酱社区 :size=autox150")](https://guojiang.club/?utm_source=swoole&utm_campaign=sponsor) |
-| [易软天创](http://www.cnezsoft.com/)                                      | 3000 元  | -                                                                                                                                                                      |
+| [易软天创](https://www.easycorp.cn/)                                      | 3000 元  | [![ShopXO](https://wenda-1252906962.file.myqcloud.com/images/sponsors/easysoft.png)](https://www.easycorp.cn/)                                                                                                                                                                     |
 | [六星教育](https://www.sixstaredu.com/)                                   | 4000 元  | [![](https://wiki.swoole.com/static/uploads/wiki/201812/03/197630887599.jpg "六星教育 :size=autox150")](https://www.sixstaredu.com/)                                   |
 | [codecasts.com](https://codecasts.com/)                                   | 8000 元  | [![](https://user-images.githubusercontent.com/6011686/28741127-791014ae-7442-11e7-929e-114e5047d9e5.png "codecasts")](https://codecasts.com/)                         |
 | [51talk](http://www.51talk.com/)                                          | 10000 元 | [![](https://static.51talk.com/static/images/html/www_new/common/log.png?v=2017-12-21 "51talk")](http://www.51talk.com/)                                               |
