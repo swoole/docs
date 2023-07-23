@@ -142,7 +142,7 @@ $server->start();
 
 ## addListener()
 
-增加监听的端口。业务代码中可以通过调用 [Server->getClientInfo](/server/methods?id=getclientinfo) 来获取某个连接来自于哪个端口。
+增加监听的端口。业务代码中可以通过调用 [Swoole\Server->getClientInfo](/server/methods?id=getclientinfo) 来获取某个连接来自于哪个端口。
 
 ```php
 Swoole\Server->addListener(string $host, int $port, int $sockType): bool|Swoole\Server\Port
@@ -150,6 +150,7 @@ Swoole\Server->addListener(string $host, int $port, int $sockType): bool|Swoole\
 
 !> 监听`1024`以下的端口需要`root`权限  
 主服务器是`WebSocket`或`HTTP`协议，新监听的`TCP`端口默认会继承主`Server`的协议设置。必须单独调用`set`方法设置新的协议才会启用新协议 [查看详细说明 ](/server/port)。
+可以点击[这里](/server/server_port)查看`Swoole\Server\Port`的详细说明。 
 
   * **参数**
 

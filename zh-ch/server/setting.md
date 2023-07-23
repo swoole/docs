@@ -1,6 +1,6 @@
 # 配置
 
-[Server->set()](/server/methods?id=set) 函数用于设置`Server`运行时的各项参数。本节所有的子页面均为配置数组的元素。
+[Swoole\Server->set()](/server/methods?id=set) 函数用于设置`Server`运行时的各项参数。本节所有的子页面均为配置数组的元素。
 
 !> 从 [v4.5.5](/version/log?id=v455) 版本起，底层会检测设置的配置项是否正确，如果设置了不是`Swoole`提供的配置项，则会产生一个Warning。
 
@@ -142,7 +142,7 @@ $server->set([
 
 ?> 客户端读超时时间，如果在服务端启用协程客户端，该参数可以控制客户端的读超时时间，单位为秒。
 
-### max_coroutine/max_coro_num :id=max_coroutine
+### max_coroutine / max_coro_num :id=max_coroutine
 
 ?> **设置当前工作进程最大协程数量。**【默认值：`100000`，Swoole版本小于`v4.4.0-beta` 时默认值为`3000`】
 
@@ -279,7 +279,7 @@ $server->set([
 
   !> 当`worker`进程内发生致命错误或者人工执行`exit`时，进程会自动退出。`master`进程会重新启动一个新的`worker`进程来继续处理请求
 
-### max_conn (max_connection)
+### max_conn / max_connection
 
 ?> **服务器程序，最大允许的连接数。**【默认值：`ulimit -n`】
 
@@ -1084,7 +1084,7 @@ $server->set(array(
       * 在`5`秒内客户端发送数据，此时会同时顺序触发`accept/onConnect/onReceive`
       * 在`5`秒内客户端没有发送任何数据，此时会触发`accept/onConnect`
 
-### ssl_cert_file/ssl_key_file :id=ssl_cert_file
+### ssl_cert_file / ssl_key_file :id=ssl_cert_file
 
 ?> **设置SSL隧道加密。**
 
@@ -1308,7 +1308,7 @@ $server->set(array(
 
     !> 使用时需要注意如果`Server`非正常结束，`PID`文件不会删除，需要使用[Swoole\Process::kill($pid, 0)](/process/process?id=kill)来侦测进程是否真的存在
 
-### buffer_input_size/input_buffer_size :id=buffer_input_size
+### buffer_input_size / input_buffer_size :id=buffer_input_size
 
 ?> **配置接收输入缓存区内存尺寸。**【默认值：`2M`】
 
@@ -1318,7 +1318,7 @@ $server->set([
 ]);
 ```
 
-### buffer_output_size/output_buffer_size :id=buffer_output_size
+### buffer_output_size / output_buffer_size :id=buffer_output_size
 
 ?> **配置发送输出缓存区内存尺寸。**【默认值：`2M`】
 
