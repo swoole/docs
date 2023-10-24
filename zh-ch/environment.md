@@ -2,7 +2,7 @@
 
 `Swoole`扩展是按照`PHP`标准扩展构建的。使用`phpize`来生成编译检测脚本，`./configure`来做编译配置检测，`make`进行编译，`make install`进行安装。
 
-* 如无特殊需求, 请务必编译安装`Swoole`的最新 [Swoole5.0.2](https://github.com/swoole/swoole-src/releases/tag/v5.0.2) 版本或 [Swoole4.8.13](https://github.com/swoole/swoole-src/releases/tag/v4.8.13)。
+* 如无特殊需求, 请务必编译安装`Swoole`的最新 [Swoole](https://github.com/swoole/swoole-src/releases/) 版本。
 * 如果当前用户不是`root`，可能没有`PHP`安装目录的写权限，安装时需要`sudo`或者`su`。
 * 如果是在`git`分支上直接`git pull`更新代码，重新编译前务必要执行`make clean`。
 * 仅支持 `Linux`(2.3.32 以上内核)、`FreeBSD`、`MacOS` 三种操作系统。
@@ -186,7 +186,7 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 > `Swoole5.0`之前是使用协程客户端进行对`PostgreSQL`进行协程化，`Swoole5.1`之后，除了使用协程客户端进行协程化，也能够使用原生的`pdo_pgsql`协程化`PostgreSQL`了。
 
-#### --with-pdo-odbc
+#### --with-swoole-odbc
 
 启动对`pdo_odbc`协程化，该参数启用之后，所有支持`odbc`接口的数据库都能够协程化了。
 

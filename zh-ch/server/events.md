@@ -1,10 +1,8 @@
-# 事件和回调对象
-
-## 事件
+# 事件
 
 此节将介绍所有的Swoole的回调函数，每个回调函数都是一个PHP函数，对应一个事件。
 
-### onStart
+## onStart
 
 ?> **启动后在主进程（master）的主线程回调此函数**
 
@@ -56,7 +54,7 @@ function onStart(Swoole\Server $server);
 WARNING swReactorProcess_start: The onStart event with SWOOLE_BASE is deprecated
 ```
 
-### onBeforeShutdown
+## onBeforeShutdown
 
 ?> **此事件在`Server`正常结束前发生** 
 
@@ -74,7 +72,7 @@ function onBeforeShutdown(Swoole\Server $server);
         * **默认值**：无
         * **其它值**：无
 
-### onShutdown
+## onShutdown
 
 ?> **此事件在`Server`正常结束时发生**
 
@@ -105,7 +103,7 @@ function onShutdown(Swoole\Server $server);
   !> 请勿在`onShutdown`中调用任何异步或协程相关`API`，触发`onShutdown`时底层已销毁了所有事件循环设施；  
 此时已经不存在协程环境，如果开发者需要使用协程相关`API`需要手动调用`Co\run`来创建[协程容器](/coroutine?id=什么是协程容器)。
 
-### onWorkerStart
+## onWorkerStart
 
 ?> **此事件在 Worker进程/ [Task进程](/learn?id=taskworker进程) 启动时发生，这里创建的对象可以在进程生命周期内使用。**
 
@@ -159,7 +157,7 @@ $server->on('WorkerStart', function ($server, $worker_id){
 
     !> 发生致命错误或者代码中主动调用`exit`时，`Worker/Task`进程会退出，管理进程会重新创建新的进程。这可能导致死循环，不停地创建销毁进程
 
-### onWorkerStop
+## onWorkerStop
 
 ?> **此事件在`Worker`进程终止时发生。在此函数中可以回收`Worker`进程申请的各类资源。**
 
@@ -184,7 +182,7 @@ function onWorkerStop(Swoole\Server $server, int $workerId);
     !> -进程异常结束，如被强制`kill`、致命错误、`core dump`时无法执行`onWorkerStop`回调函数。  
     -请勿在`onWorkerStop`中调用任何异步或协程相关`API`，触发`onWorkerStop`时底层已销毁了所有[事件循环](/learn?id=什么是eventloop)设施。
 
-### onWorkerExit
+## onWorkerExit
 
 ?> **仅在开启[reload_async](/server/setting?id=reload_async)特性后有效。参见 [如何正确的重启服务](/question/use?id=swoole如何正确的重启服务)**
 
@@ -212,7 +210,7 @@ function onWorkerExit(Swoole\Server $server, int $workerId);
     -当进程没有事件句柄在监听时，进程结束时将不会回调此函数  
     -等待`Worker`进程退出后才会执行`onWorkerStop`事件回调
 
-### onConnect
+## onConnect
 
 ?> **有新的连接进入时，在worker进程中回调。**
 
@@ -247,7 +245,7 @@ function onConnect(Swoole\Server $server, int $fd, int $reactorId);
       * 在此模式下`onConnect/onReceive/onClose`可能会被投递到不同的进程。连接相关的`PHP`对象数据，无法实现在[onConnect](/server/events?id=onconnect)回调初始化数据，[onClose](/server/events?id=onclose)清理数据
       * `onConnect/onReceive/onClose`这3种事件可能会并发执行，可能会带来异常
 
-### onReceive
+## onReceive
 
 ?> **接收到数据时回调此函数，发生在`worker`进程中。**
 
@@ -306,7 +304,7 @@ function onReceive(Swoole\Server $server, int $fd, int $reactorId, string $data)
     开启了自动协议处理选项，[onReceive](/server/events?id=onreceive)将收到完整的数据包，最大不超过 [package_max_length](/server/setting?id=package_max_length)  
     支持二进制格式，`$data`可能是二进制数据
 
-### onPacket
+## onPacket
 
 ?> **接收到`UDP`数据包时回调此函数，发生在`worker`进程中。**
 
@@ -335,7 +333,7 @@ function onPacket(Swoole\Server $server, string $data, array $clientInfo);
 
     !> 服务器同时监听`TCP/UDP`端口时，收到`TCP`协议的数据会回调[onReceive](/server/events?id=onreceive)，收到`UDP`数据包回调`onPacket`。 服务器设置的`EOF`或`Length`等自动协议处理([参考TCP数据包边界问题](/learn?id=tcp数据包边界问题))，对`UDP`端口是无效的，因为`UDP`包本身存在消息边界，不需要额外的协议处理。
 
-### onClose
+## onClose
 
 ?> **`TCP`客户端连接关闭后，在`Worker`进程中回调此函数。**
 
@@ -378,7 +376,7 @@ function onClose(Swoole\Server $server, int $fd, int $reactorId);
     -[onClose](/server/events?id=onclose)中依然可以调用[getClientInfo](/server/methods?id=getClientInfo)方法获取到连接信息，在[onClose](/server/events?id=onclose)回调函数执行完毕后才会调用`close`关闭`TCP`连接  
     -这里回调[onClose](/server/events?id=onclose)时表示客户端连接已经关闭，所以无需执行`$server->close($fd)`。代码中执行`$server->close($fd)`会抛出`PHP`错误警告。
 
-### onTask
+## onTask
 
 ?> **在`task`进程内被调用。`worker`进程可以使用[task](/server/methods?id=task)函数向`task_worker`进程投递新的任务。当前的 [Task进程](/learn?id=taskworker进程)在调用[onTask](/server/events?id=ontask)回调函数时会将进程状态切换为忙碌，这时将不再接收新的Task，当[onTask](/server/events?id=ontask)函数返回时会将进程状态切换为空闲然后继续接收新的`Task`。**
 
@@ -429,7 +427,7 @@ function onTask(Swoole\Server $server, int $task_id, int $src_worker_id, mixed $
 
     !> [onTask](/server/events?id=ontask)函数执行时遇到致命错误退出，或者被外部进程强制`kill`，当前的任务会被丢弃，但不会影响其他正在排队的`Task`
 
-### onFinish
+## onFinish
 
 ?> **此回调函数在worker进程被调用，当`worker`进程投递的任务在`task`进程中完成时， [task进程](/learn?id=taskworker进程)会通过`Swoole\Server->finish()`方法将任务处理的结果发送给`worker`进程。**
 
@@ -459,7 +457,7 @@ function onFinish(Swoole\Server $server, int $task_id, mixed $data)
     !> - [task进程](/learn?id=taskworker进程)的[onTask](/server/events?id=ontask)事件中没有调用`finish`方法或者`return`结果，`worker`进程不会触发[onFinish](/server/events?id=onfinish)  
     -执行[onFinish](/server/events?id=onfinish)逻辑的`worker`进程与下发`task`任务的`worker`进程是同一个进程
 
-### onPipeMessage
+## onPipeMessage
 
 ?> **当工作进程收到由 `$server->sendMessage()` 发送的[unixSocket](/learn?id=什么是IPC)消息时会触发 `onPipeMessage` 事件。`worker/task` 进程都可能会触发 `onPipeMessage` 事件**
 
@@ -484,7 +482,7 @@ function onPipeMessage(Swoole\Server $server, int $src_worker_id, mixed $message
       * **默认值**：无
       * **其它值**：无
 
-### onWorkerError
+## onWorkerError
 
 ?> **当`Worker/Task`进程发生异常后会在`Manager`进程内回调此函数。**
 
@@ -528,7 +526,7 @@ function onWorkerError(Swoole\Server $server, int $worker_id, int $worker_pid, i
     * `signal = 9`：说明`Worker`被系统强行`Kill`，请检查是否有人为的`kill -9`操作，检查`dmesg`信息中是否存在`OOM（Out of memory）`
     * 如果存在`OOM`，分配了过大的内存。1.检查`Server`的`setting`配置，是否[socket_buffer_size](/server/setting?id=socket_buffer_size)等分配过大；2.是否创建了非常大的[Swoole\Table](/memory/table)内存模块。
 
-### onManagerStart
+## onManagerStart
 
 ?> **当管理进程启动时触发此事件**
 
@@ -552,7 +550,7 @@ function onManagerStart(Swoole\Server $server);
 
       * 在[SWOOLE_BASE](/learn?id=swoole_base) 模式下，如果设置了`worker_num`、`max_request`、`task_worker_num`参数，底层将创建`manager`进程来管理工作进程。因此会触发`onManagerStart`和`onManagerStop`事件回调。
 
-### onManagerStop
+## onManagerStop
 
 ?> **当管理进程结束时触发**
 
@@ -564,7 +562,7 @@ function onManagerStop(Swoole\Server $server);
 
   * `onManagerStop`触发时，说明`Task`和`Worker`进程已结束运行，已被`Manager`进程回收。
 
-### onBeforeReload
+## onBeforeReload
 
 ?> **Worker进程`Reload`之前触发此事件，在Manager进程中回调**
 
@@ -579,7 +577,7 @@ function onBeforeReload(Swoole\Server $server);
       * **默认值**：无
       * **其它值**：无
 
-### onAfterReload
+## onAfterReload
 
 ?> **Worker进程`Reload`之后触发此事件，在Manager进程中回调**
 
@@ -594,7 +592,7 @@ function onAfterReload(Swoole\Server $server);
       * **默认值**：无
       * **其它值**：无
 
-### 事件执行顺序
+## 事件执行顺序
 
 * 所有事件回调均在`$server->start`后发生
 * 服务器关闭程序终止时最后一次事件是`onShutdown`
@@ -605,7 +603,7 @@ function onAfterReload(Swoole\Server $server);
 * [onFinish](/server/events?id=onfinish)事件仅在`worker`进程中发生
 * `onStart/onManagerStart/onWorkerStart` `3`个事件的执行顺序是不确定的
 
-### 回调对象
+## 面向对象风格
 
 启用[event_object](/server/setting?id=event_object)后，以下事件回调将使用对象风格
 

@@ -266,7 +266,7 @@ Swoole\Process->setTimeout(float $seconds): bool
 设置消息队列套接字是否阻塞。
 
 ```php
-Swoole\Process->setBlocking(true $$blocking): void
+Swoole\Process->setBlocking(bool $$blocking): void
 ```
 
 * **参数** 
