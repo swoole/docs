@@ -8,13 +8,13 @@
 * 7.3 [最新版]
 * 7.4 [最新版]
 * 8.0 [最新版]
+* 8.1 [最新版]
+* 8.2 [最新版]
 
 ## 建议使用的Swoole版本
+`Swoole5.x`和`Swoole4.8.x`
 
-两者的差别在于：`v4.8.x` 是主动迭代分支，`v4.4.x` 是**非**主动迭代分支，仅修复`BUG`
-
-* [v4.8.x](https://github.com/swoole/swoole-src/tree/4.8.x) [稳定版]
-* [v4.4.x](https://github.com/swoole/v4.4-lts) [稳定版]
+两者的差别在于：`v5.x` 是主动迭代分支，`v4.8.x` 是**非**主动迭代分支，仅修复`BUG`
 
 !> `v4.x`以上版本可通过设置[enable_coroutine](/server/setting?id=enable_coroutine)关闭协程特性，使其变为非协程版本
 
@@ -30,6 +30,162 @@
 ```shell
 php --ri swoole
 ```
+
+## v5.1.0
+
+### 新特性
+- 增加对`pdo_pgsql`的协程化支持
+- 增加对`pdo_odbc`的协程化支持
+- 增加对`pdo_oci`的协程化支持
+- 增加对`pdo_sqlite`的协程化支持
+- 增加`pdo_pgsql`，`pdo_odbc`，`pdo_oci`，`pdo_sqlite`的连接池配置
+
+### 增强
+- 改进了`Http\Server`的性能，极限情况下可以提升`60%`
+
+### 修复
+- 修复`WebSocket`协程客户端每次请求造成的内存泄漏
+- 修复`http协程服务端`优雅退出导致客户端不退出的问题
+- 修复编译的时候加入了`--enable-thread-context`选项会导致`Process::signal()`不起作
+- 修复在`SWOOLE_BASE`模式下，当进程非正常退出时，连接数统计错误的问题
+- 修复`stream_select()`函数签名错误
+- 修复文件MIME信息大小写敏感错误
+- 修复`Http2\Request::$usePipelineRead`拼写错误导致在PHP8.2的环境下会抛出警告
+- 修复在`SWOOLE_BASE`模式下的内存泄漏问题
+- 修复当`Http\Response::cookie()`设置cookie的过期时间导致的内存泄漏问题
+- 修复在`SWOOLE_BASE`模式下的连接泄漏问题
+
+### 内核
+- 修复swoole在php8.3下的php_url_encode的函数签名问题
+- 修复单元测试选项问题
+- 优化，重构代码
+- 兼容PHP8.3
+- 不支持32位操作系统上编译
+
+##  v5.0.3
+
+### 增强
+- 添加了`--with-nghttp2_dir`选项，用于使用系统中的`nghttp2`库
+- 支持字节长度或大小相关的选项
+- 增加`Process\Pool::sendMessage()`函数
+- `Http\Response:cookie()`支持`max-age`
+
+### 修复
+- 修复`Server task/pipemessage/finish`事件导致内存泄漏
+
+### 内核
+- `http`响应头冲突将不会抛出错误
+- `Server`连接关闭将不会抛出错误
+
+## v5.0.2
+
+### 增强
+- 支持对`http2`的默认设置进行配置
+- 支持8.1或更高版本的`xdebug`
+- 重构了原生的curl以支持具有多个套接字的curl句柄，例如curl ftp协议
+- 在`Process::setPriority/getPriority`中添加了`who`参数
+- 添加了`Coroutine\Socket::getBoundCid()`方法
+- 调整了`Coroutine\Socket::recvLine/recvWithBuffer`方法的`length`参数的默认值为`65536`
+- 重构了跨协程退出特性，使内存释放更安全，并解决了致命错误发生时的崩溃问题
+- 为`Coroutine\Client`、`Coroutine\Http\Client`、`Coroutine\Http2\Client`添加了`socket`属性，允许直接操作`socket`资源
+- 持`Http\Server`向`http2`客户端发送空文件
+- 支持`Coroutine\Http\Server`的优雅重启。当服务器关闭时，客户端连接不再被强制关闭，只停止监听新请求
+- 将`pcntl_rfork`和`pcntl_sigwaitinfo`添加到不安全函数列表中，在协程容器启动时将被关闭
+- 重构了`SWOOLE_BASE`模式进程管理器，关闭和重载行为将`SWOOLE_PROCESS`一致
+
+##  v5.0.1
+
+### 增强
+- 支持`PHP-8.2`，改进了协程异常处理，与`ext-soap`兼容
+- 添加了`pgsql`协程客户端的`LOB`支持
+- 改进了`websocket`客户端，升级头部包含`websocket`而不是使用`=`
+- 优化了`http 客户端`，在服务器发送`connection close`时禁用`keep-alive`
+- 优化了`http 客户端`，在没有压缩库的情况下禁止添加`Accept-Encoding`头部
+- 改进了调试信息，在`PHP-8.2`下将密码设置为敏感参数
+- 加强了`Server::taskWaitMulti()`，在协程环境下不会阻塞
+- 优化了日志函数，在写入日志文件失败时不再打印到屏幕上
+
+
+### 修复
+- 修复了`Coroutine::printBackTrace()`和`debug_print_backtrace()`的参数兼容性问题
+- 修复了`Event::add()`对套接字资源的支持
+- 修复了在没有`zlib`时的编译错误
+- 修复了在解析为意外字符串时解包服务器任务的崩溃问题
+- 修复了添加小于`1ms`的定时器被强制设置为`0`的问题
+- 修复了在添加列之前使用`Table::getMemorySize()`引起崩溃的问题
+- 修改了`Http\Response::setCookie()`方法的过期参数名为`expires`
+
+## V5.0.0
+
+### 新特性
+- 添加了`Server`的`max_concurrency`选项
+- 添加了`Coroutine\Http\Client`的`max_retries`选项
+- 添加了`name_resolver`全局选项。 添加了`Server`的`upload_max_filesize`选项
+- 添加了`Coroutine::getExecuteTime()`方法
+- 为`Server `添加了`SWOOLE_DISPATCH_CONCURRENT_LB`的`dispatch_mode`
+- 强化了类型系统，为所有函数的参数和返回值添加了类型
+- 优化了错误处理，所有构造函数在失败时将抛出异常
+- 调整了`Server`的默认模式，默认为`SWOOLE_BASE`模式
+- 将`pgsql`协程客户端迁移到核心库中。 包含了`4.8.x`分支中的所有`bug`修复
+
+### 移除
+- 移除了`PSR-0`风格的类名
+- 移除了在关闭函数中自动添加`Event::wait()`的功能
+- 移除了`Server::tick/after/clearTimer/defer`的别名
+- 移除了`--enable-http2/--enable-swoole-json`，调整为默认启用
+
+### 废弃
+- 协程客户端`Coroutine\Redis`和`Coroutine\MySQL`默认废弃
+
+## v4.8.13
+
+### 增强
+- 重构原生的curl以支持具有多个套接字的curl句柄，例如curl FTP协议
+- 支持手动设置`http2`设置
+- 改进`WebSocket客户端`，升级标头包含了`websocket`而不是`equal`
+- 优化HTTP客户端，在服务器发送连接关闭时禁用`keep-alive`
+- 改进调试信息，在PHP-8.2下将密码设置为敏感参数
+- 支持`HTTP Range Requests`
+
+### 修复
+- 修复了`Coroutine::printBackTrace()`和`debug_print_backtrace()`的参数兼容性问题
+- 修复了在`WebSocket`服务器同时启用`HTTP2`和`WebSocket`协议时解析长度错误的问题
+- 修复了在`Server::send()`、`Http\Response::end()`、`Http\Response::write()`和`WebSocket/Server::push()`中发生`send_yield`时的内存泄漏问题
+- 修复了在添加列之前使用`Table::getMemorySize()`时导致崩溃的问题。
+
+## v4.8.12
+
+### 增强
+- 支持PHP8.2
+- `Event::add()`函数支持`sockets resources`
+- `Http\Client::sendfile()`支持超过4G的文件
+- `Server::taskWaitMulti()`支持协程环境
+
+### 修复
+- 修复接收到错误的`multipart body`会抛出错误信息
+- 修复定时器的超时时间小于`1ms`导致的错误
+- 修复磁盘已满导致的死锁问题
+
+## v4.8.11
+
+### 增强
+- 支持 `Intel CET` 安全防御机制
+- 添加 `Server::$ssl`属性
+- 使用`pecl`编译`swoole`时，增加`enable-cares`属性
+- 重构`multipart_parser`解释器
+
+### 修复
+- 修复`pdo`持久化连接抛出异常导致的段错误
+- 修复析构函数使用协程导致段错误
+- 修复`Server::close()`的不正确的错误信息
+
+## v4.8.10
+
+### 修复
+
+- 当`stream_select`的超时参数小于`1ms`时将其重置为`0`
+- 修复编译时添加`-Werror=format-security`会导致编译失败
+- 修复使用`curl`导致`Swoole\Coroutine\Http\Server`段错误
 
 ## v4.8.9
 

@@ -155,95 +155,36 @@ if ($socket->connect('127.0.0.1', 9502) === false) {
 
 将第`4`项参数设置为`1`，启用`udp connect`，`$client->connect('192.168.1.100', 9502, 1, 1)`。这时将会绑定客户端和服务器端，底层会根据服务器端的地址来绑定`socket`绑定的地址。如连接了`192.168.1.100`，当前`socket`会被绑定到`192.168.1.*`的本机地址上。启用`udp connect`后，客户端将不再接收其他主机向此端口发送的数据包。
 
-### isConnected()
+### recv()
 
-返回Client的连接状态
-
-* 返回false，表示当前未连接到服务器
-* 返回true，表示当前已连接到服务器
+从服务器端接收数据。
 
 ```php
-Swoole\Client->isConnected(): bool
+Swoole\Client->recv(int $size = 65535, int $flags = 0): string | false
 ```
 
-!> `isConnected`方法返回的是应用层状态，只表示`Client`执行了`connect`并成功连接到了`Server`，并且没有执行`close`关闭连接。`Client`可以执行`send`、`recv`、`close`等操作，但不能再次执行`connect` 。  
-这不代表连接一定是可用的，当执行`send`或`recv`时仍然有可能返回错误，因为应用层无法获得底层`TCP`连接的状态，执行`send`或`recv`时应用层与内核发生交互，才能得到真实的连接可用状态。
+* **参数** 
 
-### getSocket()
+  * **`int $size`**
+    * **功能**：接收数据的缓存区最大长度【此参数不要设置过大，否则会占用较大内存】
+    * **默认值**：无
+    * **其它值**：无
 
-获取底层的`socket`句柄，返回的对象为`sockets`资源句柄。
-
-!> 此方法需要依赖`sockets`扩展，并且编译时需要开启[--enable-sockets](/environment?id=编译选项)选项
-
-```php
-Swoole\Client->getSocket()
-```
-
-使用`socket_set_option`函数可以设置更底层的一些`socket`参数。
-
-```php
-$socket = $client->getSocket();
-if (!socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1)) {
-    echo 'Unable to set option on socket: '. socket_strerror(socket_last_error()) . PHP_EOL;
-}
-```
-
-### getSockName()
-
-用于获取客户端socket的本地host:port。
-
-!> 必须在连接之后才可以使用
-
-```php
-Swoole\Client->getsockname(): array|false
-```
+  * **`int $flags`**
+    * **功能**：可设置额外的参数【如[Client::MSG_WAITALL](/client?id=clientmsg_waitall)】,具体哪些参数参考[此节](/client?id=常量)
+    * **默认值**：无
+    * **其它值**：无
 
 * **返回值**
 
-```php
-array('host' => '127.0.0.1', 'port' => 53652);
-```
+  * 成功收到数据返回字符串
+  * 连接关闭返回空字符串
+  * 失败返回 `false`，并设置`$client->errCode`属性
 
-### getPeerName()
+* **EOF/Length协议**
 
-获取对端socket的IP地址和端口
-
-!> 仅支持`SWOOLE_SOCK_UDP/SWOOLE_SOCK_UDP6/SWOOLE_SOCK_UNIX_DGRAM`类型
-
-```php
-Swoole\Client->getpeername(): array|false
-```
-
-`UDP`协议通信客户端向一台服务器发送数据包后，可能并非由此服务器向客户端发送响应。可以使用`getpeername`方法获取实际响应的服务器`IP:PORT`。
-
-!> 此函数必须在`$client->recv()`之后调用
-
-### getPeerCert()
-
-获取服务器端证书信息。
-
-```php
-Swoole\Client->getPeerCert(): string|false
-```
-
-* **返回值**
-
-  * 成功返回一个`X509`证书字符串信息
-  * 失败返回`false`
-
-!> 必须在SSL握手完成后才可以调用此方法。
-  
-可以使用`openssl`扩展提供的`openssl_x509_parse`函数解析证书的信息。
-
-!> 需要在编译swoole时启用[--enable-openssl](/environment?id=编译选项)
-
-### verifyPeerCert()
-
-验证服务器端证书。
-
-```php
-Swoole\Client->verifyPeerCert()
-```
+  * 客户端启用了`EOF/Length`检测后，无需设置`$size`和`$waitall`参数。扩展层会返回完整的数据包或者返回`false`，参考[协议解析](/client?id=协议解析)章节。
+  * 当收到错误的包头或包头中长度值超过[package_max_length](/server/setting?id=package_max_length)设置时，`recv`会返回空字符串，PHP代码中应当关闭此连接。
 
 ### send()
 
@@ -270,31 +211,6 @@ Swoole\Client->send(string $data): int|false
   * 如果未执行`connect`，调用`send`会触发警告
   * 发送的数据没有长度限制
   * 发送的数据太大Socket缓存区塞满，程序会阻塞等待可写
-
-### sendto()
-
-向任意`IP:PORT`的主机发送`UDP`数据包，仅支持`SWOOLE_SOCK_UDP/SWOOLE_SOCK_UDP6`类型
-
-```php
-Swoole\Client->sendto(string $ip, int $port, string $data): bool
-```
-
-* **参数** 
-
-  * **`string $ip`**
-    * **功能**：目标主机的`IP`地址，支持`IPv4/IPv6`
-    * **默认值**：无
-    * **其它值**：无
-
-  * **`int $port`**
-    * **功能**：目标主机的端口
-    * **默认值**：无
-    * **其它值**：无
-
-  * **`string $data`**
-    * **功能**：要发送的数据内容【不得超过`64K`】
-    * **默认值**：无
-    * **其它值**：无
 
 ### sendfile()
 
@@ -332,59 +248,35 @@ Swoole\Client->sendfile(string $filename, int $offset = 0, int $length = 0): boo
 
   * `sendfile`会一直阻塞直到整个文件发送完毕或者发生致命错误
 
-### recv()
 
-从服务器端接收数据。
+### sendto()
+
+向任意`IP:PORT`的主机发送`UDP`数据包，仅支持`SWOOLE_SOCK_UDP/SWOOLE_SOCK_UDP6`类型
 
 ```php
-Swoole\Client->recv(int $size = 65535, int $flags = 0): string | false
+Swoole\Client->sendto(string $ip, int $port, string $data): bool
 ```
 
 * **参数** 
 
-  * **`int $size`**
-    * **功能**：接收数据的缓存区最大长度【此参数不要设置过大，否则会占用较大内存】
+  * **`string $ip`**
+    * **功能**：目标主机的`IP`地址，支持`IPv4/IPv6`
     * **默认值**：无
     * **其它值**：无
 
-  * **`int $flags`**
-    * **功能**：可设置额外的参数【如[Client::MSG_WAITALL](/client?id=clientmsg_waitall)】,具体哪些参数参考[此节](/client?id=常量)
+  * **`int $port`**
+    * **功能**：目标主机的端口
     * **默认值**：无
     * **其它值**：无
 
-* **返回值**
-
-  * 成功收到数据返回字符串
-  * 连接关闭返回空字符串
-  * 失败返回 `false`，并设置`$client->errCode`属性
-
-* **EOF/Length协议**
-
-  * 客户端启用了`EOF/Length`检测后，无需设置`$size`和`$waitall`参数。扩展层会返回完整的数据包或者返回`false`，参考[协议解析](/client?id=协议解析)章节。
-  * 当收到错误的包头或包头中长度值超过[package_max_length](/server/setting?id=package_max_length)设置时，`recv`会返回空字符串，PHP代码中应当关闭此连接。
-
-### close()
-
-关闭连接。
-
-```php
-Swoole\Client->close(bool $force = false): bool
-```
-
-* **参数** 
-
-  * **`bool $force`**
-    * **功能**：强制关闭连接【可用于关闭 [SWOOLE_KEEP](/client?id=swoole_keep) 长连接】
+  * **`string $data`**
+    * **功能**：要发送的数据内容【不得超过`64K`】
     * **默认值**：无
     * **其它值**：无
-
-当一个`swoole_client`连接被`close`后不要再次发起`connect`。正确的做法是销毁当前的`Client`，重新创建一个`Client`并发起新的连接。
-
-`Client`对象在析构时会自动`close`。
 
 ### enableSSL()
 
-动态开启SSL隧道加密。
+动态开启SSL隧道加密，只有在编译`swoole`时开启了`--enable-openssl`才能使用该函数。
 
 ```php
 Swoole\Client->enableSSL(): bool
@@ -415,6 +307,131 @@ if ($client->enableSSL())
     echo $client->recv();
 }
 $client->close();
+```
+
+
+### getPeerCert()
+
+获取服务器端证书信息，只有在编译`swoole`时开启了`--enable-openssl`才能使用该函数。
+
+```php
+Swoole\Client->getPeerCert(): string|false
+```
+
+* **返回值**
+
+  * 成功返回一个`X509`证书字符串信息
+  * 失败返回`false`
+
+!> 必须在SSL握手完成后才可以调用此方法。
+  
+可以使用`openssl`扩展提供的`openssl_x509_parse`函数解析证书的信息。
+
+!> 需要在编译swoole时启用[--enable-openssl](/environment?id=编译选项)
+
+### verifyPeerCert()
+
+验证服务器端证书，只有在编译`swoole`时开启了`--enable-openssl`才能使用该函数。
+
+```php
+Swoole\Client->verifyPeerCert()
+```
+
+### isConnected()
+
+返回Client的连接状态
+
+* 返回false，表示当前未连接到服务器
+* 返回true，表示当前已连接到服务器
+
+```php
+Swoole\Client->isConnected(): bool
+```
+
+!> `isConnected`方法返回的是应用层状态，只表示`Client`执行了`connect`并成功连接到了`Server`，并且没有执行`close`关闭连接。`Client`可以执行`send`、`recv`、`close`等操作，但不能再次执行`connect` 。  
+这不代表连接一定是可用的，当执行`send`或`recv`时仍然有可能返回错误，因为应用层无法获得底层`TCP`连接的状态，执行`send`或`recv`时应用层与内核发生交互，才能得到真实的连接可用状态。
+
+### getSockName()
+
+用于获取客户端socket的本地host:port。
+
+!> 必须在连接之后才可以使用
+
+```php
+Swoole\Client->getsockname(): array|false
+```
+
+* **返回值**
+
+```php
+array('host' => '127.0.0.1', 'port' => 53652);
+```
+
+### getPeerName()
+
+获取对端socket的IP地址和端口
+
+!> 仅支持`SWOOLE_SOCK_UDP/SWOOLE_SOCK_UDP6/SWOOLE_SOCK_UNIX_DGRAM`类型
+
+```php
+Swoole\Client->getpeername(): array|false
+```
+
+`UDP`协议通信客户端向一台服务器发送数据包后，可能并非由此服务器向客户端发送响应。可以使用`getpeername`方法获取实际响应的服务器`IP:PORT`。
+
+!> 此函数必须在`$client->recv()`之后调用
+
+### close()
+
+关闭连接。
+
+```php
+Swoole\Client->close(bool $force = false): bool
+```
+
+* **参数** 
+
+  * **`bool $force`**
+    * **功能**：强制关闭连接【可用于关闭 [SWOOLE_KEEP](/client?id=swoole_keep) 长连接】
+    * **默认值**：无
+    * **其它值**：无
+
+当一个`swoole_client`连接被`close`后不要再次发起`connect`。正确的做法是销毁当前的`Client`，重新创建一个`Client`并发起新的连接。
+
+`Client`对象在析构时会自动`close`。
+
+### shutdown()
+
+关闭客户端
+
+```php
+Swoole\Client->shutdown(int $how): bool
+```
+
+* **参数** 
+
+  * **`int $how`**
+    * **功能**：设置如何关闭客户端
+    * **默认值**：无
+    * **其它值**：Swoole\Client::SHUT_RDWR（关闭读写），SHUT_RD（关闭读），Swoole\Client::SHUT_WR（关闭写）
+
+### getSocket()
+
+获取底层的`socket`句柄，返回的对象为`sockets`资源句柄。
+
+!> 此方法需要依赖`sockets`扩展，并且编译时需要开启[--enable-sockets](/environment?id=编译选项)选项
+
+```php
+Swoole\Client->getSocket()
+```
+
+使用`socket_set_option`函数可以设置更底层的一些`socket`参数。
+
+```php
+$socket = $client->getSocket();
+if (!socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1)) {
+    echo 'Unable to set option on socket: '. socket_strerror(socket_last_error()) . PHP_EOL;
+}
 ```
 
 ### swoole_client_select
@@ -532,6 +549,38 @@ if ($client->reuse) {
 }
 ```
 
+### reuseCount
+
+表示此连接的复用次数。与[SWOOLE_KEEP](/client?id=swoole_keep)配合使用。
+
+```php
+Swoole\Client->reuseCount;
+```
+
+### type
+
+表示`socket`的类型，会返回`Swoole\Client::__construct()`的`$sock_type`的值
+
+```php
+Swoole\Client->type;
+```
+
+### id
+
+返回`Swoole\Client::__construct()`的`$key`的值，与[SWOOLE_KEEP](/client?id=swoole_keep)配合使用
+
+```php
+Swoole\Client->id;
+```
+
+### setting
+
+返回客户端`Swoole\Client::set()`设置的配置
+
+```php
+Swoole\Client->setting;
+```
+
 ## 常量
 
 ### SWOOLE_KEEP
@@ -550,23 +599,35 @@ $client->connect('127.0.0.1', 9501);
 * `TCP`长连接可以减少`connect` `3`次握手/`close` `4`次挥手带来的额外IO消耗
 * 降低服务器端`close`/`connect`次数
 
-### Client::MSG_WAITALL
+### Swoole\Client::MSG_WAITALL
 
   * 如果设定了Client::MSG_WAITALL参数就必须设定准确的`$size`，否则会一直等待，直到接收的数据长度达到$size
   * 未设置Client::MSG_WAITALL时，`$size`最大为`64K`
   * 如果设置了错误的`$size`，会导致`recv`超时，返回 `false`
 
-### Client::MSG_DONTWAIT
+### Swoole\Client::MSG_DONTWAIT
 
 非阻塞接收数据，无论是否有数据都会立即返回。
 
-### Client::MSG_PEEK
+### Swoole\Client::MSG_PEEK
 
 窥视`socket`缓存区中的数据。设置`MSG_PEEK`参数后，`recv`读取数据不会修改指针，因此下一次调用`recv`仍然会从上一次的位置起返回数据。
 
-### Client::MSG_OOB
+### Swoole\Client::MSG_OOB
 
 读取带外数据，请自行搜索"`TCP带外数据`"。
+
+### Swoole\Client::SHUT_RDWR
+
+关闭客户端的读写端。
+
+### Swoole\Client::SHUT_RD
+
+关闭客户端的读端。
+
+### Swoole\Client::SHUT_WR
+
+关闭客户端的写端。
 
 ## 配置
 
