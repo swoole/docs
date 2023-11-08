@@ -194,13 +194,13 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 #### --with-swoole-oracle
 
-启用对`pdo_oci`的协程化，该参数启用之后，`oracle`数据库的增删改查都会触发写成操作。
+启用对`pdo_oci`的协程化，该参数启用之后，`oracle`数据库的增删改查都会触发协程操作。
 
 >`v5.1.0`版本后可用
 
 #### --enable-swoole-sqlite
 
-启用对`pdo_sqlite`的协程化，该参数启用之后，`sqlite`数据库的增删改查都会触发写成操作。
+启用对`pdo_sqlite`的协程化，该参数启用之后，`sqlite`数据库的增删改查都会触发协程操作。
 
 >`v5.1.0`版本后可用
 
