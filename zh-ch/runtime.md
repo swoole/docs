@@ -619,10 +619,10 @@ Swoole\Runtime::getHookFlags(): int
 !> **不支持协程化**表示会使协程降级为阻塞模式，此时使用协程无实际意义
 
   * `mysql`：底层使用`libmysqlclient`
-  * `mongo`：底层使用`mongo-c-client`。
-  * `pdo_pgsql`，Swoole版本 >= `v5.1.0`之后，使用`pdo_pgsql`可以协程化处理。
-  * `pdo_oci`，Swoole版本 >= `v5.1.0`之后，使用`pdo_oci`可以协程化处理。
-  * `pdo_odbc`，Swoole版本 >= `v5.1.0`之后，使用`pdo_odbc`可以协程化处理。
+  * `mongo`：底层使用`mongo-c-client`
+  * `pdo_pgsql`，Swoole版本 >= `v5.1.0`之后，使用`pdo_pgsql`可以协程化处理
+  * `pdo_oci`，Swoole版本 >= `v5.1.0`之后，使用`pdo_oci`可以协程化处理
+  * `pdo_odbc`，Swoole版本 >= `v5.1.0`之后，使用`pdo_odbc`可以协程化处理
   * `pdo_firebird`
   * `php-amqp`
 
