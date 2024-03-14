@@ -52,7 +52,7 @@ Swoole\Server->host
 
 ### $port
 
-返回当前服务器监听的端口的`port`，该属性是一个`int`类型的整数。。
+返回当前服务器监听的端口的`port`，该属性是一个`int`类型的整数。
 
 ```php
 Swoole\Server->port
@@ -135,7 +135,7 @@ $server->start();
 
 ### $manager_pid
 
-返回当前服务器管理进程的`PID`，该属性是一个`int`类型的整数。。
+返回当前服务器管理进程的`PID`，该属性是一个`int`类型的整数。
 
 ```php
 Swoole\Server->manager_pid
