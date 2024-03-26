@@ -1,0 +1,89 @@
+# Swoole\Thread
+
+从 `6.0` 版本开始提供了多线程支持，可使用线程 API 来代替多进程。相比多进程，`Thread` 提供了更丰富的并发数据容器，
+在开发游戏服务器、通信服务器方面更方便。
+
+## 编译
+- `PHP` 必须为 `ZTS` 模式，编译 `PHP` 时需要加入 `--enable-zts`
+- 编译 `Swoole` 时需要增加 `--enable-swoole-thread` 编译选项
+
+## 查看信息
+
+```shell
+php -v
+PHP 8.1.23 (cli) (built: Mar 20 2024 19:48:19) (ZTS)
+Copyright (c) The PHP Group
+Zend Engine v4.1.23, Copyright (c) Zend Technologies
+```
+
+`(ZTS)` 表示已启用线程安全
+
+```shell
+php --ri swoole
+php --ri swoole
+
+swoole
+
+Swoole => enabled
+...
+thread => enabled
+...
+```
+
+`thread => enabled` 表示已开启多线程支持
+
+## 创建线程
+
+```php
+Thread::exec(string $script_file, array ...$argv);
+```
+
+请注意创建的子线程不会从父线程继承任何资源，因此在子线程中下列内容已被清空，需要重新创建或设置：
+- 已加载的 `PHP` 文件，需要重新 `include/require` 加载
+- `autoload`
+- 类、函数、常量，将被清空，需重新加载 `PHP` 文件创建
+- 全局变量，例如 `$GLOBALS`、`$_GET/$_POST` 等，将被清空
+- 类的静态属性、函数的静态变量，将重置为初始值
+- `php.ini` 选项，例如 `error_reporting()` 需要在子线程中重新设置
+
+必须使用线程参数传递数据给子线程。在子线程中依然可以创建新的线程。
+
+### 参数
+- `$script_file`: 线程启动后要执行的脚本
+- `...$argv`：传递线程参数，必须是可序列化的变量，无法传递 `resource` 资源句柄，在子线程中可使用 `Thread::getArguments()` 获取
+
+### 返回值
+返回 `Thread` 对象，在父线程中可对子线程进行 `join()` 等操作。
+
+线程对象析构时会自动执行 `join()` 等待子线程退出。这可能会引起阻塞，可使用 `$thread->detach()` 方法
+使子线程脱离父线程，独立运行。
+
+
+### 实例
+```php
+use Swoole\Thread;
+
+$args = Thread::getArguments();
+$c = 4;
+
+if (empty($args)) {
+    # 父线程
+    for ($i = 0; $i < $c; $i++) {
+        $threads[] = Thread::exec(__FILE__, $i);
+    }
+    for ($i = 0; $i < $c; $i++) {
+        $threads[$i]->join();
+    }
+} else {
+    # 子线程
+    echo "Thread #" . $args[0] . "\n";
+    while (1) {
+        sleep(1);
+        file_get_contents('https://www.baidu.com/');
+    }
+}
+```
+
+
+## 常量
+- `Thread::HARDWARE_CONCURRENCY` 获取硬件系统支持的并发线程数，即 `CPU` 核数
