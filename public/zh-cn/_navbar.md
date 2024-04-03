@@ -1,3 +1,3 @@
 * 语言
-  * [简体中文](/wiki.swoole.com/zh-cn)
-  * [English](//wiki.swoole.com/en/)
+    * [简体中文](https://wiki.swoole.com/zh-cn)
+    * [English](https://wiki.swoole.com/en/)
