@@ -8,7 +8,7 @@
 
 [//]: # (https://naotu.baidu.com/file/bd9d2ba7dfae326e6976f0c53f88b18c)
 
-<embed src="_images/swoole_class.svg" type="image/svg+xml" alt="Swoole Architecture Diagram" />
+<embed src="/_images/swoole_class.svg" type="image/svg+xml" alt="Swoole Architecture Diagram" />
 
 ## Official Website
 
