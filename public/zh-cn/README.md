@@ -20,14 +20,13 @@
 
 * [GitHub](//github.com/swoole/swoole-src) **（支持请点Star）**
 * [码云](//gitee.com/swoole/swoole)
-* [Pecl](//pecl.php.net/package/swoole)
+* [PECL](//pecl.php.net/package/swoole)
 
 ## 开发工具
 
 * [IDE Helper](https://github.com/swoole/ide-helper)
 * [Yasd](https://github.com/swoole/yasd)
 * [debugger](https://github.com/swoole/debugger)
-* [sdebug](https://github.com/swoole/sdebug)
 
 ## 版权信息
 
