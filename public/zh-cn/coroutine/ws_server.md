@@ -190,3 +190,13 @@ Swoole\Http\Response->push(string|object $data, int $opcode = WEBSOCKET_OPCODE_T
 ```php
 Swoole\Http\Response->close(): bool
 ```
+
+此方法会直接切断 `TCP` 连接，不会发送 `Close` 帧，这与 `WebSocket\Server::disconnect()` 方法不同。
+可以在关闭连接前使用 `push()` 方法发送 `Close` 帧，主动通知客户端。
+
+```php
+$frame = new Swoole\WebSocket\CloseFrame;
+$frame->reason = 'close';
+$ws->push($frame);
+$ws->close();
+```

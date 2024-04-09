@@ -4,12 +4,10 @@
 
 ## 建议使用的PHP版本
 
-* 7.2 [最新版]
-* 7.3 [最新版]
-* 7.4 [最新版]
-* 8.0 [最新版]
-* 8.1 [最新版]
-* 8.2 [最新版]
+* 7.4
+* 8.0
+* 8.1
+* 8.2
 
 ## 建议使用的Swoole版本
 `Swoole5.x`和`Swoole4.8.x`
@@ -30,6 +28,10 @@
 ```shell
 php --ri swoole
 ```
+
+## v6.0.0
+- 增加了多线程模式的支持
+- 移除了 `Coroutine\Redis`、`Coroutine\MySQL`、`Coroutine\PostgreSQL` 客户端，已被 `ext-redis`、`mysqli`、`pdo_mysql`、`pdo_pgsql` 取代
 
 ## v5.1.0
 
