@@ -16,6 +16,6 @@
 
 ### 进程/线程结构图 <!-- {docsify-ignore} --> 
 
-![process_structure](https://wiki.swoole.com/_images/swoole/process_structure.png ':size=800xauto')
+![process_structure](https://wiki.swoole.com/_images/server/process_structure.png ':size=800xauto')
 
 ![process_structure_2](https://wiki.swoole.com/_images/server/process_structure_2.png)
