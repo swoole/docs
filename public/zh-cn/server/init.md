@@ -12,10 +12,10 @@
 
 ### 运行流程图 <!-- {docsify-ignore} --> 
 
-![running_process](https://cdn.jsdelivr.net/gh/sy-records/staticfile/images/swoole/running_process.png ':size=800xauto')
+![running_process](https://wiki.swoole.com/_images/server/running_process.png ':size=800xauto')
 
 ### 进程/线程结构图 <!-- {docsify-ignore} --> 
 
-![process_structure](https://cdn.jsdelivr.net/gh/sy-records/staticfile/images/swoole/process_structure.png ':size=800xauto')
+![process_structure](https://wiki.swoole.com/_images/swoole/process_structure.png ':size=800xauto')
 
-![process_structure_2](../_images/server/process_structure_2.png)
+![process_structure_2](https://wiki.swoole.com/_images/server/process_structure_2.png)
