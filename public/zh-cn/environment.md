@@ -190,7 +190,15 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 启动对`pdo_odbc`协程化，该参数启用之后，所有支持`odbc`接口的数据库都能够协程化了。
 
->`v5.1.0`版本后可用
+
+
+>`v5.1.0`版本后可用,需依赖扩展unixodbc-dev
+
+示例配置
+
+```
+with-swoole-odbc="unixODBC,/usr"
+```
 
 #### --with-swoole-oracle
 
