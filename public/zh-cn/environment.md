@@ -192,7 +192,7 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 
 
->`v5.1.0`版本后可用,需依赖扩展unixodbc-dev
+>`v5.1.0`版本后可用,需依赖unixodbc-dev
 
 示例配置
 
