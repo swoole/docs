@@ -47,7 +47,7 @@
         * [MySQL客户端](coroutine_client/mysql.md)
         * [Redis客户端](coroutine_client/redis.md)
 
-* [协程](coroutine.md) (Coroutine)
+* [协程 (Coroutine)](coroutine.md)
     * [一键协程化](runtime.md)
     * [核心API](coroutine/coroutine.md)
     * [协程容器](coroutine/scheduler.md)
@@ -68,9 +68,9 @@
 * 线程 (Thread)
     * [线程创建](thread/thread.md)
     * [线程管理](thread/join.md)
-    * [并发Map](thread/map.md)
-    * [并发List](thread/arraylist.md)
-    * [并发队列](thread/queue.md)
+    * [安全并发容器Map](thread/map.md)
+    * [安全并发容器List](thread/arraylist.md)
+    * [安全并发容器Queue](thread/queue.md)
 
 * 进程管理 (Process)
     * [创建进程](process/process.md)

@@ -1,6 +1,6 @@
-# 并发 Map
+# 安全并发容器 Map
 
-创建一个并发的 `Map` 结构，可作为线程参数传递给子线程。读写时在其他线程时可见的。
+创建一个并发的 `Map` 结构，可作为线程参数传递给子线程。读写时在其他线程是可见的。
 
 ## 特性
 - `Map`、`ArrayList`、`Queue` 会自动分配内存，不需要像 `Table` 那样固定分配
@@ -10,7 +10,7 @@
 - 必须在线程创建前将 `Map`、`ArrayList`、`Queue` 对象作为线程参数传递给子线程
 
 ## 使用方法
-`Thread\Map` 实现了 `ArrayAccess` 接口，可以直接作为数组操作。
+`Swoole\Thread\Map` 实现了 `ArrayAccess` 和 `Countable` 接口，可以直接作为数组操作。
 
 ## 实例
 
@@ -34,11 +34,23 @@ if (empty($args)) {
 
 ## 方法
 
-### Map::count() 
+### count()
 获取元素数量
 
-### Map::keys()
+```php
+Swoole\Thread\Map()->count(): int
+```
+
+### keys()
 返回所有 `key`
 
-### Map::clean()
+```php
+Swoole\Thread\Map()->keys(): array
+```
+
+### clean()
 清空所有元素
+
+```php
+Swoole\Thread\Map()->clean(): void
+```
