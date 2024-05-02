@@ -607,13 +607,6 @@ function onAfterReload(Swoole\Server $server);
 
 启用[event_object](/server/setting?id=event_object)后，以下事件回调的参数将有所改变。
 
-* [Swoole\Server\Event](/server/event_class)
-* [Swoole\Server\Packet](/server/packet_class)
-* [Swoole\Server\PipeMessage](/server/pipemessage_class)
-* [Swoole\Server\StatusInfo](/server/statusinfo_class)
-* [Swoole\Server\Task](/server/task_class)
-* [Swoole\Server\TaskResult](/server/taskresult_class)
-
 * 客户端连接 [onConnect](/server/events?id=onconnect)
 ```php
 $server->on('Connect', function (Swoole\Server $serv, Swoole\Server\Event $object) {
@@ -676,3 +669,10 @@ $server->on('Finish', function (Swoole\Server $serv, Swoole\Server\TaskResult $r
     var_dump($result);
 });
 ```
+
+* [Swoole\Server\Event](/server/event_class)
+* [Swoole\Server\Packet](/server/packet_class)
+* [Swoole\Server\PipeMessage](/server/pipemessage_class)
+* [Swoole\Server\StatusInfo](/server/statusinfo_class)
+* [Swoole\Server\Task](/server/task_class)
+* [Swoole\Server\TaskResult](/server/taskresult_class)
