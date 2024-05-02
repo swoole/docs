@@ -605,42 +605,46 @@ function onAfterReload(Swoole\Server $server);
 
 ## 面向对象风格
 
-启用[event_object](/server/setting?id=event_object)后，以下事件回调将使用对象风格
+启用[event_object](/server/setting?id=event_object)后，以下事件回调的参数将有所改变。
 
-#### [Swoole\Server\Event](/server/event_class)
+* [Swoole\Server\Event](/server/event_class)
+* [Swoole\Server\Packet](/server/packet_class)
+* [Swoole\Server\PipeMessage](/server/pipemessage_class)
+* [Swoole\Server\StatusInfo](/server/statusinfo_class)
+* [Swoole\Server\Task](/server/task_class)
+* [Swoole\Server\TaskResult](/server/taskresult_class)
 
-* [onConnect](/server/events?id=onconnect)
-* [onReceive](/server/events?id=onreceive)
-* [onClose](/server/events?id=onclose)
-
+* 客户端连接 [onConnect](/server/events?id=onconnect)
 ```php
 $server->on('Connect', function (Swoole\Server $serv, Swoole\Server\Event $object) {
     var_dump($object);
 });
+```
 
+* 接收数据 [onReceive](/server/events?id=onreceive)
+```php
 $server->on('Receive', function (Swoole\Server $serv, Swoole\Server\Event $object) {
     var_dump($object);
 });
+```
 
+* 连接关闭 [onClose](/server/events?id=onclose)
+```php
 $server->on('Close', function (Swoole\Server $serv, Swoole\Server\Event $object) {
     var_dump($object);
 });
 ```
 
-#### [Swoole\Server\Packet](/server/packet_class)
 
-* [onPacket](/server/events?id=onpacket)
-
+* UDP收包 [onPacket](/server/events?id=onpacket)
 ```php
 $server->on('Packet', function (Swoole\Server $serv, Swoole\Server\Packet $object) {
     var_dump($object);
 });
 ```
 
-#### [Swoole\Server\PipeMessage](/server/pipemessage_class)
 
-* [onPipeMessage](/server/events?id=onpipemessage)
-
+* 进程间通信 [onPipeMessage](/server/events?id=onpipemessage)
 ```php
 $server->on('PipeMessage', function (Swoole\Server $serv, Swoole\Server\PipeMessage $msg) {
     var_dump($msg);
@@ -649,30 +653,24 @@ $server->on('PipeMessage', function (Swoole\Server $serv, Swoole\Server\PipeMess
 });
 ```
 
-#### [Swoole\Server\StatusInfo](/server/statusinfo_class)
 
-* [onWorkerError](/server/events?id=onworkererror)
-
+* 进程发生异常 [onWorkerError](/server/events?id=onworkererror)
 ```php
 $serv->on('WorkerError', function (Swoole\Server $serv, Swoole\Server\StatusInfo $info) {
     var_dump($info);
 });
 ```
 
-#### [Swoole\Server\Task](/server/task_class)
 
-* [onTask](/server/events?id=ontask)
-
+* task进程接受任务 [onTask](/server/events?id=ontask)
 ```php
 $server->on('Task', function (Swoole\Server $serv, Swoole\Server\Task $task) {
     var_dump($task);
 });
 ```
 
-#### [Swoole\Server\TaskResult](/server/taskresult_class)
 
-* [onFinish](/server/events?id=onfinish)
-
+* worker进程接收task进程的处理结果 [onFinish](/server/events?id=onfinish)
 ```php
 $server->on('Finish', function (Swoole\Server $serv, Swoole\Server\TaskResult $result) {
     var_dump($result);
