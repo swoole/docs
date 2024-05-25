@@ -15,12 +15,11 @@
 * 吞吐量高，可以处理大量文件异步操作。
 * 对`linux`版本有要求，也需要依赖`liburing`这个共享库，有些操作系统没法使用这个特性。
 * 由于是基于`文件描述符`实现文件异步，只支持少数`PHP`的文件操作函数。
+* 对linux内核版本要求较高。
 
 
 !> 当系统安装了`liburing`和编译`Swoole`开启了`--enable-iouring`之后才能使用。
 
-!> 开启了`io_uring`之后并不会替换掉`线程池`模式，有些`io_uring`没法操作的函数还是会让`线程池`处理。
+!> 开启了`io_uring`之后并不会替换掉`线程池`模式，有些`io_uring`没法协程化的函数还是会让`线程池`处理。
 
-!> `io_uring`只能处理`file_get_contents`，`file_put_contents`，`fopen`，`fclose`，`fread`，`fwrite`，`mkdir`，`fsync`，`fdatasync`，`rename`，`fstat`，`lstat`，`filesize`函数。
-
-!> `ftruncate`函数需要`liburing`版本`>=`2.6
+!> `io_uring`只能处理`file_get_contents`，`file_put_contents`，`fopen`，`fclose`，`fread`，`fwrite`，`mkdir`，`unlink`，`fsync`，`fdatasync`，`rename`，`fstat`，`lstat`，`filesize`函数。
