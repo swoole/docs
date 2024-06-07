@@ -306,7 +306,7 @@ Co\run(function () {
     );
     $process = proc_open('php', $descriptorspec, $pipes);
     if (is_resource($process)) {
-        fwrite($pipes[0], '<?php echo "I am process\n" ?>');
+        fwrite($pipes[0], 'I am process');
         fclose($pipes[0]);
 
         while (true) {

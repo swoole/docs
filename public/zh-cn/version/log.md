@@ -30,7 +30,12 @@ php --ri swoole
 ```
 
 ## v6.0.0
+
+### 新特性
 - 增加了多线程模式的支持
+- 增加`io_uring`文件异步特性
+
+### 移除
 - 移除了 `Coroutine\Redis`、`Coroutine\MySQL`、`Coroutine\PostgreSQL` 客户端，已被 `ext-redis`、`mysqli`、`pdo_mysql`、`pdo_pgsql` 取代
 
 ## v5.1.0
@@ -117,7 +122,7 @@ php --ri swoole
 - 修复了在添加列之前使用`Table::getMemorySize()`引起崩溃的问题
 - 修改了`Http\Response::setCookie()`方法的过期参数名为`expires`
 
-## V5.0.0
+## v5.0.0
 
 ### 新特性
 - 添加了`Server`的`max_concurrency`选项

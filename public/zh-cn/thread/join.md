@@ -1,66 +1,82 @@
 # 线程管理
 
-## Thread::join()
+## 属性
 
-等待子线程退出。若子线程仍在运行，`join()` 会阻塞。
+### $id
 
-```php
-$thread = Thread::exec(__FILE__, $i);
-$thread->join();
-```
-
-## Thread::joinable()
-
-检查子线程是否已退出。
-
-### 返回值
-- `true` 表示子线程已退出，这时调用 `join()` 不会引起阻塞
-- `false` 表示未退出
-
-```php
-$thread = Thread::exec(__FILE__, $i);
-var_dump($thread->joinable());
-```
-
-## Thread::detach()
-
-使子线程脱离父线程的掌控，不再需要 `join()` 等待线程退出，回收资源。
-
-```php
-$thread = Thread::exec(__FILE__, $i);
-$thread->detach();
-unset($thread);
-```
-
-## Thread::getId()
-
-静态方法，获取当前线程的 `ID`，在子线程中调用
-
-```php
-var_dump(Thread::getId());
-```
-
-## Thread::getId()
-
-静态方法，获取当前线程的 `ID`，在子线程中调用
-
-```php
-var_dump(Thread::getId());
-```
-
-## Thread::getArguments()
-
-静态方法，获取当前线程的参数，在子线程中调用，父线程在 `Thread::exec()` 时传入。
-
-```php
-var_dump(Thread::getArguments());
-```
-
-## Thread::$id
-
-通过此对象属性获取子线程的 `ID`
+通过此对象属性获取子线程的 `ID`，该属性是一个`int`类型的。
 
 ```php
 $thread = Thread::exec(__FILE__, $i);
 var_dump($thread->id);
+```
+
+## 方法
+
+### join()
+
+等待子线程退出。若子线程仍在运行，`join()` 会阻塞。
+
+```php
+Swoole\Thread->join(): bool
+```
+
+```php
+$thread = Swoole\Thread::exec(__FILE__, 1);
+$thread->join();
+```
+
+### joinable()
+
+检查子线程是否已退出。
+
+```php
+Swoole\Thread->joinable(): bool
+```
+
+#### 返回值
+- `true` 表示子线程已退出，这时调用 `join()` 不会引起阻塞
+- `false` 表示未退出
+
+```php
+$thread = Swoole\Thread::exec(__FILE__, $i);
+var_dump($thread->joinable());
+```
+
+### detach()
+
+使子线程脱离父线程的掌控，不再需要 `join()` 等待线程退出，回收资源。
+
+```php
+Swoole\Thread->detach(): bool
+```
+
+```php
+$thread = Swoole\Thread::exec(__FILE__, $i);
+$thread->detach();
+unset($thread);
+```
+
+### getId()
+
+静态方法，获取当前线程的 `ID`，在子线程中调用
+
+```php
+Swoole\Thread->getId(): int
+```
+
+```php
+var_dump(Swoole\Thread::getId());
+```
+
+### getArguments()
+
+静态方法，获取由父进程使用`Thread::exec()` 时传递过来的共享数据，在子线程中调用。
+
+```php
+Swoole\Thread::getArguments(): array
+```
+
+```php
+var_dump(Swoole\Thread::getArguments());
 ```

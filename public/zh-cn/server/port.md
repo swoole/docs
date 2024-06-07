@@ -2,7 +2,7 @@
 
 `Swoole\Server`可以监听多个端口，每个端口都可以设置不同的协议处理方式，例如80端口处理HTTP协议，9507端口处理TCP协议。`SSL/TLS`传输加密也可以只对特定的端口启用。
 
-!> 例如主服务器是WebSocket或HTTP协议，新监听的TCP端口（[listen](/server/methods?id=listen)的返回值，即`Swoole\Server\Port`对象，以下简称port）默认会继承主Server的协议设置，必须单独调用`port`对象的`set`方法和`on`方法设置新的协议才会启用新协议。 
+!> 例如主服务器是WebSocket或HTTP协议，新监听的TCP端口（[listen](/server/methods?id=listen)的返回值，即[Swoole\Server\Port](server/server_port.md)对象，以下简称port）默认会继承主Server的协议设置，必须单独调用`port`对象的`set`方法和`on`方法设置新的协议才会启用新协议。 
 
 ## 监听新端口
 
@@ -53,8 +53,6 @@ $port2->on('packet', function ($serv, $data, $addr) {
     var_dump($data, $addr);
 });
 ```
-
-!> 可以点击[这里](/server/server_port)查看`Swoole\Server\Port`的详细说明。 
 
 ## Http/WebSocket
 

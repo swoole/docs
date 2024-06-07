@@ -495,10 +495,8 @@ $server->start();
         return $ip_long % $worker_num;
     }
 ```
-
-    * **BASE模式**
-
-      * `dispatch_mode`配置在 [SWOOLE_BASE](/learn?id=swoole_base) 模式是无效的，因为`BASE`不存在投递任务，当收到客户端发来的数据后会立即在当前线程/进程回调[onReceive](/server/events?id=onreceive)，不需要投递`Worker`进程。
+  * **Base模式**
+    * `dispatch_mode`配置在 [SWOOLE_BASE](/learn?id=swoole_base) 模式是无效的，因为`BASE`不存在投递任务，当收到客户端发来的数据后会立即在当前线程/进程回调[onReceive](/server/events?id=onreceive)，不需要投递`Worker`进程。
 
   * **注意**
 
@@ -1730,3 +1728,33 @@ $server->set([
 ```
 
 !> Swoole版本 >= `v4.8.0` 可用
+
+### bootstrap
+
+?> **多线程模式下的程序入口文件，默认是当前执行的脚本文件名。**
+
+!> Swoole版本 >= `v6.0` ， `PHP`为`ZTS`模式，编译`Swoole`时开启了`--enable-swoole-thread`可用
+
+```php
+$server->set([
+    'bootstrap' => __FILE__,
+]);
+```
+
+### init_arguments
+
+?> **设置多线程的数据共享数据，该配置需要一个回调函数，服务器启动时会自动执行该函数**
+
+!> Swoole内置了许多线程安全容器，[并发Map](/thread/map)，[并发List](/thread/arraylist)，[并发队列](/thread/queue)，不要在函数中返回不安全的变量。
+
+!> Swoole版本 >= `v6.0` ， `PHP`为`ZTS`模式，编译`Swoole`时开启了`--enable-swoole-thread`可用
+
+```php
+$server->set([
+    'init_arguments' => function() { return new Swoole\Thread\Map(); },
+]);
+
+$server->on('request', function($request, $response) {
+    $map = Swoole\Thread::getArguments();
+});
+```

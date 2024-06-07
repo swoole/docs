@@ -2,7 +2,9 @@
 
 协程`PostgreSQL`客户端。
 
-在 Swoole 5.0 版本全新重构，与旧版本用法完全不同。如果你正在使用旧版本，请查看[旧版文档](/coroutine_client/postgresql-old.md)。
+!> 在 Swoole 5.0 版本全新重构，与旧版本用法完全不同。如果你正在使用旧版本，请查看[旧版文档](/coroutine_client/postgresql-old.md)。
+
+!> 在 Swoole 6.0 之后，协程`PostgreSQL`客户端已被移除，请使用[协程化pdo_pgsql](/runtime?id=swoole_hook_pdo_pgsql)代替
 
 ## 编译安装
 

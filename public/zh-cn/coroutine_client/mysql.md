@@ -2,9 +2,8 @@
 
 协程MySQL客户端。
 
-!> 本客户端不再推荐使用，推荐使用 Swoole\Runtime::enableCoroutine + PDO或Mysqli 方式，即[一键协程化](/runtime)原生 PHP 的 MySQL 客户端。
-
-!> 请勿同时使用`Swoole1.x`时代的异步回调写法和本协程MySQL客户端。
+!> 本客户端不再推荐使用，推荐使用 `Swoole\Runtime::enableCoroutine` + `pdo_mysql`或 `mysqli` 方式，即[一键协程化](/runtime)原生 `MySQL` 客户端  
+!> `Swoole 6.0`之后，该协程 `MySQL` 客户端已被移除
 
 ## 使用示例
 

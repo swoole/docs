@@ -2,6 +2,8 @@
 
 !> 本客户端不再推荐使用，推荐使用`Swoole\Runtime::enableCoroutine + phpredis` 或 `predis` 的方式，即[一键协程化](/runtime)原生`PHP`的`redis`客户端使用。
 
+!> `Swoole 6.0` 之后，该协程Redis客户端已被移除。
+
 ## 使用示例
 
 ```php
