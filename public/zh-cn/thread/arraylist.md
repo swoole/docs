@@ -37,6 +37,29 @@ if (empty($args)) {
 
 ## 方法
 
+### incr()
+
+使 `ArrayList` 中的数据安全地自增
+
+```php
+function ArrayList::incr(int $index, $value = 1) : int | float
+```
+
+- 支持浮点型或整型，若对其他类型进行自增操作，将会自动转为整型，初始化为 `0`，再进行自增操作
+- `$index` 索引数字，必须是有效的索引地址，否则会抛出异常
+- `$value` 自增的值，如果不传递则默认为 `1`
+- 返回自增后的值
+
+### decr()
+
+使 `ArrayList` 中的数据安全地自减
+
+```php
+function ArrayList::decr(int $index, $value = -1) : int | float
+```
+
+参考 `ArrayList::incr()`
+
 ### count()
 获取元素数量
 
@@ -50,28 +73,3 @@ Swoole\Thread\ArrayList()->count(): int
 ```php
 Swoole\Thread\ArrayList()->clean(): void
 ```
-
-### ArrayList::incr()
-
-使 `ArrayList` 中的数据安全地自增
-
-```php
-function ArrayList::incr(int $index, $value = 1) : $value;
-```
-
-- 支持浮点型或整型，若对其他类型进行自增操作，将会自动转为整型，初始化为 `0`，再进行自增操作
-- `$index` 索引数字，必须是有效的索引地址，否则会抛出异常
-- `$value` 自增的值，如果不传递则默认为 `1`
-- 返回自增后的值
-
-```php
-
-### ArrayList::decr()
-
-使 `ArrayList` 中的数据安全地自减
-
-```php
-function ArrayList::decr(int $index, $value = -1) : $value;
-```
-
-参考 `ArrayList::incr()`
