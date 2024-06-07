@@ -163,6 +163,23 @@ $http->set(['websocket_mask' => false]);
 $http->set(['websocket_compression' => true]);
 ```
 
+##### write_func
+> 需要`v5.1.0`或更高版本
+
+设置`write_func`回调函数，类似于 `CURL` 的 `WRITE_FUNCTION` 选项，可以用于处理流式响应内容，
+例如 `OpenAI ChatGPT` 的 `Event Stream` 输出内容。
+
+> 设置 `write_func` 之后，将无法使用 `getContent()` 方法获取响应内容，并且 `$client->body` 也将为空  
+> 在 `write_func` 回调函数中，可以使用 `$client->close()` 停止接收响应内容，并关闭连接
+
+```php
+$cli = new Swoole\Coroutine\Http\Client('127.0.0.1', 80);
+$cli->set(['write_func' => function ($client, $data) {
+    var_dump($data);
+}]);
+$cli->get('/');
+```
+
 ### setMethod()
 
 设置请求方法。仅在当前请求有效，发送请求后会立刻清除method设置。
