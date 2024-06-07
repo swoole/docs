@@ -10,7 +10,7 @@
 - 必须在线程创建前将 `Map`、`ArrayList`、`Queue` 对象作为线程参数传递给子线程
 
 ## 使用方法
-`Swoole\Thread\AraryList` 实现了 `ArrayAccess` 和 `Countable`接口，可以直接作为数组操作。
+`Swoole\Thread\ArrayList` 实现了 `ArrayAccess` 和 `Countable`接口，可以直接作为数组操作。
 
 ## 注意事项
 - `ArrayList` 只能追加元素，不能随机删除或赋值
@@ -19,11 +19,11 @@
 
 ```php
 use Swoole\Thread;
-use Swoole\Thread\AraryList;
+use Swoole\Thread\ArrayList;
 
 $args = Thread::getArguments();
 if (empty($args)) {
-    $list = new AraryList;
+    $list = new ArrayList;
     $thread = Thread::exec(__FILE__, $i, $list);
     sleep(1);
     $list[] = unique();
@@ -41,12 +41,37 @@ if (empty($args)) {
 获取元素数量
 
 ```php
-Swoole\Thread\AraryList()->count(): int
+Swoole\Thread\ArrayList()->count(): int
 ```
 
 ### clean()
 清空所有元素
 
 ```php
-Swoole\Thread\AraryList()->clean(): void
+Swoole\Thread\ArrayList()->clean(): void
 ```
+
+### ArrayList::incr()
+
+使 `ArrayList` 中的数据安全地自增
+
+```php
+function ArrayList::incr(int $index, $value = 1) : $value;
+```
+
+- 支持浮点型或整型，若对其他类型进行自增操作，将会自动转为整型，初始化为 `0`，再进行自增操作
+- `$index` 索引数字，必须是有效的索引地址，否则会抛出异常
+- `$value` 自增的值，如果不传递则默认为 `1`
+- 返回自增后的值
+
+```php
+
+### ArrayList::decr()
+
+使 `ArrayList` 中的数据安全地自减
+
+```php
+function ArrayList::decr(int $index, $value = -1) : $value;
+```
+
+参考 `ArrayList::incr()`

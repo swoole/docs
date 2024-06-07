@@ -34,6 +34,62 @@ if (empty($args)) {
 
 ## 方法
 
+
+### Map::incr()
+
+使 `Map` 中的数据安全地自增
+
+```php
+function Map::incr($key, $value = 1) : $value;
+```
+
+- 支持浮点型或整型，若对其他类型进行自增操作，将会自动转为整型，初始化为 `0`，再进行自增操作
+- `$key` 键名，如果不存在则自动创建，并初始化为 `0`
+- `$value` 自增的值，如果不传递则默认为 `1`
+- 返回自增后的值
+
+```php
+
+### Map::decr()
+
+使 `Map` 中的数据安全地自减
+
+```php
+function Map::decr($key, $value = -1) : $value;
+```
+
+参考 `Map::incr()`
+
+### Map::add()
+
+向 `Map` 中写入数据
+
+```php
+function Map::add($key, $value) : bool;
+```
+
+
+### Map::add()
+
+向 `Map` 中写入数据
+
+```php
+function Map::add($key, $value) : bool;
+```
+
+如果 `$key` 已存在，返回 `false`，否则返回 `true` 表示添加成功
+
+### Map::update()
+
+更新 `Map` 中的数据
+
+```php
+function Map::update($key, $value) : bool;
+```
+
+如果 `$key` 不存在，返回 `false`，否则返回 `true` 表示更新成功
+
+
 ### count()
 获取元素数量
 
