@@ -60,6 +60,9 @@ Thread::exec(string $script_file, array ...$argv);
 线程对象析构时会自动执行 `join()` 等待子线程退出。这可能会引起阻塞，可使用 `$thread->detach()` 方法
 使子线程脱离父线程，独立运行。
 
+### 异常
+- `Swoole\Exception`：线程创建失败抛出此异常，请检查错误信息获取失败原因
+
 
 ### 实例
 ```php
