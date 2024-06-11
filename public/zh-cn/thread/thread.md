@@ -56,7 +56,7 @@ new Swoole\Thread(string $script_file, array ...$argv);
 
 ### 参数
 - `$script_file`: 线程启动后要执行的脚本
-- `...$argv`：传递线程参数，必须是可序列化的变量，无法传递 `resource` 资源句柄，在子线程中可使用 `Swoole\Thread::getArguments()` 获取
+- `...$argv`：传递线程参数，可传递的变量类型参考 [线程参数传递](thread/transfer.md)，在子线程中可使用 `Swoole\Thread::getArguments()` 获取
 
 ### 返回值
 返回 `Thread` 对象，在父线程中可对子线程进行 `join()` 等操作。

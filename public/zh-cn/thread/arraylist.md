@@ -5,7 +5,7 @@
 ## 特性
 - `Map`、`ArrayList`、`Queue` 会自动分配内存，不需要像 `Table` 那样固定分配
 - 底层会自动加锁，是线程安全的
-- 仅支持 `null/bool/int/float/string` 类型，其他类型将在写入时自动序列化，读取时反序列化
+- 可传递的变量类型参考 [线程参数传递](thread/transfer.md)
 - 不支持迭代器，在迭代器中删除元素会出现内存错误
 - 必须在线程创建前将 `Map`、`ArrayList`、`Queue` 对象作为线程参数传递给子线程
 
