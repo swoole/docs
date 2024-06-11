@@ -65,6 +65,8 @@
 * 线程管理 (Thread)
     * [线程创建](thread/thread.md)
     * [线程管理](thread/join.md)
+    * [线程锁](thread/lock.md)
+    * [线程原子计数](thread/atomic.md)
     * [并发Map](thread/map.md)
     * [并发List](thread/arraylist.md)
     * [并发Queue](thread/queue.md)
