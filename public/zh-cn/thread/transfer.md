@@ -14,7 +14,7 @@
 这意味着 `PHP Stream`/`Swoole\Coroutine\Socket` 会存在 `3` 次引用计数，分别是：
 - `PHP Stream`/`Swoole\Coroutine\Socket` 初始创建时所在的线程
 - `ArrayList`、`Queue`、`Map` 容器
-- 读取 ArrayList`、`Queue`、`Map` 容器的子线程
+- 读取 `ArrayList`、`Queue`、`Map` 容器的子线程
 
 当没有任何线程或容器持有此资源，引用计数减为 `0` 时，`PHP Stream`/`Swoole\Coroutine\Socket` 资源才会被真正地释放
 

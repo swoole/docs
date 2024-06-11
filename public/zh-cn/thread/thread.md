@@ -67,6 +67,8 @@ new Swoole\Thread(string $script_file, array ...$argv);
 ### 异常
 - `Swoole\Exception`：线程创建失败抛出此异常，请检查错误信息获取失败原因
 
+### 退出回调
+可使用 `register_shutdown_function()` 注册回调函数，当线程退出时会自动调用，执行清理工作。
 
 ### 实例
 ```php
