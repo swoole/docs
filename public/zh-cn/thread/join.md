@@ -22,7 +22,7 @@ Swoole\Thread->join(): bool
 ```
 
 ```php
-$thread = Swoole\new Swoole\Thread(__FILE__, 1);
+$thread = new Swoole\Thread(__FILE__, 1);
 $thread->join();
 ```
 
@@ -39,7 +39,7 @@ Swoole\Thread->joinable(): bool
 - `false` 表示未退出
 
 ```php
-$thread = Swoole\new Swoole\Thread(__FILE__, $i);
+$thread = new Swoole\Thread(__FILE__, $i);
 var_dump($thread->joinable());
 ```
 
@@ -52,7 +52,7 @@ Swoole\Thread->detach(): bool
 ```
 
 ```php
-$thread = Swoole\new Swoole\Thread(__FILE__, $i);
+$thread = new Swoole\Thread(__FILE__, $i);
 $thread->detach();
 unset($thread);
 ```

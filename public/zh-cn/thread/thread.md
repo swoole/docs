@@ -78,7 +78,7 @@ $c = 4;
 if (empty($args)) {
     # 父线程
     for ($i = 0; $i < $c; $i++) {
-        $threads[] = new Swoole\Thread(__FILE__, $i);
+        $threads[] = new Thread(__FILE__, $i);
     }
     for ($i = 0; $i < $c; $i++) {
         $threads[$i]->join();

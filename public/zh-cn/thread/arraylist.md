@@ -24,7 +24,7 @@ use Swoole\Thread\ArrayList;
 $args = Thread::getArguments();
 if (empty($args)) {
     $list = new ArrayList;
-    $thread = new Swoole\Thread(__FILE__, $i, $list);
+    $thread = new Thread(__FILE__, $i, $list);
     sleep(1);
     $list[] = unique();
     $thread->join();
