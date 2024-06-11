@@ -80,3 +80,10 @@ Swoole\Thread::getArguments(): array
 ```php
 var_dump(Swoole\Thread::getArguments());
 ```
+
+### getTsrmInfo()
+静态方法，获取当前线程的 `TSRM` 信息。返回一个数组，包含以下信息：
+
+- `is_main_thread`：是否为主线程
+- `api_name`：线程 `API` 名称，例如 `POSIX Threads`
+- `is_shutdown`：线程是否已关闭
