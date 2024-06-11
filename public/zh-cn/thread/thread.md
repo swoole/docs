@@ -7,8 +7,12 @@
 - `PHP` 必须为 `ZTS` 模式，编译 `PHP` 时需要加入 `--enable-zts`
 - 编译 `Swoole` 时需要增加 `--enable-swoole-thread` 编译选项
 
-`--enable-swoole-thread` 编译参数与非线程模式互斥的，包括 `Server`、`Atomic`、`Lock` 模块，在开启 `thread` 特性
-后将无法用于多进程模式。
+## 兼容性问题
+
+`--enable-swoole-thread` 编译参数开启后，部分特性在子线程中无法使用：
+
+- `Runtime::enableCoroutine()/setHookFlags()`：无法在子线程中开启或关闭协程 `Hook`
+- `swoole_async_set()` 无法在子线程中被调用
 
 ## 查看信息
 
@@ -95,10 +99,11 @@ if (empty($args)) {
 
 ## Server
 - 所有工作进程将使用线程来运行，包括 `Worker`、`Task Worker`、`User Process`
+- 新增 `SWOOLE_THREAD` 运行模式，启用后将使用线程代替进程运行
 - 增加了 `bootstrap` 和 `init_arguments` 两项配置，用于设置工作线程的入口脚本文件、线程初始化参数
 
 ```php
-$http = new Swoole\Http\Server("0.0.0.0", 9503);
+$http = new Swoole\Http\Server("0.0.0.0", 9503, SWOOLE_THREAD);
 $http->set([
     'worker_num' => 2,
     'task_worker_num' => 3,
