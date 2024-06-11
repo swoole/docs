@@ -7,7 +7,7 @@
 通过此对象属性获取子线程的 `ID`，该属性是一个`int`类型的。
 
 ```php
-$thread = Thread::exec(__FILE__, $i);
+$thread = new Swoole\Thread(__FILE__, $i);
 var_dump($thread->id);
 ```
 
@@ -22,7 +22,7 @@ Swoole\Thread->join(): bool
 ```
 
 ```php
-$thread = Swoole\Thread::exec(__FILE__, 1);
+$thread = Swoole\new Swoole\Thread(__FILE__, 1);
 $thread->join();
 ```
 
@@ -39,7 +39,7 @@ Swoole\Thread->joinable(): bool
 - `false` 表示未退出
 
 ```php
-$thread = Swoole\Thread::exec(__FILE__, $i);
+$thread = Swoole\new Swoole\Thread(__FILE__, $i);
 var_dump($thread->joinable());
 ```
 
@@ -52,7 +52,7 @@ Swoole\Thread->detach(): bool
 ```
 
 ```php
-$thread = Swoole\Thread::exec(__FILE__, $i);
+$thread = Swoole\new Swoole\Thread(__FILE__, $i);
 $thread->detach();
 unset($thread);
 ```
@@ -71,7 +71,7 @@ var_dump(Swoole\Thread::getId());
 
 ### getArguments()
 
-静态方法，获取由父进程使用`Thread::exec()` 时传递过来的共享数据，在子线程中调用。
+静态方法，获取由父进程使用`new Swoole\Thread()` 时传递过来的共享数据，在子线程中调用。
 
 ```php
 Swoole\Thread::getArguments(): array

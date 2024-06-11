@@ -41,12 +41,12 @@ thread => enabled
 ## 创建线程
 
 ```php
-Thread::exec(string $script_file, array ...$argv);
+new Swoole\Thread(string $script_file, array ...$argv);
 ```
 
-请注意创建的子线程不会从父线程继承任何资源，因此在子线程中下列内容已被清空，需要重新创建或设置：
+`Swoole` 线程与 `Node.js` `Worker Thread` 是相似的，在子线程中会创建一个全新的 `ZendVM` 环境。 子线程不会从父线程继承任何资源，因此在子线程中下列内容已被清空，需要重新创建或设置：
 - 已加载的 `PHP` 文件，需要重新 `include/require` 加载
-- `autoload`
+- `autoload` 函数，需要重新注册
 - 类、函数、常量，将被清空，需重新加载 `PHP` 文件创建
 - 全局变量，例如 `$GLOBALS`、`$_GET/$_POST` 等，将被清空
 - 类的静态属性、函数的静态变量，将重置为初始值
@@ -78,7 +78,7 @@ $c = 4;
 if (empty($args)) {
     # 父线程
     for ($i = 0; $i < $c; $i++) {
-        $threads[] = Thread::exec(__FILE__, $i);
+        $threads[] = new Swoole\Thread(__FILE__, $i);
     }
     for ($i = 0; $i < $c; $i++) {
         $threads[$i]->join();

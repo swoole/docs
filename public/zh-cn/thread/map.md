@@ -21,7 +21,7 @@ use Swoole\Thread\Map;
 $args = Thread::getArguments();
 if (empty($args)) {
     $map = new Map;
-    $thread = Thread::exec(__FILE__, $i, $map);
+    $thread = new Swoole\Thread(__FILE__, $i, $map);
     sleep(1);
     $map['test'] = unique();
     $thread->join();
