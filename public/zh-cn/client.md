@@ -60,7 +60,7 @@ Swoole\Client::__construct(int $sock_type, int $is_sync = SWOOLE_SOCK_SYNC, stri
 $cli = new Swoole\Client(SWOOLE_SOCK_TCP | SWOOLE_KEEP);
 ```
 
-加入 [SWOOLE_KEEP](/client?id=swoole_keep) 标志后，创建的`TCP`连接在PHP请求结束或者调用`$cli->close()`时并不会关闭。下一次执行`connect`调用时会复用上一次创建的连接。长连接保存的方式默认是以`ServerHost:ServerPort`为`key`的。可以再第`3`个参数内指定`key`。
+加入 [SWOOLE_KEEP](/client?id=swoole_keep) 标志后，创建的`TCP`连接在PHP请求结束或者调用`$cli->close()`时并不会关闭。下一次执行`connect`调用时会复用上一次创建的连接。长连接保存的方式默认是以`ServerHost:ServerPort`为`key`的。可以在第`3`个参数内指定`key`。
 
 `Client`对象析构会自动调用[close](/client?id=close)方法关闭`socket`
 
