@@ -4,15 +4,15 @@
 
 ## 建议使用的PHP版本
 
-* 7.4
 * 8.0
 * 8.1
 * 8.2
+* 8.3
 
 ## 建议使用的Swoole版本
-`Swoole5.x`和`Swoole4.8.x`
+`Swoole6.x`和`Swoole5.x`
 
-两者的差别在于：`v5.x` 是主动迭代分支，`v4.8.x` 是**非**主动迭代分支，仅修复`BUG`
+两者的差别在于：`v6.x` 是主动迭代分支，`v5.x` 是**非**主动迭代分支，仅修复`BUG`
 
 !> `v4.x`以上版本可通过设置[enable_coroutine](/server/setting?id=enable_coroutine)关闭协程特性，使其变为非协程版本
 
