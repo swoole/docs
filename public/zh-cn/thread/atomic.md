@@ -1,5 +1,5 @@
 # 线程原子计数
-专门用于线程同步的原子计数，其接口与 `Swoole/Atomic` 、`Swoole/Atomic/Long` 完全一致，
+专门用于线程同步的原子计数，除了命名空间不一样，其内置接口，使用方法和注意事项与 `Swoole/Atomic` 、`Swoole/Atomic/Long` 完全一致，
 
 - `Swoole/Thread/Atomic`：`32` 位原子计数
 - `Swoole/Thread/Atomic/Long`：`64` 位原子计数
@@ -7,7 +7,7 @@
 `Swoole/Thread/Atomic` 和 `Swoole/Thread/Atomic/Long` 可以安全地动态创建和销毁，
 并且可通过 `ArrayList`、`Map`、`Queue` 或者作为线程参数传递给其他线程。
 
-## 构造对象
+## __construct
 
 ```php
 function Swoole\Thread\Atomic::__construct(int $value = 0)

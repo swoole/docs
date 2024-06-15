@@ -38,6 +38,58 @@ php --ri swoole
 ### 移除
 - 移除了 `Coroutine\Redis`、`Coroutine\MySQL`、`Coroutine\PostgreSQL` 客户端，已被 `ext-redis`、`mysqli`、`pdo_mysql`、`pdo_pgsql` 取代
 
+## v5.1.3
+### Bug修复：
+- 修复无法通过`pecl`安装的问题。
+- 修复`Swoole\Coroutine\FastCGI\Client`客户端无法设置keepalive。
+- 修复请求参数超过`max_input_vars`时会抛出错误导致进程不断重启的问题。
+- 修复在协程中使用`Swoole\Event::wait()`导致的未知问题。
+- 修复`proc_open`在协程化的时候不支持pty的问题。
+- 修复`pdo_sqlite`在PHP8.3会出现段错误的问题。
+- 修复编译`Swoole`时的无用警告。
+- 修复如果`STDOUT/STDERR`已经关闭时，底层调用zend_fetch_resource2_ex会抛出错误。
+- 修复无效的`set_tcp_nodelay`配置。
+- 修复文件上传的时候偶尔会触发不可达的分支问题。
+- 修复设置了`dispatch_func`，会导致php底层抛出错误的问题。
+- 修复AC_PROG_CC_C99在autoconf >= 2.70版本中已过时。
+
+### 内核优化：
+- 移除对`socket structs`的无用检查。
+- 升级swoole Library。 @deminy
+- `Swoole\Http\Response`增加对451状态码的支持。
+- 同步PHP不同版本的`文件`操作代码。
+- 同步PHP不同版本的`pdo`操作代码。
+- 优化`Socket::ssl_recv()`的代码。
+- 优化了config.m4，一些配置可以通过`pkg-config`设置依赖库位置。 
+- 优化`解析请求头`的时候使用动态数组的问题。 
+
+## v5.1.2
+
+### Bug修复
+- 支持嵌入 sapi。
+- 修复 PHP 8.3 中 ZEND_CHECK_STACK_LIMIT 的兼容性问题。
+- 修复范围请求返回文件全部内容时没有 Content-Range 响应头的错误。
+- 修复截断的 cookie。
+- 修复了 PHP 8.3 上的 native-curl 崩溃问题。
+- 修复了 Server::Manager::wait() 后的无效 errno 错误。
+- 修复了 HTTP2 的拼写错误。
+  
+### 优化
+- 优化 HTTP 服务器性能。
+- 添加 CLOSE_SERVICE_RESTART、CLOSE_TRY_AGAIN_LATER、CLOSE_BAD_GATEWAY 作为 websocket 的有效关闭原因
+
+## v5.5.1
+### Bug 修复
+- 修复`http协程客户端`内存泄漏问题。
+- 修复`pdo_odbc`无法协程化的问题。
+- 修复`socket_import_stream()`执行错误的问题。
+- 修复`Context::parse_multipart_data()`无法处理空请求体的问题。
+- 修复`PostgreSQL协程客户端`参数不起作用的问题。
+- 修复`curl`在析构时会崩溃的bug。
+- 修复`Swoole5.x`与新版的`xdebug`不兼容问题。
+- 修复类`自动加载`的过程中发生协程切换导致提示`类不存在`的问题。
+- 修复无法在`OpenBSD`编译`swoole`的问题。
+
 ## v5.1.0
 
 ### 新特性

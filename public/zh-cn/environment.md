@@ -158,7 +158,7 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 #### --enable-swoole-curl
 
-启用对[SWOOLE_HOOK_NATIVE_CURL](/runtime?id=swoole_hook_native_curl)的支持
+启用对[SWOOLE_HOOK_NATIVE_CURL](/runtime?id=swoole_hook_native_curl)的支持，开启这个需要确保`php`和`Swoole`使用相同的`libcurl`的共享库和头文件，否则会出现一些无法预知的问题。
 
 > `v4.6.0`版本可用。如果编译报错`curl/curl.h: No such file or directory`，请查看[安装问题](/question/install?id=libcurl)
 
