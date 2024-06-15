@@ -55,7 +55,7 @@ php --ri swoole
 
 ### 内核优化：
 - 移除对`socket structs`的无用检查。
-- 升级swoole Library。 @deminy
+- 升级swoole Library。
 - `Swoole\Http\Response`增加对451状态码的支持。
 - 同步PHP不同版本的`文件`操作代码。
 - 同步PHP不同版本的`pdo`操作代码。
