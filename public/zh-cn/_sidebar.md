@@ -62,22 +62,22 @@
 * 定时器 (Timer)
     * [毫秒定时器](timer.md)
 
-* 线程管理 (Thread)
-    * [线程创建](thread/thread.md)
-    * [线程管理](thread/join.md)
-    * [线程锁](thread/lock.md)
-    * [线程原子计数](thread/atomic.md)
+* [线程管理 (Thread)](thread/thread.md)
+    * [方法与属性](thread/info)
     * [并发Map](thread/map.md)
     * [并发List](thread/arraylist.md)
     * [并发Queue](thread/queue.md)
+    * [数据类型](thread/transfer.md)
 
 * 进程管理 (Process)
     * [创建进程](process/process.md)
     * [进程池(Process\Pool)](process/process_pool.md)
     * [进程管理器(Process\Manager)](process/process_manager.md)
     * [高性能共享内存(Table)](memory/table.md)
-    * [进程间无锁计数器(Atomic)](memory/atomic.md)
-    * [进程间锁(Lock)](memory/lock.md)
+
+* [进程/线程间无锁计数器(Atomic)](memory/atomic.md)
+
+* [进程/线程间锁(Lock)](memory/lock.md)
 
 * 事件管理
     * [Event](event.md)

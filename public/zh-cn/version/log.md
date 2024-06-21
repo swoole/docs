@@ -4,15 +4,15 @@
 
 ## 建议使用的PHP版本
 
-* 7.4
 * 8.0
 * 8.1
 * 8.2
+* 8.3
 
 ## 建议使用的Swoole版本
-`Swoole5.x`和`Swoole4.8.x`
+`Swoole6.x`和`Swoole5.x`
 
-两者的差别在于：`v5.x` 是主动迭代分支，`v4.8.x` 是**非**主动迭代分支，仅修复`BUG`
+两者的差别在于：`v6.x` 是主动迭代分支，`v5.x` 是**非**主动迭代分支，仅修复`BUG`
 
 !> `v4.x`以上版本可通过设置[enable_coroutine](/server/setting?id=enable_coroutine)关闭协程特性，使其变为非协程版本
 
@@ -32,11 +32,100 @@ php --ri swoole
 ## v6.0.0
 
 ### 新特性
-- 增加了多线程模式的支持
-- 增加`io_uring`文件异步特性
+- `Swoole`支持多线程模式，当`php`是`zts`模式，编译`Swoole`时开启`--enable-swoole-thread`时，就能使用多线程模式。
+- 新增线程管理类`Swoole\Thread`。 @matyhtf
+- 新增线程锁`Swoole\Thread\Lock`。 @matyhtf
+- 新增线程原子计数`Swoole\Thread\Atomic`，`Swoole\Thread\Atomic\Long`。 @matyhtf
+- 新增安全并发容器`Swoole\Thread\Map`，`Swoole\Thread\ArrayList`，`Swoole\Thread\Queue`。 @matyhtf
+- 文件异步操作支持`iouring`作为底层引擎，安装了`liburing`和编译`Swoole`时开启`--enable-iouring`，`file_get_contents`，`file_put_contents`，`fopen`，`fclose`，`fread`，`fwrite`，`mkdir`，`unlink`，`fsync`，`fdatasync`，`rename`，`fstat`，`lstat`，`filesize`这些函数的异步操作将会由`iouring`实现。 @matyhtf @NathanFreeman
+- 升级`Boost Context`版本到1.84。现在，龙芯CPU也能够使用协程了。 @NathanFreeman
 
-### 移除
-- 移除了 `Coroutine\Redis`、`Coroutine\MySQL`、`Coroutine\PostgreSQL` 客户端，已被 `ext-redis`、`mysqli`、`pdo_mysql`、`pdo_pgsql` 取代
+### Bug修复
+- 修复无法通过`pecl`安装的问题。 @remicollet
+- 修复`Swoole\Coroutine\FastCGI\Client`客户端无法设置keepalive。 @NathanFreeman
+- 修复请求参数超过`max_input_vars`时会抛出错误导致进程不断重启的问题。 @NathanFreeman
+- 修复在协程中使用`Swoole\Event::wait()`导致的未知问题。 @matyhtf
+- 修复`proc_open`在协程化的时候不支持pty的问题。 @matyhtf
+- 修复`pdo_sqlite`在PHP8.3会出现段错误的问题。 @NathanFreeman
+- 修复编译`Swoole`时的无用警告。 @Appla @NathanFreeman
+- 修复如果`STDOUT/STDERR`已经关闭时，底层调用zend_fetch_resource2_ex会抛出错误。 @Appla @matyhtf
+- 修复无效的`set_tcp_nodelay`配置。 @matyhtf
+- 修复文件上传的时候偶尔会触发不可达的分支问题。 @NathanFreeman
+- 修复设置了`dispatch_func`，会导致php底层抛出错误的问题。 @NathanFreeman
+- 修复AC_PROG_CC_C99在autoconf >= 2.70版本中已过时。 @petk
+- 当线程创建失败时，捕获其抛出的异常。 @matyhtf
+- 修复`_tsrm_ls_cache`未定义问题。 @jingjingxyk
+- 修复在`GCC 14`编译会导致致命错误。 @remicollet
+
+### 内核优化
+- 移除对`socket structs`的无用检查。 @petk
+- 升级swoole Library。 @deminy
+- `Swoole\Http\Response`增加对451状态码的支持。 @abnegate
+- 同步PHP不同版本的`文件`操作代码。 @NathanFreeman
+- 同步PHP不同版本的`pdo`操作代码。 @NathanFreeman
+- 优化`Socket::ssl_recv()`的代码。 @matyhtf
+- 优化了config.m4，一些配置可以通过`pkg-config`设置依赖库位置。 @NathanFreeman
+- 优化`解析请求头`的时候使用动态数组的问题 。 @NathanFreeman
+- 优化在多线程模式下，文件描述符`fd`的生命周期问题。 @matyhtf
+- 优化协程一些基本逻辑。 @matyhtf
+
+### 废弃
+- 不再支持`PHP 8.0`。
+- 不再支持`Swoole\Coroutine\MySQL`协程客户端。
+- 不再支持`Swoole\Coroutine\Redis`协程客户端。
+- 不再支持`Swoole\Coroutine\PostgreSQL`协程客户端。
+
+## v5.1.3
+### Bug修复
+- 修复无法通过`pecl`安装的问题。
+- 修复`Swoole\Coroutine\FastCGI\Client`客户端无法设置keepalive。
+- 修复请求参数超过`max_input_vars`时会抛出错误导致进程不断重启的问题。
+- 修复在协程中使用`Swoole\Event::wait()`导致的未知问题。
+- 修复`proc_open`在协程化的时候不支持pty的问题。
+- 修复`pdo_sqlite`在PHP8.3会出现段错误的问题。
+- 修复编译`Swoole`时的无用警告。
+- 修复如果`STDOUT/STDERR`已经关闭时，底层调用zend_fetch_resource2_ex会抛出错误。
+- 修复无效的`set_tcp_nodelay`配置。
+- 修复文件上传的时候偶尔会触发不可达的分支问题。
+- 修复设置了`dispatch_func`，会导致php底层抛出错误的问题。
+- 修复AC_PROG_CC_C99在autoconf >= 2.70版本中已过时。
+
+### 内核优化
+- 移除对`socket structs`的无用检查。
+- 升级swoole Library。
+- `Swoole\Http\Response`增加对451状态码的支持。
+- 同步PHP不同版本的`文件`操作代码。
+- 同步PHP不同版本的`pdo`操作代码。
+- 优化`Socket::ssl_recv()`的代码。
+- 优化了config.m4，一些配置可以通过`pkg-config`设置依赖库位置。
+- 优化`解析请求头`的时候使用动态数组的问题。
+
+## v5.1.2
+
+### Bug修复
+- 支持嵌入 sapi。
+- 修复 PHP 8.3 中 ZEND_CHECK_STACK_LIMIT 的兼容性问题。
+- 修复范围请求返回文件全部内容时没有 Content-Range 响应头的错误。
+- 修复截断的 cookie。
+- 修复了 PHP 8.3 上的 native-curl 崩溃问题。
+- 修复了 Server::Manager::wait() 后的无效 errno 错误。
+- 修复了 HTTP2 的拼写错误。
+
+### 优化
+- 优化 HTTP 服务器性能。
+- 添加 CLOSE_SERVICE_RESTART、CLOSE_TRY_AGAIN_LATER、CLOSE_BAD_GATEWAY 作为 websocket 的有效关闭原因
+
+## v5.5.1
+### Bug 修复
+- 修复`http协程客户端`内存泄漏问题。
+- 修复`pdo_odbc`无法协程化的问题。
+- 修复`socket_import_stream()`执行错误的问题。
+- 修复`Context::parse_multipart_data()`无法处理空请求体的问题。
+- 修复`PostgreSQL协程客户端`参数不起作用的问题。
+- 修复`curl`在析构时会崩溃的bug。
+- 修复`Swoole5.x`与新版的`xdebug`不兼容问题。
+- 修复类`自动加载`的过程中发生协程切换导致提示`类不存在`的问题。
+- 修复无法在`OpenBSD`编译`swoole`的问题。
 
 ## v5.1.0
 

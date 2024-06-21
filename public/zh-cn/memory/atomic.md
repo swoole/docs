@@ -1,4 +1,4 @@
-# 进程间无锁计数器 Atomic
+# 进程/线程间无锁计数器 Atomic
 
 `Atomic`是`Swoole`底层提供的原子计数操作类，可以方便整数的无锁原子增减。
 
@@ -6,6 +6,7 @@
 * 基于`gcc/clang`提供的`CPU`原子指令，无需加锁
 * 在服务器程序中必须在`Server->start`前创建才能在`Worker`进程中使用
 * 默认使用`32`位无符号类型，如需要`64`有符号整型，可使用`Swoole\Atomic\Long`
+* 多线程模式需要使用`Swoole\Thread\Atomic`和`Swoole\Thread\Atomic\Long`，除了命名空间不同，其接口与 `Swoole\Atomic` 、`Swoole\Atomic\Long` 完全一致。
 
 !> 请勿在[onReceive](/server/events?id=onreceive)等回调函数中创建计数器，否则内存会持续增长，造成内存泄漏。
 

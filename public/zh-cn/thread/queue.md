@@ -3,22 +3,21 @@
 创建一个并发的 `Queue` 结构，可作为线程参数传递给子线程。读写时在其他线程是可见的。
 
 ## 特性
-- `Map`、`ArrayList`、`Queue` 会自动分配内存，不需要像 `Table` 那样固定分配
-- 底层会自动加锁，是线程安全的
-- 可传递的变量类型参考 [线程参数传递](thread/transfer.md)
-- 不支持迭代器，在迭代器中删除元素会出现内存错误
-- 必须在线程创建前将 `Map`、`ArrayList`、`Queue` 对象作为线程参数传递给子线程
+- `Swoole\Thread\Queue` 是一个先进先出的数据结构。
 
+- `Map`、`ArrayList`、`Queue` 会自动分配内存，不需要像 `Table` 那样固定分配。
 
-## 使用方法
-`Swoole\Thread\Queue` 是一个先进先出的数据结构，有两个核心操作：
-- `Swoole\Thread\Queue::push($value)` 向队列中写入数据
-- `Swoole\Thread\Queue::pop()` 从队列头部中提取数据
+- 底层会自动加锁，是线程安全的。
 
-## 注意事项
+- 可传递的变量类型参考 [线程参数传递](thread/transfer.md)。
+
+- 不支持迭代器，在迭代器中删除元素会出现内存错误。
+
+- 必须在线程创建前将 `Map`、`ArrayList`、`Queue` 对象作为线程参数传递给子线程。
+
 - `Swoole\Thread\Queue` 只能追加元素，不能随机删除或赋值
 
-## 实例代码
+## 示例
 
 ```php
 use Swoole\Thread;
@@ -60,27 +59,47 @@ if (empty($args)) {
 
 ## 方法列表
 
-### push()
+### __construct()
+安全并发容器 `Queue` 构造函数
 
+```php
+Swoole\Thread\Queue->__construct()
+```
+
+### push()
 向队列中写入数据
 
 ```php
 Swoole\Thread\Queue()->push(mixed $value, int $notify_which = 0): void
 ```
 
-- `$value`：写入的数据内容
-- `$notify`：是否通知等待读取数据的线程，`Swoole\Thread\Queue::NOTIFY_ONE` 唤醒一个线程，`Swoole\Thread\Queue::NOTIFY_ALL` 唤醒所有线程
+  * **参数**
+      * `mixed $value`
+          * 功能：写入的数据内容。
+          * 默认值：无。
+          * 其它值：无。
+  
+      * `int $notify`
+          * 功能：是否通知等待读取数据的线程。
+          * 默认值：0。
+          * 其它值：`Swoole\Thread\Queue::NOTIFY_ONE` 唤醒一个线程，`Swoole\Thread\Queue::NOTIFY_ALL` 唤醒所有线程。
 
 
 ### pop()
-
 从队列头部中提取数据
 
 ```php
-Swoole\Thread\Queue()->pop(float $wait = 0): mixed
+Swoole\Thread\Queue()->pop(float $timeout = 0): mixed
 ```
 
-- `$wait`：默认值0，表示不等待，当队列为空时直接返回 `NULL`， 如果不为0， 表示当队列为空时等待生产者 `push()` 数据，若 `$timeout` 为负数时表示永不超时
+* **参数**
+    * `float $wait`
+        * 功能：超时时间。
+        * 默认值：0，表示不等待。
+        * 其它值：如果不为0， 表示当队列为空时在`$timeout`秒内等待生产者 `push()` 数据，为负数时表示永不超时。
+
+* **返回值**
+    * 返回队列头部数据，当队列为空时直接返回 `NULL`。
 
 ### count()
 获取队列元素数量
@@ -88,6 +107,9 @@ Swoole\Thread\Queue()->pop(float $wait = 0): mixed
 ```php
 Swoole\Thread\Queue()->count(): int
 ```
+
+* **返回值**
+    * 返回队列数量。
 
 ### clean()
 清空所有元素
