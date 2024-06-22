@@ -281,9 +281,9 @@ $server->set(array(
 
 ![process_demo](_images/server/process_demo.png)
 
-## Server的两种运行模式介绍
+## Server的三种运行模式介绍
 
-在`Swoole\Server`构造函数的第三个参数，可以填2个常量值 -- [SWOOLE_BASE](/learn?id=swoole_base)或[SWOOLE_PROCESS](/learn?id=swoole_process)，下面将分别介绍这两个模式的区别以及优缺点
+在`Swoole\Server`构造函数的第三个参数，可以填3个常量值 -- [SWOOLE_BASE](/learn?id=swoole_base)，[SWOOLE_PROCESS](/learn?id=swoole_process)和[SWOOLE_THREAD](/learn?id=swoole_thread)，下面将分别介绍这三个模式的区别以及优缺点
 
 ### SWOOLE_PROCESS
 
@@ -336,6 +336,27 @@ SWOOLE_BASE这种模式就是传统的异步非阻塞`Server`。与`Nginx`和`No
 在 `BASE` 模式下，[Server 方法](/server/methods)除了 [send](/server/methods?id=send) 和 [close](/server/methods?id=close)以外，其他的方法都**不支持**跨进程执行。
 
 !> v4.5.x 版本的 `BASE` 模式下仅`send`方法支持跨进程执行；v4.6.x 版本中只有`send`和`close`方法支持。
+
+### SWOOLE_THREAD
+
+SWOOLE_THREAD是`Swoole 6.0`引入的新运行模式，借助`PHP zts`模式，我们现在可以开启多线程模式的服务。
+
+[worker_num](/server/setting?id=worker_num)参数对于`THREAD`模式仍然有效，只不过会由创建多进程变成创建多线程，会启动多个`Worker`线程。
+
+只会有一个进程，子进程会转化为子线程负责接收客户端的请求。
+
+#### THREAD模式的优点：
+* 进程间通信更加简单，没有额外的IPC通信消耗。
+* 调试程序更加方便，由于只有一个进程，`gdb -p`会更简单。
+* 拥有协程并发 IO 编程的便利，又可以拥有多线程并行执行、共享内存堆栈的优势。
+
+#### THREAD模式的缺点：
+* 发生 Crash 时或调用了 Process::exit() 整个进程都会退出，需要在客户端做好错误重试、断线重连等故障恢复逻辑，另外需要使用 supervisor 和 docker/k8s 在进程退出后自动重启。
+* `ZTS` 和 锁的操作可能会额外的开销，性能可能会比 `NTS` 多进程并发模型差 10% 左右，如果是无状态的服务，仍建议使用 `NTS` 多进程的运行方式。
+* 不支持线程之间传递对象和资源。
+
+#### THREAD模式的适用场景：
+* THREAD模式在开发游戏服务器、通信服务器方面更有效率。
 
 ## Process、Process\Pool、UserProcess的区别是什么 :id=process-diff
 

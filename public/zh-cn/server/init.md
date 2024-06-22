@@ -6,7 +6,7 @@
 
 前往了解：
 
-[Server 的两种运行模式介绍](/learn?id=server的两种运行模式介绍 ':target=_blank')  
+[Server 的三种运行模式介绍](/learn?id=server的三种运行模式介绍 ':target=_blank')  
 [Process、ProcessPool、UserProcess的区别是什么](/learn?id=process-diff ':target=_blank')  
 [Master进程、Reactor线程、Worker进程、Task进程、Manager进程的区别与联系](/learn?id=diff-process ':target=_blank')  
 

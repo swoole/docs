@@ -33,7 +33,9 @@ Swoole\Server::__construct(string $host = '0.0.0.0', int $port = 0, int $mode = 
 
       * 功能：指定运行模式。
       * 默认值：[SWOOLE_PROCESS](/learn?id=swoole_process) 多进程模式（默认）。
-      * 其它值：[SWOOLE_BASE](/learn?id=swoole_base) 基本模式。
+      * 其它值：[SWOOLE_BASE](/learn?id=swoole_base) 基本模式，[SWOOLE_THREAD](/learn?id=swoole_thread) 多线程模式（Swoole 6.0可用）。
+
+      ?> `SWOOLE_THREAD`模式下，可以点击这里[线程 + 服务端（异步风格）](/thread/thread?id=线程-服务端（异步风格）)查看如何在多线程模式下建立一个服务端。
 
       !> 从Swoole5开始，运行模式的默认值为`SWOOLE_BASE`。
 

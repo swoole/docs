@@ -46,4 +46,6 @@ $server->set([
 
 !> 如果传入的值过大，内核会抛出异常并且终止程序。
 
+!> 当系统安装了`liburing`和编译`Swoole`开启了`--enable-iouring`之后才能使用。
+
 !> 当系统安装了`liburing`和编译``Swoole v6.0`以上的版本，开启了`--enable-iouring`之后才能使用。
