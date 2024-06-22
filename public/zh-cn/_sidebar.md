@@ -75,9 +75,9 @@
     * [进程管理器(Process\Manager)](process/process_manager.md)
     * [高性能共享内存(Table)](memory/table.md)
 
-* [进程/线程间无锁计数器(Atomic)](memory/atomic.md)
+* [锁(Lock)](memory/lock.md)
 
-* [进程/线程间锁(Lock)](memory/lock.md)
+* [无锁计数器(Atomic)](memory/atomic.md)
 
 * 事件管理
     * [Event](event.md)

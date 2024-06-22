@@ -76,7 +76,7 @@ php --ri swoole
 - 不再支持`Swoole\Coroutine\PostgreSQL`协程客户端。
 
 ## v5.1.3
-### Bug修复
+### Bug修复：
 - 修复无法通过`pecl`安装的问题。
 - 修复`Swoole\Coroutine\FastCGI\Client`客户端无法设置keepalive。
 - 修复请求参数超过`max_input_vars`时会抛出错误导致进程不断重启的问题。
@@ -90,15 +90,15 @@ php --ri swoole
 - 修复设置了`dispatch_func`，会导致php底层抛出错误的问题。
 - 修复AC_PROG_CC_C99在autoconf >= 2.70版本中已过时。
 
-### 内核优化
+### 内核优化：
 - 移除对`socket structs`的无用检查。
 - 升级swoole Library。
 - `Swoole\Http\Response`增加对451状态码的支持。
 - 同步PHP不同版本的`文件`操作代码。
 - 同步PHP不同版本的`pdo`操作代码。
 - 优化`Socket::ssl_recv()`的代码。
-- 优化了config.m4，一些配置可以通过`pkg-config`设置依赖库位置。
-- 优化`解析请求头`的时候使用动态数组的问题。
+- 优化了config.m4，一些配置可以通过`pkg-config`设置依赖库位置。 
+- 优化`解析请求头`的时候使用动态数组的问题。 
 
 ## v5.1.2
 
@@ -110,12 +110,12 @@ php --ri swoole
 - 修复了 PHP 8.3 上的 native-curl 崩溃问题。
 - 修复了 Server::Manager::wait() 后的无效 errno 错误。
 - 修复了 HTTP2 的拼写错误。
-
+  
 ### 优化
 - 优化 HTTP 服务器性能。
 - 添加 CLOSE_SERVICE_RESTART、CLOSE_TRY_AGAIN_LATER、CLOSE_BAD_GATEWAY 作为 websocket 的有效关闭原因
 
-## v5.5.1
+## v5.1.1
 ### Bug 修复
 - 修复`http协程客户端`内存泄漏问题。
 - 修复`pdo_odbc`无法协程化的问题。
