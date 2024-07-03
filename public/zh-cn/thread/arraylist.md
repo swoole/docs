@@ -42,8 +42,12 @@ if (empty($args)) {
 安全并发容器 `ArrayList` 构造函数
 
 ```php
-Swoole\Thread\ArrayList->__construct()
+Swoole\Thread\ArrayList->__construct(?array $values = null)
 ```
+
+- `$values` 可选，遍历数组将数组中的值添加到 `ArrayList` 中
+- 只接受 `list` 类型的数组，不接受关联数组，否则将抛出异常
+- 关联数组需使用 `array_values` 转换为 `list` 类型的数组
 
 ### incr()
 使 `ArrayList` 中的数据安全地自增，支持浮点型或整型，若对其他类型进行自增操作，将会自动转为整型，初始化为 `0`，再进行自增操作。
@@ -88,7 +92,7 @@ Swoole\Thread\ArrayList->(int $index, $value = 1) : int | float
     * 返回自减后的值。
 
 ### count()
-获取ArrayList元素数量
+获取 `ArrayList` 元素数量
 
 ```php
 Swoole\Thread\ArrayList()->count(): int
@@ -96,6 +100,15 @@ Swoole\Thread\ArrayList()->count(): int
 
 * **返回值**
     * 返回List中的元素数量。
+
+### toArray()
+将 `ArrayList` 转换为数组
+
+```php
+Swoole\Thread\ArrayList()->toArray(): array
+```
+
+* **返回值** 类型数组，返回 `ArrayList` 中的所有元素。
 
 ### clean()
 清空所有元素

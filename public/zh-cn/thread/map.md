@@ -40,8 +40,10 @@ if (empty($args)) {
 安全并发容器 `Map` 构造函数
 
 ```php
-Swoole\Thread\Map->__construct()
+Swoole\Thread\Map->__construct(?array $values = null)
 ```
+
+- `$values` 可选，遍历数组将数组中的值添加到 `Map` 中
 
 ### add()
 向 `Map` 中写入数据
@@ -142,7 +144,24 @@ Swoole\Thread\Map()->keys(): array
 ```
 
   * **返回值**
-    * 返回Map中的key数量。
+    * 返回 `Map` 所有的 `key`
+
+### values()
+返回所有 `value`
+
+```php
+Swoole\Thread\Map()->values(): array
+```
+
+* **返回值**
+    * 返回 `Map` 所有的 `value`
+
+* ### toArray()
+将 `Map` 转换为数组
+
+```php
+Swoole\Thread\Map()->toArray(): array
+```
 
 ### clean()
 清空所有元素
