@@ -31,31 +31,34 @@ Swoole\Coroutine\System::statvfs(string $path): array|false
     Swoole\Coroutine\run(function () {
         var_dump(Swoole\Coroutine\System::statvfs('/'));
     });
+    ```
+  * **输出示例**
     
-    // array(11) {
-    //   ["bsize"]=>
-    //   int(4096)
-    //   ["frsize"]=>
-    //   int(4096)
-    //   ["blocks"]=>
-    //   int(61068098)
-    //   ["bfree"]=>
-    //   int(45753580)
-    //   ["bavail"]=>
-    //   int(42645728)
-    //   ["files"]=>
-    //   int(15523840)
-    //   ["ffree"]=>
-    //   int(14909927)
-    //   ["favail"]=>
-    //   int(14909927)
-    //   ["fsid"]=>
-    //   int(1002377915335522995)
-    //   ["flag"]=>
-    //   int(4096)
-    //   ["namemax"]=>
-    //   int(255)
-    // }
+    ```php
+    array(11) {
+      ["bsize"]=>
+      int(4096)
+      ["frsize"]=>
+      int(4096)
+      ["blocks"]=>
+      int(61068098)
+      ["bfree"]=>
+      int(45753580)
+      ["bavail"]=>
+      int(42645728)
+      ["files"]=>
+      int(15523840)
+      ["ffree"]=>
+      int(14909927)
+      ["favail"]=>
+      int(14909927)
+      ["fsid"]=>
+      int(1002377915335522995)
+      ["flag"]=>
+      int(4096)
+      ["namemax"]=>
+      int(255)
+    }
     ```
 
 ### fread()
@@ -68,6 +71,8 @@ Swoole\Coroutine\System::fread(resource $handle, int $length = 0): string|false
 
 !> `v4.0.4`以下版本`fread`方法不支持非文件类型的`stream`，如`STDIN`、`Socket`，请勿使用`fread`操作此类资源。  
 `v4.0.4`以上版本`fread`方法支持了非文件类型的`stream`资源，底层会自动根据`stream`类型选择使用`AIO`线程池或[EventLoop](/learn?id=什么是eventloop)实现。
+
+!> 此方法已在 `5.0` 版本中废弃，`6.0` 版本已移除
 
   * **参数** 
 
@@ -106,6 +111,8 @@ Swoole\Coroutine\System::fwrite(resource $handle, string $data, int $length = 0)
 
 !> `v4.0.4`以下版本`fwrite`方法不支持非文件类型的`stream`，如`STDIN`、`Socket`，请勿使用`fwrite`操作此类资源。  
 `v4.0.4`以上版本`fwrite`方法支持了非文件类型的`stream`资源，底层会自动根据`stream`类型选择使用`AIO`线程池或[EventLoop](/learn?id=什么是eventloop)实现。
+
+!> 此方法已在 `5.0` 版本中废弃，`6.0` 版本已移除
 
   * **参数** 
 
@@ -150,6 +157,8 @@ Swoole\Coroutine\System::fgets(resource $handle): string|false
 ```
 
 !> `fgets`函数仅可用于文件类型的`stream`资源，Swoole版本 >= `v4.4.4` 可用
+
+!> 此方法已在 `5.0` 版本中废弃，`6.0` 版本已移除
 
   * **参数** 
 

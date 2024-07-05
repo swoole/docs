@@ -56,9 +56,10 @@ thread => enabled
 ```php
 use Swoole\Thread;
 
-$args = Thread::getArguments(); // 如果是主线程，$args为空，如果是子线程，$args不为空
+$args = Thread::getArguments();
 $c = 4;
 
+// 主线程没有线程参数，$args 为 null
 if (empty($args)) {
     # 主线程
     for ($i = 0; $i < $c; $i++) {

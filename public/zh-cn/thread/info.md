@@ -63,21 +63,23 @@ Swoole\Thread::getId(): int
 静态方法，获取由主线程使用`new Swoole\Thread()` 时传递过来的共享数据，在子线程中调用。
 
 ```php
-Swoole\Thread::getArguments(): array
+Swoole\Thread::getArguments(): ?array
 ```
 
 * **返回值**
     * 子线程中返回父进程传递过来的共享数据。
 
-?> 主线程第一次调用会返回空数组，因为此时还未创建任何子线程，可以通过这个方法判断父子线程，让他们执行不同的逻辑。
+?> 主线程不会有任何线程参数，可以通过判断线程参数是否为空来分辨父子线程，让他们执行不同的逻辑
 ```php
 use Swoole\Thread;
 
 $args = Thread::getArguments(); // 如果是主线程，$args为空，如果是子线程，$args不为空
 if (empty($args)) {
     # 主线程
+    new Thread(__FILE__, 'child thread'); // 传递线程参数
 } else {
     # 子线程
+    var_dump($args); // 输出: ['child thread']
 }
 ```
 
