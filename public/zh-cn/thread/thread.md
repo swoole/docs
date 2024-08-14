@@ -1,37 +1,34 @@
 # Swoole\Thread <!-- {docsify-ignore-all} -->
 
-从 `6.0` 版本开始提供了多线程支持，可使用线程 API 来代替多进程。相比多进程，`Thread` 提供了更丰富的并发数据容器，
+从 `6.0` 版本开始提供了多线程支持，可使用线程 `API` 来代替多进程。相比多进程，`Thread` 提供了更丰富的并发数据容器，
 在开发游戏服务器、通信服务器方面更方便。
 
-# 注意
+- `PHP` 必须为 `ZTS` 模式，编译 `PHP` 时需要加入 `--enable-zts`
+- 编译 `Swoole` 时需要增加 `--enable-swoole-thread` 编译选项
 
-- `Swoole 6.0`以上的版本才能使用该新特性。
-
-- `PHP` 必须为 `ZTS` 模式，编译 `PHP` 时需要加入 `--enable-zts`， 编译 `Swoole` 时需要增加 `--enable-swoole-thread` 编译选项。
-
-- `--enable-swoole-thread` 编译参数开启后，部分特性在子线程中无法使用。
-
-- 无法在子线程使用`Swoole\Runtime::enableCoroutine()或Swoole\Runtime::setHookFlags()`中开启或关闭协程 `Hook`。
-
--  无法在子线程中被调用`swoole_async_set()`修改线程参数。
-
-# 资源隔离
+## 资源隔离
 
 `Swoole` 线程与 `Node.js Worker Thread` 是相似的，在子线程中会创建一个全新的 `ZendVM` 环境。 子线程不会从父线程继承任何资源，因此在子线程中下列内容已被清空，需要重新创建或设置。
 
-- 已加载的 `PHP` 文件，需要重新 `include/require` 加载。
+- 已加载的 `PHP` 文件，需要重新 `include/require` 加载
+- 需要重新注册`autoload` 函数
+- 类、函数、常量，将被清空，需重新加载 `PHP` 文件创建
+- 全局变量，例如 `$GLOBALS`、`$_GET/$_POST` 等，将被重置
+- 类的静态属性、函数的静态变量，将重置为初始值
+- 一些`php.ini` 选项，例如 `error_reporting()` 需要在子线程中重新设置
 
-- 需要重新注册`autoload` 函数。
+## 不可用特性
 
-- 类、函数、常量，将被清空，需重新加载 `PHP` 文件创建。
+在多线程模式下，下列特性仅支持在主线程中操作，无法在子线程中执行：
 
-- 全局变量，例如 `$GLOBALS`、`$_GET/$_POST` 等，将被重置。
+- `swoole_async_set()` 修改线程参数
+- `Swoole\Runtime::enableCoroutine()` 和 `Swoole\Runtime::setHookFlags()`
+- 仅主线程可设置信号监听，包括 `Process::signal()` 和 `Coroutine\System::waitSignal()` 不能在子线程中使用
+- 仅主线程可创建异步服务器，包括 `Server`、`Http\Server`、`WebSocket\Server` 等不能在子线程中使用
 
-- 类的静态属性、函数的静态变量，将重置为初始值。
+除此之外，`Runtime Hook` 在多线程模式下开启后将无法关闭。
 
-- 一些`php.ini` 选项，例如 `error_reporting()` 需要在子线程中重新设置。
-
-## 查看是否开启了新特性
+## 查看是否开启线程支持
 
 ```shell
 php -v
@@ -79,11 +76,11 @@ if (empty($args)) {
 ```
 
 ### 线程 + 服务端（异步风格）
-- 所有工作进程将使用线程来运行，包括 `Worker`、`Task Worker`、`User Process`。
-
-- 新增 `SWOOLE_THREAD` 运行模式，启用后将使用线程代替进程运行。
-
-- 增加了 [bootstrap](/server/setting?id=bootstrap) 和 [init_arguments](/server/setting?id=init_arguments) 两项配置，用于设置工作线程的入口脚本文件、线程共享数据。
+- 所有工作进程将使用线程来运行，包括 `Worker`、`Task Worker`、`User Process`
+- 新增 `SWOOLE_THREAD` 运行模式，启用后将使用线程代替进程运行
+- 增加了 [bootstrap](/server/setting?id=bootstrap) 和 [init_arguments](/server/setting?id=init_arguments) 两项配置，用于设置工作线程的入口脚本文件、线程共享数据
+- 必须在主线程中创建 `Server`，可在回调函数中创建新的 `Thread` 执行其他任务
+- `Server::addProcess()` 进程对象不支持标准输入输出重定向
 
 ```php
 use Swoole\Process;
