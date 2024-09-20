@@ -6,7 +6,7 @@
 多线程构造方法
 
 ```php
-Swoole\Thread->join(string $script_file, mixed ...$args)
+Swoole\Thread->__construct(string $script_file, mixed ...$args)
 ```
 * **参数**
     * `string $script_file`
