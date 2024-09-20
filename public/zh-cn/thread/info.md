@@ -83,19 +83,18 @@ if (empty($args)) {
 }
 ```
 
-### getTsrmInfo()
-静态方法，获取当前线程的 `TSRM` 信息。
+### info()
+静态方法，获取当前多线程环境的信息。
 
 ```php
-Swoole\Thread::getTsrmInfo(): array
+Swoole\Thread::info(): array
 ```
 返回数组信息如下：
 
-- `is_main_thread`：是否为主线程
-
+- `is_main_thread`：当前的线程是否为主线程
 - `api_name`：线程 `API` 名称，例如 `POSIX Threads`
-
 - `is_shutdown`：线程是否已关闭
+- `thread_num`：当前活跃的线程数量
 
 ## 属性
 

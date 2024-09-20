@@ -28,6 +28,12 @@
 
 除此之外，`Runtime Hook` 在多线程模式下开启后将无法关闭。
 
+## 致命错误
+当主线程退出时，若依然存在活跃的子线程，将抛出一个致命错误，退出的状态码为：`200`，错误信息如下：
+```
+Fatal Error: 2 active threads are running, cannot exit safely.
+```
+
 ## 查看是否开启线程支持
 
 ```shell
