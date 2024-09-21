@@ -77,6 +77,7 @@ $args = Thread::getArguments(); // 如果是主线程，$args为空，如果是�
 if (empty($args)) {
     # 主线程
     new Thread(__FILE__, 'child thread'); // 传递线程参数
+    echo "main thread\n";
 } else {
     # 子线程
     var_dump($args); // 输出: ['child thread']
@@ -106,3 +107,9 @@ Swoole\Thread::info(): array
 $thread = new Swoole\Thread(__FILE__, $i);
 var_dump($thread->id);
 ```
+
+## 常量
+
+名称 | 作用
+---|---
+`Thread::HARDWARE_CONCURRENCY` | 硬件并发线程数量，一般为`CPU`核数

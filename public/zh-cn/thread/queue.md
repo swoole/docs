@@ -59,6 +59,14 @@ if (empty($args)) {
 }
 ```
 
+## 常量
+
+
+名称 | 作用
+---|---
+`Queue::NOTIFY_ONE` | 唤醒一个线程
+`Queue::NOTIFY_ALL` | 唤醒所有线程
+
 ## 方法列表
 
 ### __construct()
