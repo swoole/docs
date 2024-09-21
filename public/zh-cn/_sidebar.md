@@ -65,6 +65,7 @@
   * [并发Map](thread/map.md)
   * [并发List](thread/arraylist.md)
   * [并发Queue](thread/queue.md)
+  * [同步屏障Barrier](thread/barrier.md)
   * [数据类型](thread/transfer.md)
 
 * 进程管理 (Process)
