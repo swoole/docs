@@ -22,7 +22,7 @@ Swoole\Thread->__construct(string $script_file, mixed ...$args)
 !> 线程创建失败会抛出`Swoole\Exception`，可以通过`try catch`捕获它。
 
 ### join()
-主线程等待子线程退出。若子线程仍在运行，`join()` 会阻塞。
+主线程等待子线程退出。若子线程仍在运行，`join()` 会阻塞，直到子线程退出。
 
 ```php
 Swoole\Thread->join(): bool
@@ -42,7 +42,7 @@ Swoole\Thread->joinable(): bool
 - `false` 表示未退出
 
 ### detach()
-使子线程脱离主线程的掌控，不再需要 `join()` 等待线程退出，回收资源，需要在子线程中使用。
+使子线程脱离主线程的掌控，不再需要 `join()` 等待线程退出。
 
 ```php
 Swoole\Thread->detach(): bool
@@ -51,7 +51,7 @@ Swoole\Thread->detach(): bool
     * 返回`true`表示操作成功，返回`false`表示操作失败。
 
 ### getId()
-静态方法，获取当前线程的 `ID`，在子线程中调用。
+静态方法，获取当前线程的 `ID`。
 
 ```php
 Swoole\Thread::getId(): int
@@ -100,7 +100,7 @@ Swoole\Thread::info(): array
 
 ### id
 
-通过此对象属性获取子线程的 `ID`，该属性是一个`int`类型的。
+通过此对象属性获取子线程的 `ID`，该属性是`int`类型。
 
 ```php
 $thread = new Swoole\Thread(__FILE__, $i);

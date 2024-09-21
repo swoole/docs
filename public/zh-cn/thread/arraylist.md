@@ -7,15 +7,15 @@
 
 - 底层会自动加锁，是线程安全的。
 
-- 可传递的变量类型参考 [数据类型](thread/transfer.md)。
+- 可传递的变量类型参考 [数据类型](thread/transfer.md)
 
-- 不支持迭代器，在迭代器中删除元素会出现内存错误。
+- 不支持迭代器，可使用 `toArray()` 来代替
 
-- 必须在线程创建前将 `Map`、`ArrayList`、`Queue` 对象作为线程参数传递给子线程。
+- 必须在线程创建前将 `Map`、`ArrayList`、`Queue` 对象作为线程参数传递给子线程
 
-- `Swoole\Thread\ArrayList` 实现了 `ArrayAccess` 和 `Countable`接口，可以直接作为数组操作。
+- `Thread\ArrayList` 实现了 `ArrayAccess` 和 `Countable`接口，可以直接作为数组操作
 
-- `ArrayList` 只能追加元素，不能随机删除或赋值。
+- `Thread\ArrayList` 仅支持数字索引下标操作，非数字将进行一次强制转换操作
 
 ## 示例
 ```php
@@ -35,6 +35,17 @@ if (empty($args)) {
     var_dump($list[0]);
 }
 ```
+
+- 增加或修改：`$list[$index] = $value`
+- 删除：`unset($list[$index])`
+- 读取：`$value = $list[$index]`
+- 获取长度：`count($list)`
+
+## 删除
+请注意删除操作会引起`List`批量前移操作，例如`List`有`1000`个元素，当`unset($list[4])`时，
+将需要`$list[5:999]`进行批量迁移操作，填补删除`$list[4]`产生的空位。但不会深度复制元素，仅移动其指针。
+
+> 若`List`较大时，删除靠前的元素，可能会消耗较多的`CPU`资源
 
 ## 方法
 

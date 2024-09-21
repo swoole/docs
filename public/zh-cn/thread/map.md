@@ -9,11 +9,11 @@
 
 - 可传递的变量类型参考 [数据类型](thread/transfer.md)。
 
-- 不支持迭代器，在迭代器中删除元素会出现内存错误。
+- 不支持迭代器，可使用 `keys()`、`values()`、`toArray()` 来代替。
 
 - 必须在线程创建前将 `Map`、`ArrayList`、`Queue` 对象作为线程参数传递给子线程。
 
-- `Swoole\Thread\Map` 实现了 `ArrayAccess` 和 `Countable` 接口，可以直接作为数组操作。
+- `Thread\Map` 实现了 `ArrayAccess` 和 `Countable` 接口，可以直接作为数组操作。
 
 ## 示例
 ```php
@@ -33,6 +33,11 @@ if (empty($args)) {
     var_dump($map['test']);
 }
 ```
+
+- 增加或修改：`$map[$key] = $value`
+- 删除：`unset($map[$key])`
+- 读取：`$value = $map[$key]`
+- 获取长度：`count($map)`
 
 ## 方法
 
