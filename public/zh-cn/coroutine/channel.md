@@ -76,7 +76,7 @@ Swoole\Coroutine\Channel->push(mixed $data, float $timeout = -1): bool
       * **默认值**：无
       * **其它值**：无
 
-      !> 为避免产生歧义，请勿向通道中写入空数据，如`0`、`false`、`空字符串`、`null`
+      !> 为避免产生歧义，请勿向通道中写入`null`和`false`
 
     * **`float $timeout`**
       * **功能**：设置超时时间

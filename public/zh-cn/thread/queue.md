@@ -77,7 +77,7 @@ Swoole\Thread\Queue->__construct()
 ```
 
 ### push()
-向队列中写入数据
+向队列尾部中写入数据
 
 ```php
 Swoole\Thread\Queue()->push(mixed $value, int $notify_which = 0): void
@@ -88,10 +88,12 @@ Swoole\Thread\Queue()->push(mixed $value, int $notify_which = 0): void
           * 功能：写入的数据内容。
           * 默认值：无。
           * 其它值：无。
+
+      !> 为避免产生歧义，请勿向通道中写入`null`和`false`
   
       * `int $notify`
           * 功能：是否通知等待读取数据的线程。
-          * 默认值：0。
+          * 默认值：`0`，不会唤醒任何线程
           * 其它值：`Swoole\Thread\Queue::NOTIFY_ONE` 唤醒一个线程，`Swoole\Thread\Queue::NOTIFY_ALL` 唤醒所有线程。
 
 
@@ -105,11 +107,13 @@ Swoole\Thread\Queue()->pop(float $timeout = 0): mixed
 * **参数**
     * `float $wait`
         * 功能：超时时间。
-        * 默认值：0，表示不等待。
-        * 其它值：如果不为0， 表示当队列为空时在`$timeout`秒内等待生产者 `push()` 数据，为负数时表示永不超时。
+        * 默认值：`0`，表示不等待。
+        * 其它值：如果不为`0`， 表示当队列为空时在`$timeout`秒内等待生产者 `push()` 数据，为负数时表示永不超时。
 
 * **返回值**
     * 返回队列头部数据，当队列为空时直接返回 `NULL`。
+
+> 使用`Queue::NOTIFY_ALL`唤醒所有线程时，只有一个线程可以获得`push()`操作写入的数据
 
 ### count()
 获取队列元素数量
