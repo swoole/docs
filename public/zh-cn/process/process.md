@@ -846,7 +846,7 @@ Swoole\Process->setAffinity(array $cpus): bool
 -使用 [swoole_cpu_num()](/functions?id=swoole_cpu_num) 可以得到当前服务器的`CPU`核数。
 
 ### getAffinity()
-获取线程`CPU`亲缘性
+获取进程`CPU`亲缘性
 
 ```php
 Swoole\Process->getAffinity(): array

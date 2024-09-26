@@ -122,7 +122,7 @@ Swoole\Thread->setPriority(int $priority, int $policy = -1): bool
         * 默认值：无。
         * 其它值：无。
 
-    * `mixed $args`
+    * `mixed $policy`
         * 功能：设置线程调度优先策略
         * 默认值：`-1`，表示不调整调度策略。
         * 其它值：`Thread::SCHED_*` 相关常量。
