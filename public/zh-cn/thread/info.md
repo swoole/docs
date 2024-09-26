@@ -84,18 +84,101 @@ if (empty($args)) {
 }
 ```
 
-### info()
+### getInfo()
 静态方法，获取当前多线程环境的信息。
 
 ```php
-Swoole\Thread::info(): array
+Swoole\Thread::getInfo(): array
 ```
 返回数组信息如下：
 
 - `is_main_thread`：当前的线程是否为主线程
-- `api_name`：线程 `API` 名称，例如 `POSIX Threads`
 - `is_shutdown`：线程是否已关闭
 - `thread_num`：当前活跃的线程数量
+
+### getPriority()
+获取线程调度的信息
+
+```php
+Swoole\Thread->getPriority(): array
+```
+返回数组信息如下：
+
+- `policy`：线程调度策略
+- `priority`：线程的调度优先级
+
+### setPriority()
+设置线程调度优先级和策略
+
+?> 仅`root`用户可以调整，非`root`用户执行将被拒绝执行
+
+```php
+Swoole\Thread->setPriority(int $priority, int $policy = -1): bool
+```
+
+* **参数**
+    * `int $priority`
+        * 功能：设置线程调度优先级
+        * 默认值：无。
+        * 其它值：无。
+
+    * `mixed $args`
+        * 功能：设置线程调度优先策略
+        * 默认值：`-1`，表示不调整调度策略。
+        * 其它值：`Thread::SCHED_*` 相关常量。
+
+* **返回值**
+    * 成功返回`true`
+    * 失败返回`false`，使用`swoole_last_error()`获取错误信息
+
+### getAffinity()
+获取线程`CPU`亲缘性
+
+```php
+Swoole\Thread->getAffinity(): array
+```
+返回值为数组，元素为`CPU`核数，例如：`[0, 1, 3, 4]` 表示此线程将被调度到`CPU`的`0/1/3/4`核心运行
+
+### setAffinity()
+设置线程`CPU`亲缘性
+
+```php
+Swoole\Thread->setAffinity(array $cpu_set): bool
+```
+
+* **参数**
+    * `array $cpu_set`
+        * 功能：`CPU`核心的列表，例如`[0, 1, 3, 4]`
+        * 默认值：无。
+        * 其它值：无。
+
+* **返回值**
+    * 成功返回`true`
+    * 失败返回`false`，使用`swoole_last_error()`获取错误信息
+
+### setName()
+设置线程的名称
+
+```php
+Swoole\Thread->setName(string $name): bool
+```
+
+* **参数**
+    * `string $name`
+        * 功能：线程名称
+        * 默认值：无。
+        * 其它值：无。
+
+* **返回值**
+    * 成功返回`true`
+    * 失败返回`false`，使用`swoole_last_error()`获取错误信息
+
+### gettid()
+获取线程线程的系统 `ID`，将返回一个整数，类似于进程的 `PID`，仅 `Linux` 系统支持此函数。
+
+```php
+Swoole\Thread->gettid(): int
+```
 
 ## 属性
 
@@ -113,3 +196,11 @@ var_dump($thread->id);
 名称 | 作用
 ---|---
 `Thread::HARDWARE_CONCURRENCY` | 硬件并发线程数量，一般为`CPU`核数
+`Thread::API_NAME` | 线程 `API` 名称，例如 `POSIX Threads`
+`Thread::SCHED_OTHER` | 线程调度策略 `SCHED_OTHER`
+`Thread::SCHED_FIFO` | 线程调度策略 `SCHED_FIFO`
+`Thread::SCHED_RR` | 线程调度策略 `SCHED_RR`
+`Thread::SCHED_BATCH` | 线程调度策略 `SCHED_BATCH`
+`Thread::SCHED_ISO` | 线程调度策略 `SCHED_ISO`
+`Thread::SCHED_IDLE` | 线程调度策略 `SCHED_IDLE`
+`Thread::SCHED_DEADLINE` | 线程调度策略 `SCHED_DEADLINE`

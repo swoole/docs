@@ -845,6 +845,14 @@ Swoole\Process->setAffinity(array $cpus): bool
 -该函数需要操作系统支持设置绑定`CPU`的功能；  
 -使用 [swoole_cpu_num()](/functions?id=swoole_cpu_num) 可以得到当前服务器的`CPU`核数。
 
+### getAffinity()
+获取线程`CPU`亲缘性
+
+```php
+Swoole\Process->getAffinity(): array
+```
+返回值为数组，元素为`CPU`核数，例如：`[0, 1, 3, 4]` 表示此进程将被调度到`CPU`的`0/1/3/4`核心运行
+
 ### setPriority()
 
 设置进程、进程组和用户进程的优先级。
