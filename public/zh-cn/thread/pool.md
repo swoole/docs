@@ -84,7 +84,7 @@ $map = new Swoole\Thread\Map();
 
 工作线程类必须继承此类。
 
-### run(...$args)
+### run(array $args)
 
 必须重写此方法，`$args`是线程池对象使用`withArguments()`方法传入的参数。
 
