@@ -161,7 +161,7 @@ Swoole\Thread\Map()->values(): array
 * **返回值**
     * 返回 `Map` 所有的 `value`
 
-* ### toArray()
+### toArray()
 将 `Map` 转换为数组
 
 ```php

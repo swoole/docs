@@ -97,7 +97,7 @@ Swoole\Thread::getInfo(): array
 - `thread_num`：当前活跃的线程数量
 
 ### getPriority()
-获取线程调度的信息
+静态方法，获取当前线程调度的信息
 
 ```php
 Swoole\Thread->getPriority(): array
@@ -108,7 +108,7 @@ Swoole\Thread->getPriority(): array
 - `priority`：线程的调度优先级
 
 ### setPriority()
-设置线程调度优先级和策略
+静态方法，设置当前线程调度优先级和策略
 
 ?> 仅`root`用户可以调整，非`root`用户执行将被拒绝执行
 
@@ -131,8 +131,12 @@ Swoole\Thread->setPriority(int $priority, int $policy = -1): bool
     * 成功返回`true`
     * 失败返回`false`，使用`swoole_last_error()`获取错误信息
 
+> `SCHED_BATCH/SCHED_ISO/SCHED_IDLE/SCHED_DEADLINE`仅在`Linux`系统下可用  
+
+> `SCHED_FIFO/SCHED_RR`策略的线程一般为实时线程，优先级高于普通线程，可获得多的`CPU`时间片
+
 ### getAffinity()
-获取线程`CPU`亲缘性
+静态方法，获取当前线程`CPU`亲缘性
 
 ```php
 Swoole\Thread->getAffinity(): array
@@ -140,7 +144,7 @@ Swoole\Thread->getAffinity(): array
 返回值为数组，元素为`CPU`核数，例如：`[0, 1, 3, 4]` 表示此线程将被调度到`CPU`的`0/1/3/4`核心运行
 
 ### setAffinity()
-设置线程`CPU`亲缘性
+静态方法，设置当前线程`CPU`亲缘性
 
 ```php
 Swoole\Thread->setAffinity(array $cpu_set): bool
@@ -157,7 +161,7 @@ Swoole\Thread->setAffinity(array $cpu_set): bool
     * 失败返回`false`，使用`swoole_last_error()`获取错误信息
 
 ### setName()
-设置线程的名称
+静态方法，设置当前线程的名称。在使用`ps`和`gdb`等工具查看和调试时，提供更友好的显示方式。
 
 ```php
 Swoole\Thread->setName(string $name): bool
@@ -173,6 +177,19 @@ Swoole\Thread->setName(string $name): bool
     * 成功返回`true`
     * 失败返回`false`，使用`swoole_last_error()`获取错误信息
 
+```shell
+$ ps aux|grep -v grep|grep pool.php
+swoole   2226813  0.1  0.1 423860 49024 pts/6    Sl+  17:38   0:00 php pool.php
+
+$ ps -T -p 2226813
+    PID    SPID TTY          TIME CMD
+2226813 2226813 pts/6    00:00:00 Master Thread
+2226813 2226814 pts/6    00:00:00 Worker Thread 0
+2226813 2226815 pts/6    00:00:00 Worker Thread 1
+2226813 2226816 pts/6    00:00:00 Worker Thread 2
+2226813 2226817 pts/6    00:00:00 Worker Thread 3
+```
+
 ### getNativeId()
 获取线程线程的系统 `ID`，将返回一个整数，类似于进程的 `PID`。
 
@@ -180,11 +197,17 @@ Swoole\Thread->setName(string $name): bool
 Swoole\Thread->getNativeId(): int
 ```
 
+此函数在`Linux`系统会调用`gettid()`系统调用，获取一个类似于操作系统线程`ID`，是一个短整数。当进程线程销毁时可能会被操作系统服用。
+
+此`ID`可以用于`gdb`、`strace`调试，例如`gdb -p $tid`。另外还可以读取`/proc/{PID}/task/{ThreadNativeId}`获取线程的执行信息。
+
 ## 属性
 
 ### id
 
 通过此对象属性获取子线程的 `ID`，该属性是`int`类型。
+
+> 此属性仅用在父线程，子线程无法获得`$thread`对象，应使用`Thread::getId()`静态方法获取线程的`ID`
 
 ```php
 $thread = new Swoole\Thread(__FILE__, $i);
@@ -204,3 +227,4 @@ var_dump($thread->id);
 `Thread::SCHED_ISO` | 线程调度策略 `SCHED_ISO`
 `Thread::SCHED_IDLE` | 线程调度策略 `SCHED_IDLE`
 `Thread::SCHED_DEADLINE` | 线程调度策略 `SCHED_DEADLINE`
+

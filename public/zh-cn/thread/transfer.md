@@ -72,7 +72,7 @@ var_dump($map['e']);
 ## 对象
 ### 线程资源对象
 
-例如 `Thread\Lock`、`Thread\Atomic`、`Thread\ArrayList`、`Thread\Map` 等，可直接存储到 `ArrayList`、`Queue`、`Map` 中。
+`Thread\Lock`、`Thread\Atomic`、`Thread\ArrayList`、`Thread\Map` 等线程资源对象，可直接存储到 `ArrayList`、`Queue`、`Map` 中。
 此操作仅仅是将对象的引用存储到容器中，不会进行对象的拷贝。
 
 将对象写入到 `ArrayList` 或 `Map` 时，只是对线程资源增加一次引用计数，不会拷贝。当对象的引用计数为 `0` 时，会被释放。
@@ -86,6 +86,18 @@ $map['lock'] = $lock; // 当前引用计数为 2
 unset($map['lock']); // 当前引用计数为 1
 unset($lock); // 当前引用计数为 0，Lock 对象被释放
 ```
+
+支持列表：
+
+- `Thread\Lock`
+- `Thread\Atomic`
+- `Thread\Atomic\Long`
+- `Thread\Barrier`
+- `Thread\ArrayList`
+- `Thread\Map`
+- `Thread\Queue`
+
+请注意`Thread`线程对象，不可序列化也不可传递，仅在父线程中可用。
 
 ### 普通 PHP 对象
 将在写入时自动序列化，读取时反序列化。请注意若对象包含不可序列化类型，将会抛出异常。

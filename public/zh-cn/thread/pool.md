@@ -1,6 +1,6 @@
 # 线程池
 
-线程池，可管理多个工作线程，自动创建、重启、关闭子线程。
+线程池，可维持多个工作线程的运行，自动创建、重启、关闭子线程。
 
 ## 方法
 
@@ -13,8 +13,8 @@ Swoole\Thread\Pool::__construct(string $workerThreadClass, int $num);
 ```
 
 * **参数** 
-  * **`string $workerThreadClass`**：工作线程运行的类
-  * **`int $worker_num`**：指定工作线程的数量
+  * `string $workerThreadClass`：工作线程运行的类
+  * `int $worker_num`：指定工作线程的数量
 
 
 ### withArguments()
@@ -34,7 +34,7 @@ Swoole\Thread\Pool::withArguments(...$args): static;
 Swoole\Thread\Pool::withAutoloader(string $autoloader): static;
 ```
 * **参数** 
-  * **`string $autoloader`**：`autoload`的`PHP`文件路径
+  * `string $autoloader`：`autoload`的`PHP`文件路径
 
 
 > 若使用了`Composer`，底层可自动推断并在工作进程中加载`vendor/autoload.php`，不需要手动指定
@@ -43,13 +43,13 @@ Swoole\Thread\Pool::withAutoloader(string $autoloader): static;
 
 设置工作线程类的定义文件，**此文件必须只包含`namespace`、`use`、`class定义`代码，不得包含可执行的代码片段**。
 
-工作线程类必须继承自`Swoole\Thread\Runnable`基类，并实现`run(...$args)`方法。
+工作线程类必须继承自`Swoole\Thread\Runnable`基类，并实现`run(array $args)`方法。
 
 ```php
 Swoole\Thread\Pool::withClassDefinitionFile(string $classFile): static;
 ```
 * **参数** 
-  * **`string $classFile`**：定义工作线程类的`PHP`文件路径
+  * `string $classFile`：定义工作线程类的`PHP`文件路径
 
 若工作线程类在`autoload`路径中，可不设置
 
