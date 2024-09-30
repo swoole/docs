@@ -173,11 +173,11 @@ Swoole\Thread->setName(string $name): bool
     * 成功返回`true`
     * 失败返回`false`，使用`swoole_last_error()`获取错误信息
 
-### gettid()
-获取线程线程的系统 `ID`，将返回一个整数，类似于进程的 `PID`，仅 `Linux` 系统支持此函数。
+### getNativeId()
+获取线程线程的系统 `ID`，将返回一个整数，类似于进程的 `PID`。
 
 ```php
-Swoole\Thread->gettid(): int
+Swoole\Thread->getNativeId(): int
 ```
 
 ## 属性
