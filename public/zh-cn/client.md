@@ -1,14 +1,13 @@
 # Swoole\Client
 
-`Swoole\Client`以下简称`Client`，提供了`TCP/UDP`、`socket`的客户端的封装代码，使用时仅需 `new Swoole\Client` 即可。可用于`FPM/Apache`环境。  
+`Swoole\Client`以下简称`Client`，提供了`TCP/UDP/UnixSocket`的客户端的封装代码，使用时仅需 `new Swoole\Client` 即可。可用于`FPM/Apache`环境。  
 相对传统的[streams](https://www.php.net/streams)系列函数，有几大优势：
 
-  * `stream`函数存在超时设置的陷阱和`Bug`，一旦没处理好会导致`Server`端长时间阻塞
-  * `stream`函数的`fread`默认最大`8192`长度限制，无法支持`UDP`的大包
+  * `stream`函数存在默认超时时间较长，对端响应时间过长，可能导致长时间阻塞
+  * `stream`函数的`fread`默认缓存区尺寸为`8192`长度限制，无法支持`UDP`的大包
   * `Client`支持`waitall`，在有确定包长度时可一次取完，不必循环读取
   * `Client`支持`UDP Connect`，解决了`UDP`串包问题
   * `Client`是纯`C`的代码，专门处理`socket`，`stream`函数非常复杂。`Client`性能更好
-  * `Client`支持长连接
   * 可以使用[swoole_client_select](/client?id=swoole_client_select)函数实现多个`Client`的并发控制
 
 ### 完整示例
@@ -23,8 +22,6 @@ echo $client->recv();
 $client->close();
 ```
 
-!> 不支持`Apache`的`prework`多线程模式
-
 ## 方法
 
 ### __construct()
@@ -32,7 +29,7 @@ $client->close();
 构造方法
 
 ```php
-Swoole\Client::__construct(int $sock_type, int $is_sync = SWOOLE_SOCK_SYNC, string $key);
+Swoole\Client::__construct(int $sock_type, bool $is_sync = false, string $key);
 ```
 
 * **参数** 
@@ -42,9 +39,9 @@ Swoole\Client::__construct(int $sock_type, int $is_sync = SWOOLE_SOCK_SYNC, stri
     * **默认值**：无
     * **其它值**：无
 
-  * **`int $is_sync`**
-    * **功能**：同步阻塞模式，现在只有这一个类型，保留此参数只为了兼容api
-    * **默认值**：`SWOOLE_SOCK_SYNC`
+  * **`bool $is_sync`**
+    * **功能**：同步阻塞模式，只能设置为`false`，若要使用异步回调模式，请使用`Swoole\Async\Client`
+    * **默认值**：`false`
     * **其它值**：无
 
   * **`string $key`**
