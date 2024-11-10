@@ -27,5 +27,4 @@
 ## 专栏
 
 * [Swoole - 知乎](https://zhuanlan.zhihu.com/swoole)
-* [就是要你懂swoole - 知乎](https://zhuanlan.zhihu.com/c_1007210652385071104)
 * [Swoole - SegmentFault 思否](https://segmentfault.com/blog/swoole)
