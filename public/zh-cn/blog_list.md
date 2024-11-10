@@ -4,18 +4,9 @@
 
 ## PHP & Swoole
 
-* [PHP解析C/C++结构体struct](https://gitee.com/swoole/swoole_framework/blob/master/libs/Swoole/Memory/Struct.php)
 * [如何实现从 Redis 中订阅消息转发到 WebSocket 客户端](https://segmentfault.com/a/1190000010986855)
 * [在PHP-FPM或Apache中使用swoole提供的task功能](https://segmentfault.com/a/1190000007993744)
 * [漫谈Swoole协程与异步IO](https://mp.weixin.qq.com/s/pymXJoSHIj3Cvtmi6lzcVw)
-
-## Swoole 微课程
-
-* [定位PHP卡死问题](https://course.swoole-cloud.com/article/2)
-* [Swoole长连接常见问题](https://course.swoole-cloud.com/article/11)
-* [Swoole与TCP四次挥手](https://course.swoole-cloud.com/article/10)
-* [PHP程序员内功心法-常用工具](https://course.swoole-cloud.com/article/14)
-* [趣说进程内连接池的作用和实现](https://course.swoole-cloud.com/article/13)
 
 ## Swoole 内核
 
@@ -30,7 +21,6 @@
 ## 其他
 
 * [PHP & Swoole 与 Java、Go 等技术选型答疑](https://segmentfault.com/a/1190000020180096)
-* [编程语言的心智负担](https://segmentfault.com/a/1190000017411420)
 * [聊聊 2018 年后端技术趋势](https://segmentfault.com/a/1190000012975028)
 * [2017年PHP程序员未来路在何方](https://segmentfault.com/a/1190000008888700)
 

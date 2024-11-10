@@ -1,5 +1,32 @@
 # 方法与属性
 
+## 属性
+
+### id
+
+通过此对象属性获取子线程的 `ID`，该属性是`int`类型。
+
+> 此属性仅用在父线程，子线程无法获得`$thread`对象，应使用`Thread::getId()`静态方法获取线程的`ID`
+
+```php
+$thread = new Swoole\Thread(__FILE__, $i);
+var_dump($thread->id);
+```
+
+## 常量
+
+名称 | 作用
+---|---
+`Thread::HARDWARE_CONCURRENCY` | 硬件并发线程数量，一般为`CPU`核数
+`Thread::API_NAME` | 线程 `API` 名称，例如 `POSIX Threads`
+`Thread::SCHED_OTHER` | 线程调度策略 `SCHED_OTHER`
+`Thread::SCHED_FIFO` | 线程调度策略 `SCHED_FIFO`
+`Thread::SCHED_RR` | 线程调度策略 `SCHED_RR`
+`Thread::SCHED_BATCH` | 线程调度策略 `SCHED_BATCH`
+`Thread::SCHED_ISO` | 线程调度策略 `SCHED_ISO`
+`Thread::SCHED_IDLE` | 线程调度策略 `SCHED_IDLE`
+`Thread::SCHED_DEADLINE` | 线程调度策略 `SCHED_DEADLINE`
+
 ## 方法
 
 ### __construct()
@@ -200,31 +227,3 @@ Swoole\Thread->getNativeId(): int
 此函数在`Linux`系统会调用`gettid()`系统调用，获取一个类似于操作系统线程`ID`，是一个短整数。当进程线程销毁时可能会被操作系统服用。
 
 此`ID`可以用于`gdb`、`strace`调试，例如`gdb -p $tid`。另外还可以读取`/proc/{PID}/task/{ThreadNativeId}`获取线程的执行信息。
-
-## 属性
-
-### id
-
-通过此对象属性获取子线程的 `ID`，该属性是`int`类型。
-
-> 此属性仅用在父线程，子线程无法获得`$thread`对象，应使用`Thread::getId()`静态方法获取线程的`ID`
-
-```php
-$thread = new Swoole\Thread(__FILE__, $i);
-var_dump($thread->id);
-```
-
-## 常量
-
-名称 | 作用
----|---
-`Thread::HARDWARE_CONCURRENCY` | 硬件并发线程数量，一般为`CPU`核数
-`Thread::API_NAME` | 线程 `API` 名称，例如 `POSIX Threads`
-`Thread::SCHED_OTHER` | 线程调度策略 `SCHED_OTHER`
-`Thread::SCHED_FIFO` | 线程调度策略 `SCHED_FIFO`
-`Thread::SCHED_RR` | 线程调度策略 `SCHED_RR`
-`Thread::SCHED_BATCH` | 线程调度策略 `SCHED_BATCH`
-`Thread::SCHED_ISO` | 线程调度策略 `SCHED_ISO`
-`Thread::SCHED_IDLE` | 线程调度策略 `SCHED_IDLE`
-`Thread::SCHED_DEADLINE` | 线程调度策略 `SCHED_DEADLINE`
-

@@ -174,3 +174,18 @@ Swoole\Thread\Map()->toArray(): array
 ```php
 Swoole\Thread\Map()->clean(): void
 ```
+
+### find()
+根据值搜索`Map`中对应的key。
+
+```php
+Swoole\Thread\Map()->find(mixed $value): mixed
+```
+* **参数**
+    * `mixed $value`
+        * 功能：需要搜索的值。
+        * 默认值：无。
+        * 其它值：无。
+
+* **返回值**
+    * 返回该值对应的key。

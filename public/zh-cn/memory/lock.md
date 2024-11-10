@@ -1,7 +1,9 @@
-# 进程/线程间锁 Lock
+# 锁 Lock
 
-* `PHP`代码中可以很方便地创建一个锁`Swoole\Lock`，用来实现数据同步。`Lock`类支持`5`种锁的类型。
+* `PHP`代码中可以很方便地创建一个锁`Swoole\Lock`，用来实现数据同步。`Lock`类支持`6`种锁的类型。
 * 多线程模式需要使用`Swoole\Thread\Lock`，除了命名空间不一样，其接口与 `Swoole\Lock` 完全一致。
+* `swoole6.0`引入协程锁，使得多进程多协程之间的加锁不再阻塞进程，该协程锁默认通过`原子计数`和`sleep`实现可重入的互斥锁。
+* 如果`linux`内核为6.7以上，`liburing`版本为2.6以上，编译时`swoole6.0`开启了`--enable-iouring`，协程锁的底层将会替换成`io_uring`的`futex`特性，相关的配置参数可以查看[文件异步操作 - 配置](/file/setting?id=iouring_entries)。
 
 锁类型 | 说明
 ---|---
@@ -10,8 +12,15 @@ SWOOLE_RWLOCK | 读写锁
 SWOOLE_SPINLOCK | 自旋锁
 SWOOLE_FILELOCK | 文件锁(废弃)
 SWOOLE_SEM | 信号量(废弃)
+SWOOLE_COROLOCK | 协程锁
+
+!> 在协程中无法使用除了协程锁之外的锁，请谨慎使用，不要在`lock`和`unlock`操作中间使用可能引起协程切换的`API`。
 
 !> 请勿在[onReceive](/server/events?id=onreceive)等回调函数中创建锁，否则内存会持续增长，造成内存泄漏。
+
+!> `原子计数`和`sleep`实现的协程锁比起`io_uring`实现的协程锁，性能会较差，因为它会带来不必要的上下文切换。
+
+!> 加锁和解锁必须在同一个进程/线程/协程中完成，不然会破坏竞争条件，无法有效实现互斥。
 
 ## 使用示例
 
@@ -38,13 +47,9 @@ sleep(1);
 echo "[Master]exit\n";
 ```
 
-## 警告
-
-!> 在协程中无法使用锁，请谨慎使用，不要在`lock`和`unlock`操作中间使用可能引起协程切换的`API`。
-
 ### 错误示例
 
-!> 此代码在协程模式下`100%`死锁 参考[此文章](https://course.swoole-cloud.com/article/2)
+!> 如果不是使用协程锁，此代码在协程模式下`100%`死锁。
 
 ```php
 $lock = new Swoole\Lock();
@@ -92,6 +97,7 @@ Swoole\Lock::__construct(int $type = SWOOLE_MUTEX, string $lockfile = '');
 ```php
 Swoole\Lock->lock(): bool
 ```
+* 如果是协程锁，当其他`进程`的协程持有锁，那当前协程`不会阻塞`，而是会让出CPU，等待`唤醒`。
 
 ### trylock()
 
@@ -127,6 +133,7 @@ Swoole\Lock->lock_read(): bool
 * 在持有读锁的过程中，其他进程依然可以获得读锁，可以继续发生读操作；
 * 但不能`$lock->lock()`或`$lock->trylock()`，这两个方法是获取独占锁，在独占锁加锁时，其他进程无法再进行任何加锁操作，包括读锁；
 * 当另外一个进程获得了独占锁(调用`$lock->lock()`/`$lock->trylock()`)时，`$lock->lock_read()`会发生阻塞，直到持有独占锁的进程释放锁。
+* 协程锁没有读锁的概念，因此`$lock->lock_read()`和`$lock->lock`效果是一样的。
 
 !> 只有`SWOOLE_RWLOCK`和`SWOOLE_FILELOCK`类型的锁支持只读加锁
 

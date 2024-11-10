@@ -1,6 +1,6 @@
 # Coroutine <!-- {docsify-ignore-all} -->
 
-本节介绍一些协程基本概念和常见问题，也可以通过 [Swoole视频教程](https://course.swoole-cloud.com/course-video/6) 观看。
+本节介绍一些协程基本概念和常见问题。
 
 从4.0版本开始`Swoole`提供了完整的`协程（Coroutine）`+ `通道（Channel）`特性，带来全新的`CSP`编程模型。
 

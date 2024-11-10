@@ -85,6 +85,20 @@ pecl install -D 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" ena
 pecl install --configureoptions 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="yes" enable-swoole-json="no" enable-swoole-curl="yes" enable-cares="yes"' swoole
 ```
 
+## PIE
+
+Swoole 项目支持由 PHP 全新的扩展安装工具 PIE 一键下载安装。
+
+```shell
+pie install swoole/swoole:5.1.5
+```
+
+通过 PIE 安装 Swoole 时，在安装过程中它会询问是否要启用某些功能，这也可以在运行安装之前提供，例如：
+
+```shell
+pie install swoole/swoole:5.1.5 --enable-socket --enable-swoole-curl
+```
+
 ## 添加Swoole到php.ini
 
 最后，编译安装成功后，修改`php.ini`加入
@@ -224,6 +238,8 @@ with-swoole-odbc="unixODBC,/usr"
 添加这个编译选项后，`swoole`的文件异步处理将会由异步线程变成`iouring`模式。
 
 >`v6.0`版本后可用，而且需要安装`liburing`依赖来支持此特性，如果磁盘性能够好的情况下两种模式性能相差不大，只有`I/O`压力较大的情况下，`iouring`模式性能会优于异步线程模式。
+
+>`io_uring`对linux内核版本要求较高，建议在linux 5.12+，liburing 2.6+ 以上的系统使用。
 
 ### 特殊参数
 

@@ -1,4 +1,4 @@
-# Coroutine\Channel
+# Channel
 
 > 建议先查看[概览](/coroutine)，了解一些协程基本概念后再看此节。
 

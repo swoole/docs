@@ -569,6 +569,8 @@ Swoole\Coroutine::getElapsed([$cid]): int
 
 !> Swoole版本 >= `v4.7.0` 可用
 
+!> 你无法取消正在进行文件IO的协程，因为此时内核正在进行文件读写操作，如果此时取消协程，会导致内核正在操作的内存被释放导致段错误。
+
 ```php
 Swoole\Coroutine::cancel($cid): bool
 ```
