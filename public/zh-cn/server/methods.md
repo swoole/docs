@@ -101,7 +101,7 @@ Swoole\Server->on(string $event, callable $callback): bool
 
 !> 重复调用`on`方法时会覆盖上一次的设定
 
-!> 从PHP8.2开始，如果`$event`不是`Swoole`规定的事件，PHP8.2会抛出一个的警告，因为PHP8.2不支持直接设置动态属性
+!> 从`PHP 8.2`开始不再支持直接设置动态属性，如果`$event`不是`Swoole`规定的事件，会抛出一个的警告
 
   * **参数**
 

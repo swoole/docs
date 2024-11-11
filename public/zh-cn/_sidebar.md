@@ -30,6 +30,7 @@
 
 * [客户端](client_init.md)
   * [同步阻塞客户端](client.md)
+  * [异步回调客户端](client_async.md)
   * [协程客户端](coroutine_client/init.md)
     * [TCP/UDP客户端](coroutine_client/client.md)
     * [Socket客户端](coroutine_client/socket.md)
