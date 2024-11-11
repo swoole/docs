@@ -262,7 +262,7 @@ $server->set([
     * 如果业务代码是全[异步IO](/learn?id=同步io异步io)的，这里设置为`CPU`核数的`1-4`倍最合理
     * 如果业务代码为[同步IO](/learn?id=同步io异步io)，需要根据请求响应时间和系统负载来调整，例如：`100-500`
     * 默认设置为[swoole_cpu_num()](/functions?id=swoole_cpu_num)，最大不得超过[swoole_cpu_num()](/functions?id=swoole_cpu_num) * 1000
-    * 假设每个进程占用`40M`内存，`100`个进程就需要占用`4G`内存，如何正确查看进程的内存占用请参考[Swoole官方视频教程](https://course.swoole-cloud.com/course-video/85)
+    * 假设每个进程占用`40M`内存，`100`个进程就需要占用`4G`内存。
 
 ### max_request
 
@@ -270,7 +270,7 @@ $server->set([
 
 ?> 一个`worker`进程在处理完超过此数值的任务后将自动退出，进程退出后会释放所有内存和资源
 
-!> 这个参数的主要作用是解决由于程序编码不规范导致的PHP进程内存泄露问题。PHP应用程序有缓慢的内存泄漏，但无法定位到具体原因、无法解决，可以通过设置`max_request`临时解决，需要找到内存泄漏的代码并修复，而不是通过此方案，可以使用 [Swoole Tracker](https://course.swoole-cloud.com/course-video/92) 发现泄漏的代码。
+!> 这个参数的主要作用是解决由于程序编码不规范导致的PHP进程内存泄露问题。PHP应用程序有缓慢的内存泄漏，但无法定位到具体原因、无法解决，可以通过设置`max_request`临时解决，需要找到内存泄漏的代码并修复，而不是通过此方案，可以使用Swoole Tracker发现泄漏的代码。
 
   * **提示**
 
@@ -620,13 +620,13 @@ ipcrm -Q [msgkey]
     * 注1:`linux2.2`之后握手过程分为`syn queue`和`accept queue`两个队列, `syn queue`长度由`tcp_max_syn_backlog`决定。
     * 注2:高版本内核调用的是`accept4`，为了节省一次`set no block`系统调用。
     * 注3:客户端收到`syn+ack`包就认为连接成功了，实际上服务端还处于半连接状态，有可能发送`rst`包给客户端，客户端的表现就是`Connection reset by peer`。
-    * 注4:成功是通过TCP的重传机制，相关的配置有`tcp_synack_retries`和`tcp_abort_on_overflow`。想深入学习底层TCP机制可以看[Swoole官方视频教程](https://course.swoole-cloud.com/course-video/3)。
+    * 注4:成功是通过TCP的重传机制，相关的配置有`tcp_synack_retries`和`tcp_abort_on_overflow`。
 
 ### open_tcp_keepalive
 
 ?> 在`TCP`中有一个`Keep-Alive`的机制可以检测死连接，应用层如果对于死链接周期不敏感或者没有实现心跳机制，可以使用操作系统提供的`keepalive`机制来踢掉死链接。
 在 [Server->set()](/server/methods?id=set) 配置中增加`open_tcp_keepalive => true`表示启用`TCP keepalive`。
-另外，有`3`个选项可以对`keepalive`的细节进行调整，参考[Swoole官方视频教程](https://course.swoole-cloud.com/course-video/10)。
+另外，有`3`个选项可以对`keepalive`的细节进行调整。
 
   * **选项**
 
@@ -673,7 +673,7 @@ $serv->start();
 
 ?> **启用心跳检测**【默认值：`false`】
 
-?> 此选项表示每隔多久轮循一次，单位为秒。如 `heartbeat_check_interval => 60`，表示每`60`秒，遍历所有连接，如果该连接在`120`秒内（`heartbeat_idle_time`未设置时默认为`interval`的两倍），没有向服务器发送任何数据，此连接将被强制关闭。若未配置，则不会启用心跳, 该配置默认关闭，参考[Swoole官方视频教程](https://course.swoole-cloud.com/course-video/10)。
+?> 此选项表示每隔多久轮循一次，单位为秒。如 `heartbeat_check_interval => 60`，表示每`60`秒，遍历所有连接，如果该连接在`120`秒内（`heartbeat_idle_time`未设置时默认为`interval`的两倍），没有向服务器发送任何数据，此连接将被强制关闭。若未配置，则不会启用心跳, 该配置默认关闭。
 
   * **提示**
     * `Server`并不会主动向客户端发送心跳包，而是被动等待客户端发送心跳。服务器端的`heartbeat_check`仅仅是检测连接上一次发送数据的时间，如果超过限制，将切断连接。

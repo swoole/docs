@@ -371,9 +371,9 @@ function onClose(Swoole\Server $server, int $fd, int $reactorId);
 
   * **注意**
 
-    !> -[onClose](/server/events?id=onclose) 回调函数如果发生了致命错误，会导致连接泄漏。通过 `netstat` 命令会看到大量 `CLOSE_WAIT` 状态的 `TCP` 连接 ，[参考Swoole视频教程](https://course.swoole-cloud.com/course-video/4)  
-    -无论由客户端发起`close`还是服务器端主动调用`$server->close()`关闭连接，都会触发此事件。因此只要连接关闭，就一定会回调此函数  
-    -[onClose](/server/events?id=onclose)中依然可以调用[getClientInfo](/server/methods?id=getClientInfo)方法获取到连接信息，在[onClose](/server/events?id=onclose)回调函数执行完毕后才会调用`close`关闭`TCP`连接  
+    !> -[onClose](/server/events?id=onclose) 回调函数如果发生了致命错误，会导致连接泄漏。通过 `netstat` 命令会看到大量 `CLOSE_WAIT` 状态的 `TCP` 连接。
+    -无论由客户端发起`close`还是服务器端主动调用`$server->close()`关闭连接，都会触发此事件。因此只要连接关闭，就一定会回调此函数。  
+    -[onClose](/server/events?id=onclose)中依然可以调用[getClientInfo](/server/methods?id=getClientInfo)方法获取到连接信息，在[onClose](/server/events?id=onclose)回调函数执行完毕后才会调用`close`关闭`TCP`连接。  
     -这里回调[onClose](/server/events?id=onclose)时表示客户端连接已经关闭，所以无需执行`$server->close($fd)`。代码中执行`$server->close($fd)`会抛出`PHP`错误警告。
 
 ## onTask
