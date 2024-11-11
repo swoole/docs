@@ -120,8 +120,7 @@ Swoole领跑**动态语言第一**
 
 ## Swoole如何维持TCP长连接
 
-关于TCP长连接维持有2组配置[tcp_keepalive](/server/setting?id=open_tcp_keepalive)和[heartbeat](/server/setting?id=heartbeat_check_interval)，使用方法和注意事项参考
-[Swoole官方视频教程](https://course.swoole-cloud.com/course-video/10)
+关于TCP长连接维持有2组配置[tcp_keepalive](/server/setting?id=open_tcp_keepalive)和[heartbeat](/server/setting?id=heartbeat_check_interval)。
 
 ## Swoole如何正确的重启服务
 

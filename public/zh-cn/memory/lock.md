@@ -44,7 +44,7 @@ echo "[Master]exit\n";
 
 ### 错误示例
 
-!> 此代码在协程模式下`100%`死锁 参考[此文章](https://course.swoole-cloud.com/article/2)
+!> 此代码在协程模式下`100%`死锁。
 
 ```php
 $lock = new Swoole\Lock();

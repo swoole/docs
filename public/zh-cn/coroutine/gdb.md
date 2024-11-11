@@ -85,5 +85,3 @@ foreach($coros as $cid)
 	var_dump(Coroutine::getBackTrace($cid));
 }
 ```
-
-可以参考 [Swoole微课程中的视频教程](https://course.swoole-cloud.com/course-video/66)
