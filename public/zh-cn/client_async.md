@@ -36,7 +36,7 @@ $client->connect("127.0.0.1", 9501, 0.2);
 
 ## 方法
 
-本页仅列出与 `Swoole\Client` 存在差异的方法，子类未修改的方法，请参考同步阻塞客户端。
+本页仅列出与 `Swoole\Client` 存在差异的方法，子类未修改的方法，请参考[同步阻塞客户端](client.md)。
 
 ### __construct()
 
@@ -145,8 +145,8 @@ $client->on("error", function(Swoole\Async\Client $client) {
 
 - 请注意`connect`和`error`只会触发其中之一，连接建立成功或失败，只能存在一个结果
 - `Client::connect()`可能会直接返回`false`，表示连接失败，这时将不会执行`error`回调，请务必检查`connect`调用返回值
-- `error`事件表示只是一个异步结果，从发起连接到`error`事件触发中间会存在一定`IO`等待时间
-- `connect`返回失败表示立即失败，此错误由操作系统直接触发，不会进入网络层，中间不存在任何`IO`等待时间
+- `error`事件是异步结果，从发起连接到`error`事件触发中间会存在一定`IO`等待时间
+- `connect`返回失败表示立即失败，此错误由操作系统直接触发，中间不存在任何`IO`等待时间
 
 ### receive
 接收到数据后触发
