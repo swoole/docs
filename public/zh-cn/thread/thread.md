@@ -3,36 +3,36 @@
 从 `6.0` 版本开始提供了多线程支持，可使用线程 `API` 来代替多进程。相比多进程，`Thread` 提供了更丰富的并发数据容器，
 在开发游戏服务器、通信服务器方面更方便。
 
-- `PHP` 必须为 `ZTS` 模式，编译 `PHP` 时需要加入 `--enable-zts`
-- 编译 `Swoole` 时需要增加 `--enable-swoole-thread` 编译选项
+- `PHP` 必须为 `ZTS` 模式，编译 `PHP` 时需要加入 `--enable-zts`。
+- 编译 `Swoole` 时需要增加 `--enable-swoole-thread` 编译选项。
 
 ## 资源隔离
 
 `Swoole` 线程与 `Node.js Worker Thread` 是相似的，在子线程中会创建一个全新的 `ZendVM` 环境。 子线程不会从父线程继承任何资源，因此在子线程中下列内容已被清空，需要重新创建或设置。
 
-- 已加载的 `PHP` 文件，需要重新 `include/require` 加载
-- 需要重新注册`autoload` 函数
-- 类、函数、常量，将被清空，需重新加载 `PHP` 文件创建
-- 全局变量，例如 `$GLOBALS`、`$_GET/$_POST` 等，将被重置
-- 类的静态属性、函数的静态变量，将重置为初始值
-- 一些`php.ini` 选项，例如 `error_reporting()` 需要在子线程中重新设置
+- 已加载的 `PHP` 文件，需要重新 `include/require` 加载。
+- 需要重新注册`autoload` 函数。
+- 类、函数、常量，将被清空，需重新加载 `PHP` 文件创建。
+- 全局变量，例如 `$GLOBALS`、`$_GET/$_POST` 等，将被重置。
+- 类的静态属性、函数的静态变量，将重置为初始值。
+- 一些`php.ini` 选项，例如 `error_reporting()` 需要在子线程中重新设置。
 
 ## 不可用特性
 
-在多线程模式下，下列特性仅支持在主线程中操作，无法在子线程中执行：
+在多线程模式下，下列特性仅支持在主线程中操作，主线程的设置会影响到子线程：
 
-- `swoole_async_set()` 修改线程参数
-- `Swoole\Runtime::enableCoroutine()` 和 `Swoole\Runtime::setHookFlags()`
-- 仅主线程可设置信号监听，包括 `Process::signal()` 和 `Coroutine\System::waitSignal()` 不能在子线程中使用
-- 仅主线程可创建异步服务器，包括 `Server`、`Http\Server`、`WebSocket\Server` 等不能在子线程中使用
+- 只能由主线程通过`swoole_async_set()` 设置线程参数
+- 只能由主线程通过`Swoole\Runtime::enableCoroutine()` 和 `Swoole\Runtime::setHookFlags()`设置协程参数。
+- 仅主线程可设置信号监听，包括 `Process::signal()` 和 `Coroutine\System::waitSignal()` 不能在子线程中设置。
+- 仅主线程可创建异步服务器，包括 `Server`、`Http\Server`、`WebSocket\Server` 等不能在子线程中使用。
 
-除此之外，`Runtime Hook` 在多线程模式下开启后将无法关闭。
 
-## 致命错误
-当主线程退出时，若依然存在活跃的子线程，将抛出一个致命错误，退出的状态码为：`200`，错误信息如下：
-```
-Fatal Error: 2 active threads are running, cannot exit safely.
-```
+
+## 注意
+!> 除此之外，`Runtime Hook` 在多线程模式下开启后将无法关闭。
+
+!> 当主线程退出时，若依然存在活跃的子线程，将抛出一个致命错误，退出的状态码为：`200`，错误信息如下：     
+`Fatal Error: 2 active threads are running, cannot exit safely`
 
 ## 查看是否开启线程支持
 
@@ -43,7 +43,7 @@ Copyright (c) The PHP Group
 Zend Engine v4.1.23, Copyright (c) Zend Technologies
 ```
 
-`(ZTS)` 表示已启用线程安全
+`(ZTS)` 表示已启用线程安全。
 
 ```shell
 php --ri swoole
@@ -53,7 +53,7 @@ Swoole => enabled
 thread => enabled
 ```
 
-`thread => enabled` 表示已开启多线程支持
+`thread => enabled` 表示已开启多线程支持。
 
 ### 创建多线程
 ```php
@@ -82,11 +82,11 @@ if (empty($args)) {
 ```
 
 ### 线程 + 服务端（异步风格）
-- 所有工作进程将使用线程来运行，包括 `Worker`、`Task Worker`、`User Process`
-- 新增 `SWOOLE_THREAD` 运行模式，启用后将使用线程代替进程运行
-- 增加了 [bootstrap](/server/setting?id=bootstrap) 和 [init_arguments](/server/setting?id=init_arguments) 两项配置，用于设置工作线程的入口脚本文件、线程共享数据
-- 必须在主线程中创建 `Server`，可在回调函数中创建新的 `Thread` 执行其他任务
-- `Server::addProcess()` 进程对象不支持标准输入输出重定向
+- 所有工作进程将使用线程来运行，包括 `Worker`、`Task Worker`、`User Process`。
+- 新增 `SWOOLE_THREAD` 运行模式，启用后将使用线程代替进程运行。
+- 增加了 [bootstrap](/server/setting?id=bootstrap) 和 [init_arguments](/server/setting?id=init_arguments) 两项配置，用于设置工作线程的入口脚本文件、线程共享数据。
+- 必须在主线程中创建 `Server`，可在回调函数中创建新的 `Thread` 执行其他任务。
+- `Server::addProcess()` 进程对象不支持标准输入输出重定向。
 
 ```php
 use Swoole\Process;

@@ -1,6 +1,6 @@
 # Event
 
-`Swoole`扩展还提供了直接操作底层`epoll/kqueue`事件循环的接口。可将其他扩展创建的`socket`，`PHP`代码中`stream/socket`扩展创建的`socket`等加入到`Swoole`的[EventLoop](/learn?id=什么是eventloop)中，
+`Swoole`扩展还提供了直接操作底层`epoll/kqueue/poll/select`事件循环的接口。可将其他扩展创建的`socket`，`PHP`代码中`stream/socket`扩展创建的`socket`等加入到`Swoole`的[EventLoop](/learn?id=什么是eventloop)中，
 否则第三方的$fd如果是同步IO会导致Swoole的EventLoop得不到执行，[参考案例](/learn?id=同步io转换成异步io)。
 
 !> `Event`模块比较底层，是`epoll`的初级封装，使用者最好有IO多路复用编程经验。
@@ -41,9 +41,9 @@ Swoole\Event::add(mixed $sock, callable $read_callback, callable $write_callback
     * **其它值**：无
 
   * **`int $flags`**
-    * **功能**：事件类型的掩码【可选择关闭/开启可读可写事件，如`SWOOLE_EVENT_READ`、`SWOOLE_EVENT_WRITE`或者`SWOOLE_EVENT_READ|SWOOLE_EVENT_WRITE`】
+    * **功能**：事件类型的掩码
     * **默认值**：无
-    * **其它值**：无
+    * **其它值**：`SWOOLE_EVENT_READ`监听可读事件，`SWOOLE_EVENT_WRITE`监听可写事件，`SWOOLE_EVENT_READ|SWOOLE_EVENT_WRITE`同时监听可读可写事件
 
 * **$sock 4种类型**
 
@@ -58,7 +58,7 @@ object | `Swoole\Process`或`Swoole\Client`，底层自动转换为[UnixSocket](
 
   * 添加事件监听成功成功返回`true`
   * 添加失败返回`false`，请使用`swoole_last_error`获取错误码
-  * 已添加过的`socket`不能重复添加，可以使用`swoole_event_set`修改`socket`对应的回调函数和事件类型
+  * 已添加过的`socket`不能重复添加，重复添加同一个`socket`会抛出错误。可以使用`swoole_event_set`修改`socket`对应的回调函数和事件类型
 
   !> 使用`Swoole\Event::add`将`socket`加入到事件监听后，底层会自动将该`socket`设置为非阻塞模式
 
@@ -95,9 +95,10 @@ Swoole\Event::set($fd, mixed $read_callback, mixed $write_callback, int $flags):
 * **参数** 
 
   * 参数与[Event::add](/event?id=add)完全相同。如果传入`$fd`在[EventLoop](/learn?id=什么是eventloop)中不存在返回`false`。
-  * 当`$read_callback`不为`null`时，将修改可读事件回调函数为指定的函数
-  * 当`$write_callback`不为`null`时，将修改可写事件回调函数为指定的函数
-  * `$flags`可关闭/开启，可写（`SWOOLE_EVENT_READ`）和可读（`SWOOLE_EVENT_WRITE`）事件的监听  
+  * 当`$read_callback`不为`null`时，将修改可读事件回调函数为指定的函数。
+  * 当`$write_callback`不为`null`时，将修改可写事件回调函数为指定的函数。
+  * 如果`$flags`为`SWOOLE_EVENT_READ`，意味着只监听可读事件，停止监听可写事件。
+  * 如果`$flags`为`SWOOLE_EVENT_WRITE`，意味着只监听可写事件，停止监听可读事件。 
 
   !> 注意如果监听了`SWOOLE_EVENT_READ`事件，而当前并未设置`read_callback`，底层会直接返回`false`，添加失败。`SWOOLE_EVENT_WRITE`同理。
 
@@ -198,9 +199,9 @@ Event::add($fp, function($fp) {
 Event::write($fp, $data);
 ```
 
-#### SOCKET缓存区已满后，Swoole的底层逻辑
+#### socket缓存区已满后，Swoole的底层逻辑
 
-持续写入`SOCKET`如果对端读取不够快，那`SOCKET`缓存区会塞满。`Swoole`底层会将数据存到内存缓存区中，直到可写事件触发再写入`SOCKET`。
+持续写入`socket`如果对端读取不够快，那`socket`缓存区会塞满。`Swoole`底层会将数据存到内存缓存区中，直到可写事件触发再写入`socket`。
 
 如果内存缓存区也被写满了，此时`Swoole`底层会抛出`pipe buffer overflow, reactor will block.`错误，并进入阻塞等待。
 
