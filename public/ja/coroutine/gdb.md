@@ -1,6 +1,6 @@
-# コレージのデバッグ
+# コレoutineのデバッグ
 
-Swooleコレージを使用する際には、以下の方法でデバッグを行うことができます。
+Swooleコレoutineを使用する際には、以下の方法でデバッグを行うことができます。
 
 ## GDBデバッグ
 
@@ -24,7 +24,7 @@ gdb php test.php
 (gdb) b zim_swoole_coroutine_util_sleep
 ```
 
-### 現在のプロセスのすべてのコレージと状態を印刷する <!-- {docsify-ignore} -->
+### 現在のプロセスのすべてのコレoutineと状態を印刷する <!-- {docsify-ignore} -->
 
 ```shell
 (gdb) co_list 
@@ -32,7 +32,7 @@ coroutine 1 SW_CORO_YIELD
 coroutine 2 SW_CORO_RUNNING
 ```
 
-### 現在の実行中のコレージの呼び出しスタックを印刷する <!-- {docsify-ignore} -->
+### 現在の実行中のコレoutineの呼び出しスタックを印刷する <!-- {docsify-ignore} -->
 
 ```shell
 (gdb) co_bt 
@@ -43,7 +43,7 @@ coroutine cid:[2]
 [0x7ffff141e030] (main) /home/shiguangqi/php/swoole-src/examples/coroutine/exception/test.php:10
 ```
 
-### 指定のコレージIDの呼び出しスタックを印刷する <!-- {docsify-ignore} -->
+### 指定のコレoutine IDの呼び出しスタックを印刷する <!-- {docsify-ignore} -->
 
 ``` shell
 (gdb) co_bt 1
@@ -53,7 +53,7 @@ coroutine cid:[2]
 [0x7ffff141e030] (main) /home/shiguangqi/php/swoole-src/examples/coroutine/exception/test.php:10 
 ```
 
-### 全局コレージの状態を印刷する <!-- {docsify-ignore} -->
+### 全局コレoutineの状態を印刷する <!-- {docsify-ignore} -->
 
 ```shell
 (gdb) co_status 
@@ -65,17 +65,17 @@ coroutine cid:[2]
 	 peak_coro_num: 2
 ```
 
-## PHPコードのデバッグ
+## PHPコードデバッグ
 
-現在のプロセスのすべてのコレージを巡り、呼び出しスタックを印刷します。
+現在のプロセスのすべてのコレoutineを traversalし、呼び出しスタックを印刷します。
 
 ```php
 Swoole\Coroutine::listCoroutines(): Swoole\Coroitine\Iterator
 ```
 
-!> `4.1.0`またはそれ以上のバージョンが必要です
+!> `4.1.0`またはそれ以上のバージョンが必要です。
 
-* 迭代器を返し、`foreach`で巡ったり、`iterator_to_array`で配列に変換することができます
+* 迭代器を返し、`foreach`で traversalするか、`iterator_to_array`で配列に変換することができます。
 
 ```php
 use Swoole\Coroutine;

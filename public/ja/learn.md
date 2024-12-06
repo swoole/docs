@@ -1,16 +1,17 @@
-# 基礎知識
-## 四種設定コールバック関数の方法
+#的基础知识
 
-* **匿名関数**
+##四种设置回调函数的方式
+
+* **匿名函数**
 
 ```php
 $server->on('Request', function ($req, $resp) use ($a, $b, $c) {
     echo "hello world";
 });
 ```
-!> `use`を使って匿名関数にパラメータを渡すことができる
+不使用`use`向匿名函数传递参数
 
-* **クラスの静的メソッド**
+* **类静态方法**
 
 ```php
 class A
@@ -23,9 +24,9 @@ class A
 $server->on('Request', 'A::Test');
 $server->on('Request', array('A', 'Test'));
 ```
-!>対応する静的メソッドは`public`でなければならない
+对应的静态方法必须为`public`
 
-* **関数**
+* **函数**
 
 ```php
 function my_onRequest($req, $resp)
@@ -35,7 +36,7 @@ function my_onRequest($req, $resp)
 $server->on('Request', 'my_onRequest');
 ```
 
-* **オブジェクトのメソッド**
+* **对象方法**
 
 ```php
 class A
@@ -50,43 +51,45 @@ $object = new A();
 $server->on('Request', array($object, 'test'));
 ```
 
-!> 対応するメソッドは`public`でなければならない
-## 同步IO/非同期IO
+对应的方法必须为`public`
 
-`Swoole4+`の下では、すべてのビジネスコードが同期書きであり（`Swoole1.x`時代には非同期書きがサポートされていましたが、現在は非同期クライアントが移除され、対応するニーズは完全にキャプチャされたキャプチャクライアントで実現できます）、心の負担がまったくなく、人間の思考習慣に合っていますが、同期書きの下層には「同期IO/非同期IO」が存在する可能性があります。
+##同步IO/异步IO
 
-同期IO/非同期IOにかかわらず、「Swoole/Server」は多くの`TCP`クライアント接続を維持することができます（[SWOOLE_PROCESSモード](/learn?id=swoole_process)を参照）。あなたのサービスがブロッキングなのか非ブロッキングなのかは、コード内に同期IOの操作があるかどうかによって異なり、特別なパラメータを設定する必要はありません。
+在`Swoole4+`下所有的业务代码都是同步写法（`Swoole1.x`时代才支持异步写法，现在已经移除了异步客户端，对应的需求完全可以用协程客户端实现），完全没有心智负担，符合人类思维习惯，但同步的写法底层可能有`同步IO/异步IO`之分。
 
-**同期IOとは何ですか：**
+无论是同步IO/异步IO，`Swoole/Server`都可以维持大量`TCP`客户端连接(参考[SWOOLE_PROCESS模式](/learn?id=swoole_process))。你的服务是阻塞还是非阻塞不需要单独的配置某些参数，取决于你的代码里面是否有同步IO的操作。
 
-単純な例として、「MySQL->query」が実行されたとき、このプロセスは何もしないで、MySQLからの結果を待ちます。結果が返ってきた後、次のコードを実行します。したがって、同期IOのサービスの並行能力は非常に悪いです。
-
-**同期IOのコードとは何ですか：**
-
- * [ワンタッチキャプチャ](/runtime)を開始していない場合、コードのほとんどのIO操作が同期IOであり、キャプチャ化された後、それは非同期IOになります。プロセスはそこで無駄に待つことはありません。キャプチャスケジュールについて[参考](/coroutine?id=协程调度)を参照してください。
- * 一部の「IO」はワンタッチキャプチャではできず、同期IOを非同期IOに変えることができないため、例えば「MongoDB」（「Swoole」がこの問題を解決すると信じられる）などです。コードを書く際に注意が必要です。
-
-!> [キャプチャ](/coroutine)は並行性を高めるためのものですが、もし私のアプリケーションに高並行性がなかったり、非同期化できないIO操作（上記のMongoDBのような）が必要な場合は、「ワンタッチキャプチャ」を開始せずに、「enable_coroutine」を「off」にし、より多くの「Worker」プロセスを開始することができます。これは「Fpm/Apache」と同じモデルです。注目すべきは、「Swoole」が常駐プロセスであるため、同期IOの性能も大幅に向上し、実際には多くの企業がこの方法を採用していることです。
-### 同期IOから非同期IOへの変換
-
-前節では、同期/非同期IOが何であるかについて説明しましたが、「Swoole」の下では、同期の「IO」操作が非同期IOに変換できる場合があります。
+**什么是同步IO：**
  
- - [ワンタッチキャプチャ](/runtime)を有効にした後、「MySQL」、「Redis」、「Curl」などの操作は非同期IOになります。
- - [Event](/event)モジュールを利用して手動でイベントを管理し、fdを[EventLoop](/learn?id=何がeventloop)に追加することで、非同期IOになります。例：
+简单的例子就是执行到`MySQL->query`的时候，这个进程什么事情都不做，等待MySQL返回结果，返回结果后再向下执行代码，所以同步IO的服务并发能力是很差的。
+
+**什么样的代码是同步IO：**
+
+ * 没有开启[一键协程化](/runtime)的时候，那么你的代码里面绝大部分涉及IO的操作都是同步IO的，协程化后，就会变成异步IO，进程不会傻等在那里，参考[协程调度](/coroutine?id=协程调度)。
+ * 有些`IO`是没法一键协程化，没法将同步IO变为异步IO的，例如`MongoDB`(相信`Swoole`会解决这个问题)，需要写代码时候注意。
+
+不使用[协程](/coroutine)是为了提高并发的，如果我的应用就没有高并发，或者必须要用某些无法异步化IO的操作(例如上文的MongoDB)，那么你完全可以不开启[一键协程化](/runtime)，关闭[enable_coroutine](/server/setting?id=enable_coroutine)，多开一些`Worker`进程，这就是和`Fpm/Apache`是一样的模型了，值得一提的是由于`Swoole`是常驻进程的，即使同步IO性能也会有很大提升，实际应用中也有很多公司这样做。
+
+###同步IO转换成异步IO
+
+[上小节](/learn?id=同步io异步io)介绍了什么是同步/异步IO，在`Swoole`下面，有些情况同步的`IO`操作是可以转换成异步IO的。
+ 
+ - 开启[一键协程化](/runtime)后，`MySQL`、`Redis`、`Curl`等操作会变成异步IO。
+ - 利用[Event](/event)模块手动管理事件，将fd加到[EventLoop](/learn?id=什么是eventloop)里面，变成异步IO，例子：
 
 ```php
-//inotifyを利用してファイルの変化を監視
+//利用inotify监控文件变化
 $fd = inotify_init();
-//$fdをSwooleのEventLoopに追加
+//将$fd添加到Swoole的EventLoop
 Swoole\Event::add($fd, function () use ($fd){
-    $var = inotify_read($fd);//ファイルが変化した後、変化したファイルを読み出す。
+    $var = inotify_read($fd);//文件发生变化后读取变化的文件。
     var_dump($var);
 });
 ```
 
-上記のコードを実行しないと、IOは非同期にならず、「inotify_read()」はWorkerプロセスをブロックし、他のリクエストは処理されません。
+上述代码如果不调用`Swoole\Event::add`将IO异步化，直接`inotify_read()`将阻塞Worker进程，其他的请求将得不到处理。
 
- - `Swoole\Server`の[sendMessage()](/server/methods?id=sendMessage)メソッドを使用してプロセス間通信を行いますが、デフォルトの`sendMessage`は同期IOですが、場合によっては`Swoole`によって非同期IOに変換されます。例えば[Userプロセス](/server/methods?id=addprocess)を使って：
+ - 使用`Swoole\Server`的[sendMessage()](/server/methods?id=sendMessage)方法进行进程间通讯，默认`sendMessage`是同步IO，但有些情况是会被`Swoole`转换成异步IO，用[User进程](/server/methods?id=addprocess)举例：
 
 ```php
 $serv = new Swoole\Server("0.0.0.0", 9501, SWOOLE_BASE);
@@ -98,37 +101,37 @@ $serv->set(
 
 $serv->on('pipeMessage', function ($serv, $src_worker_id, $data) {
     echo "#{$serv->worker_id} message from #$src_worker_id: $data\n";
-    sleep(10);//sendMessageからのデータを受信しないで、バッファーはすぐに満たされます
+    sleep(10);//不接收sendMessage发来的数据，缓冲区将很快写满
 });
 
 $serv->on('receive', function (swoole_server $serv, $fd, $reactor_id, $data) {
 
 });
 
-//状況1：同期IO（デフォルト行動）
+//情况1：同步IO(默认行为)
 $userProcess = new Swoole\Process(function ($worker) use ($serv) {
     while (1) {
-        var_dump($serv->sendMessage("big string", 0));//デフォルトでは、バッファーが満たされた後、ここでブロックされます
+        var_dump($serv->sendMessage("big string", 0));//默认情况下，缓存区写满后，此处会阻塞
     }
 }, false);
 
-//状況2：enable_coroutineパラメータを有効にしてUserProcessプロセスのキャプチャサポートを開始し、他のキャプチャがEventLoopをスケジュールできないように、
-//SwooleはsendMessageを非同期IOに変換します
+//情况2：通过enable_coroutine参数开启UserProcess进程的协程支持，为了防止其他协程得不到 EventLoop 的调度，
+//Swoole会把sendMessage转换成异步IO
 $enable_coroutine = true;
 $userProcess = new Swoole\Process(function ($worker) use ($serv) {
     while (1) {
-        var_dump($serv->sendMessage("big string", 0));//バッファーが満たされた後、プロセスはブロックされず、エラーが発生します
+        var_dump($serv->sendMessage("big string", 0));//缓存区写满后，不会阻塞进程,会报错
     }
 }, false, 1, $enable_coroutine);
 
-//状況3：UserProcessプロセス内で異步コールバックを設定（例えば、タイマーを設定したり、Swoole\Event::add()などを設定したり）場合、
-//他のコールバック関数がEventLoopをスケジュールできないように、SwooleはsendMessageを非同期IOに変換します
+//情况3：在UserProcess进程里面如果设置了异步回调(例如设置定时器、Swoole\Event::add等)，
+//为了防止其他回调函数得不到 EventLoop 的调度，Swoole会把sendMessage转换成异步IO
 $userProcess = new Swoole\Process(function ($worker) use ($serv) {
     swoole_timer_tick(2000, function ($interval) use ($worker, $serv) {
         echo "timer\n";
     });
     while (1) {
-        var_dump($serv->sendMessage("big string", 0));//バッファーが満たされた後、プロセスはブロックされず、エラーが発生します
+        var_dump($serv->sendMessage("big string", 0));//缓存区写满后，不会阻塞进程,会报错
     }
 }, false);
 
@@ -137,34 +140,35 @@ $serv->addProcess($userProcess);
 $serv->start();
 ```
 
- - 同様に、[Taskプロセス](/learn?id=taskworkerプロセス)間の通信も`sendMessage()`を通じて行われますが、違いはTaskプロセスがキャプチャサポートを開始するのはServerの[task_enable_coroutine](/server/setting?id=task_enable_coroutine)設定によって開始され、状況3は存在しません。つまり、Taskプロセスが異步コールバックを開始した場合でも、sendMessageは非同期IOにはなりません。
-## EventLoopとは何ですか
+同理，[Task进程](/learn?id=taskworker进程)通过`sendMessage()`进程间通讯是一样的，不同的是task进程开启协程支持是通过Server的[task_enable_coroutine](/server/setting?id=task_enable_coroutine)配置开启，并且不存在`情况3`，也就是说task进程不会因为开启异步回调就将sendMessage异步IO。
 
-「EventLoop」とは、イベントループのことで、簡単に言えばepoll_waitで、すべてのイベントが発生するハンドル（fd）をepoll_waitに追加します。これらのイベントには、読み込み可能、書き込み可能、エラーなどが含まれます。
+##什么是EventLoop
 
-対応するプロセスはepoll_waitという内核関数によってブロックされ、イベント（またはタイムアウト）が発生した後、epoll_waitはブロックを解除して結果を返し、それによって対応するPHP関数を呼び出します。例えば、クライアントからのデータを受信し、「onReceive」のコールバック関数に呼び出します。
+所谓`EventLoop`，即事件循环，可以简单的理解为epoll_wait，会把所有要发生事件的句柄（fd）加入到`epoll_wait`中，这些事件包括可读，可写，出错等。
 
-大量のfdがepoll_waitに追加され、同時に多くのイベントが発生した場合、epoll_waitが返したときには、対応するコールバック関数が順番に呼ばれます。これを「イベントループ」と呼び、IOマルチポートを実現します。その後、再びepoll_waitによってブロックされ、次のイベントループを行います。
+对应的进程就阻塞在`epoll_wait`这个内核函数上，当发生了事件(或超时)后`epoll_wait`这个函数就会结束阻塞返回结果，就可以回调相应的PHP函数，例如，收到客户端发来的数据，回调`onReceive`回调函数。
+
+当有大量的fd放入到了`epoll_wait`中，并且同时产生了大量的事件，`epoll_wait`函数返回的时候就会挨个调用相应的回调函数，叫做一轮事件循环，即IO多路复用，然后再次阻塞调用`epoll_wait`进行下一轮事件循环。
 ## TCPデータパケットの境界問題
 
-並行性がない場合は、「スピードアップ中のコード」（/start/start_tcp_server）は正常に動作できますが、並行性が高くなるとTCPデータパケットの境界問題が発生します。TCPプロトコルは、UDPプロトコルの順序とパケットの損失リピーターの問題を低レベルで解決していますが、UDPに比べて新しい問題が生じます。TCPプロトコルは流式的であり、データパケットには境界がありません。そのため、アプリケーションがTCPで通信する際にはこれらの難問に直面します。これを俗にTCP粘包問題と呼びます。
+並発がない場合[クイックスタート中のコード](/start/start_tcp_server)は正常に動作できますが、並発が高くなるとTCPデータパケットの境界問題が発生します。`TCP`プロトコルは基盤的なメカニズムで`UDP`プロトコルの順序とパケットの再送問題を解決していますが、`UDP`と比較して新たな問題も引き起こします。`TCP`プロトコルはストリーム型であり、データパケットには境界がありません。アプリケーションが`TCP`通信を使用すると、これらの難問に直面します。これらは俗にTCPの粘着パケット問題と呼ばれています。
 
-TCP通信が流式的であるため、大きなデータパケットを受信するときに、それが複数のデータパケットに分割されて送信される可能性があります。複数回の「Send」操作は、下層で一度に送信されることもあります。これを解決するためには2つの操作が必要です：
+`TCP`通信はストリーム型であるため、大きなデータパケットを受信すると、複数のデータパケットに分割されて送信される可能性があります。複数回の`Send`は基盤レベルで一度に送信される可能性もあります。ここでは2つの操作が必要です：
 
-* パケット分割：「Server」が複数のデータパケットを受信し、それを分割する必要があります。
-* パケット合計：「Server」が受信したデータはパケットの一部に過ぎず、データを緩衝して完全なパケットにまとめる必要があります。
+* パケット分割：`Server`が複数のデータパケットを受信し、データパケットを分割する必要があります。
+* パケット結合：`Server`が受信したデータがパケットの一部であるため、データをキャッシュし、完全なパケットに結合する必要があります。
 
-したがって、TCPネットワーク通信では、通信プロトコルを設定する必要があります。一般的なTCPネットワーク通信プロトコルには、「HTTP」、「HTTPS」、「FTP」、「SMTP」、「POP3」、「IMAP」、「SSH」、「Redis」、「Memcache」、「MySQL」があります。
+したがって、TCPネットワーク通信時には通信プロトコルを設定する必要があります。一般的なTCP汎用ネットワーク通信プロトコルには`HTTP`、`HTTPS`、`FTP`、`SMTP`、`POP3`、`IMAP`、`SSH`、`Redis`、`Memcache`、`MySQL`があります。
 
-注目すべきは、Swooleが多くの一般的なプロトコルの解析を内置しており、これらのプロトコルのサーバーのTCPデータパケットの境界問題を解決するために、単純な設定で済みます。参考になるのは、「open_http_protocol」（/server/setting?id=open_http_protocol）、「open_http2_protocol」（/http_server?id=open_http2_protocol）、「open_websocket_protocol」（/server/setting?id=open_websocket_protocol）、「open_mqtt_protocol」（/server/setting?id=open_mqtt_protocol）です。
+注目すべきは、Swooleが多くの一般的なプロトコルの解析を内蔵しており、これらのプロトコルのサーバーにおけるTCPデータパケットの境界問題を解決するのに非常に簡単です。単に設定するだけで済みます。[open_http_protocol](/server/setting?id=open_http_protocol)/[open_http2_protocol](/http_server?id=open_http2_protocol)/[open_websocket_protocol](/server/setting?id=open_websocket_protocol)/[open_mqtt_protocol](/server/setting?id=open_mqtt_protocol)を参照してください。
 
-一般的なプロトコルに加えて、独自のプロトコルも可能です。「Swoole」では2種類のタイプの独自のネットワーク通信プロトコルをサポートしています。
+一般的なプロトコル以外にもカスタムプロトコルを定義することができます。`Swoole`は2種類のカスタムネットワーク通信プロトコルをサポートしています。
 
-* **EOF終了符プロトコル**
+* **EOF終端文字列プロトコル**
 
-「EOF」プロトコルの処理原理は、各データパケットの終わりに特別な文字列を追加してパケットが終了したことを示します。例えば、「Memcache」、「FTP」、「SMTP」はすべて`\r\n`を終了符として使用しています。データを送信する際には、パケットの終わりに`\r\n`を追加するだけで十分です。「EOF」プロトコルを使用する場合は、データパケットの中に「EOF」が発生しないことを確認する必要があります。
+`EOF`プロトコルの処理原理は、各データパケットの最後に特別な文字列を加えてパケットが終了したことを示します。例えば`Memcache`、`FTP`、`SMTP`は`\r\n`を終端文字列として使用しています。データを送信する際には、パケットの最後に`\r\n`を加えるだけで済みます。`EOF`プロトコルを使用する場合、データパケットの途中に`EOF`が現れることは絶対に避けなければなりません。そうでなければ分包エラーを引き起こす可能性があります。
 
-「Server」と「Client」のコードでは、2つのパラメータを設定するだけで「EOF」プロトコルを使用することができます。
+`Server`と`Client`のコードでは、単に2つのパラメータを設定するだけで`EOF`プロトコルを使用して処理できます。
 
 ```php
 $server->set(array(
@@ -177,7 +181,7 @@ $client->set(array(
 ));
 ```
 
-しかし、上記の「EOF」の設定は性能が低くなります。Swooleは各ビットを走査して、データが`\r\n`かどうかを確認し、上記の方法以外にも次のように設定することができます。
+しかし、上記の`EOF`設定の性能は比較的低く、Swooleは各バイトを走査してデータが`\r\n`かを確認します。上記の方法以外にも次のように設定できます。
 
 ```php
 $server->set(array(
@@ -189,142 +193,191 @@ $client->set(array(
     'package_eof' => "\r\n",
 ));
 ```
-この設定は性能がずっと良くなります。データを走査することなく、パケットの分割問題だけを解決できますが、パケットの合計問題を解決できません。つまり、Clientから一度のリクエストを受け取った後、Server側がそのリクエストに対する応答データを返すのを待たなければならず、同時に2つのリクエストを送信することはありません。
+この設定の性能はずっと良くなり、データの走査は必要ありませんが、分包問題を解決するだけで、合包問題は解決できません。つまり、`onReceive`で一度にクライアントから複数のリクエストを受け取った場合、自分で分包する必要があります。例えば`explode("\r\n", $data)`のように。この設定の最大の用途は、リクエスト応答型のサービス（例えばターミナルで命令を入力する）では、データの分割を考慮する必要がないことです。その理由は、クライアントが一度のリクエストを送信した後、サーバー側が現在のリクエストの応答データ返回するのを待ってから、次のリクエストを送りません。同時に2つのリクエストを送信することはありません。
 
-* **固定ヘッダ+パケット体プロトコル**
+* **固定ヘッダ+ボディプロトコル**
 
-固定ヘッダの方法は非常に一般的で、サーバ端末プログラムでよく見られます。このプロトコルの特徴は、データパケットが常にヘッダとパケット体の2部分から構成されていることです。ヘッダには、パケット体または全体のパケットの長さを示すフィールドがあり、長さは通常「2」バイト/「4」バイトの整数で表されます。サーバはヘッダを受信した後、長さの値に基づいて、必要なデータをどれだけ受信するかを正確に制御できます。Swooleの設定はこのプロトコルをよくサポートしており、すべての状況に対応するために柔軟に4つのパラメータを設定することができます。
+固定ヘッダの方法は非常に汎用的であり、サーバー側のプログラムでよく見られます。このプロトコルの特徴は、データパケットが常にヘッダ+ボディの2つの部分で構成されていることです。ヘッダはボディまたは全体のパケットの長さを指定するフィールドがあり、長さは通常、2バイト/4バイトの整数で表されます。サーバーはヘッダを受信した後、長さの値に基づいて、完全なデータパケットとしてさらにどれだけのデータを受信する必要があるかを正確に制御できます。Swooleの設定はこのようなプロトコルを非常によくサポートしており、柔軟に4つのパラメータを設定してすべての状況に対応できます。
 
-「Server」は[onReceive](/server/events?id=onreceive)コールバック関数でデータパ
+`Server`は[onReceive](/server/events?id=onreceive)回调関数でデータパケットを処理し、プロトコル処理を設定した後、完全なデータパケットを受信したときにのみ[onReceive](/server/events?id=onreceive)イベントがトリガーされます。クライアントはプロトコル処理を設定した後、[$client->recv()](/client?id=recv)を呼び出す際に長さを渡す必要がなくなります。`recv`関数は完全なデータパケットを受信したり、エラーが発生した後に返回します。
+
+```php
+$server->set(array(
+    'open_length_check' => true,
+    'package_max_length' => 81920,
+    'package_length_type' => 'n', //see php pack()
+    'package_length_offset' => 0,
+    'package_body_offset' => 2,
+));
+```
+
+!> 各設定の具体的な意味は、「サーバー/クライアント」の章の[設定](/server/setting?id=open_length_check)小节を参照してください。
+
+## IPCとは何か
+
+同じホスト上の2つのプロセス間の通信（略称IPC）には多くの方法がありますが、Swooleでは`Unix Socket`と`sysvmsg`の2つの方法を使用しています。以下にそれぞれ紹介します：
+
+- **Unix Socket**  
+
+    全名 UNIX Domain Socket、略称`UDS`は、ソケットのAPI（socket、bind、listen、connect、read、write、closeなど）を使用し、TCP/IPとは異なりIPとポートを指定する必要はなく、ファイル名で表されます（例えばFPMとNginxの間の`/tmp/php-fcgi.sock`）。UDSはLinuxカーネルが実現する全メモリ通信であり、いかなる`IO`消費もありません。1プロセスがwriteし、別のプロセスがreadし、1024バイトのデータを100万回通信するテストでは、わずか1.02秒で完了し、非常に強力です。SwooleではデフォルトでこのIPC方法を使用しています。  
+      
+    * **`SOCK_STREAM`と`SOCK_DGRAM`**  
+
+        - SwooleではUDS通信には2つのタイプがあり、`SOCK_STREAM`と`SOCK_DGRAM`です。これはTCPとUDPの違いを簡単に理解できます。`SOCK_STREAM`タイプを使用する場合も[TCPデータパケットの境界問題](/learn?id=tcp数据包边界问题)を考慮する必要があります。  
+        - `SOCK_DGRAM`タイプを使用する場合、TCPデータパケットの境界問題を考慮する必要はありません。各`send()`のデータには境界があり、どれだけ大きなデータを送信しても受信したデータの大きさと同じであり、伝送過程でのパケットの損失や乱序の問題は発生しません。`send`の写入と`recv`の読み取りの順序は完全に一致しています。`send`が成功返回した後、必ず`recv`で受信できます。  
+
+    IPCで伝送されるデータが小さい場合は、`SOCK_DGRAM`この方法が非常に適しています。**IPパケットには最大64kの制限があるため、SOCK_DGRAMでIPCを行う際には、一度に送信するデータは64kを超えることはできず、同時に受信速度が遅すぎてオペレーティングシステムのバッファが満たされてパケットが捨てられることに注意する必要があります。UDPはパケットの損失を許しているので、バッファを適切に大きくすることができます。**
+
 - **sysvmsg**
      
-    Linuxによって提供される「メッセージキューシステム」で、この「IPC」方式はファイル名を「キー」として使用してコミュニケーションを行います。この方式は非常に柔軟ではなく、実際のプロジェクトでの使用は多くありません。ここでは詳しく説明しません。
+    Linuxが提供する「メッセージキュー」は、このIPC方法で、ファイル名を`key`として通信します。この方法は非常に非柔軟で、実際のプロジェクトでの使用はそれほど多くありません。詳細は省略します。
 
-    * **このIPC方式は2つのシナリオで役立ちます:**
+    * **このIPC方法が役立つシーンは以下の2つだけです:**
 
-        - データの損失を防ぐため、サービス全体が停止した場合でも、キュー内のメッセージは残り、消費を続けることができますが、同時にデータの歪みも発生します。
-        - 外部からデータを投げ込むことができます。例えば、Swooleの「Workerプロセス」が「Taskプロセス」にメッセージを投げ、第三方的なプロセスもキューにタスクを投げ、Taskが消費することができます。さらに、コマンドラインから手動でメッセージをキューに追加することもできます。
-## Masterプロセス、Reactorタイム、Workerプロセス、Taskプロセス、Managerプロセスの違いと関連性 :id=diff-process
+        - データの損失を防ぐため、もしサービス全体が停止しても、キューに残されたメッセージは残り、消費を続けることができます。**しかし、やはり汚れたデータの問題があります。**
+        - 外部からデータを投入することができ、例えばSwooleの`Workerプロセス`が`Taskプロセス`にメッセージキューを通じてタスクを投入したり、サードパーティのプロセスもタスクをキューに投入してTaskが消費したり、コマンドラインから手動でメッセージをキューに追加することもできます。
+## Masterプロセス、Reactorスレッド、Workerプロセス、Taskプロセス、Managerプロセスの違いと関連性 :id=diff-process
+
 ### Masterプロセス
 
-* Masterプロセスはマルチタスクプロセスであり、[プロセス/タスク構造図](/server/init?id=プロセスタスク構造図)を参照してください。
-### Reactorタイム
+* Masterプロセスはマルチスレッドプロセスで、[プロセス/スレッド構造図](/server/init?id=プロセススレッド構造図)を参照してください。
 
-* ReactorタイムはMasterプロセス内で作成されるタイムラインです。
-* クライアントの「TCP」接続の維持、ネットワーク「IO」の処理、プロトコルの処理、データの送受信を担当します。
-* PHPコードを実行しません。
-* 「TCP」クライアントからのデータをバッファリングし、結合し、完整なリクエストパケットに分割します。
+### Reactorスレッド
+
+* ReactorスレッドはMasterプロセス内で作成されるスレッドです。
+* クライアントの`TCP`接続を維持し、ネットワーク`IO`を処理し、プロトコルを処理し、データを送受信します。
+* PHPコードは実行しません。
+* `TCP`クライアントからのデータをバッファし、組み立て、分割して完全な一つのリクエストデータパケットにします。
+
 ### Workerプロセス
 
-* 「Reactor」タイムから投げられたリクエストパケットを受け取り、「PHP」カーボン回调関数でデータを処理します。
-* レスポンスデータを生成して「Reactor」タイムに送り、そのタイムが「TCP」クライアントに送信します。
-* アダプタメント非ブロッキングモードか、同期ブロッキングモードかのどちらかです。
-* 「Worker」はマルチプロセスで運用されます。
+* Reactorスレッドから投与されたリクエストデータパケットを受け取り、PHP回调関数を実行してデータを処理します。
+* 応答データを生成し、Reactorスレッドに同時に送信し、Reactorスレッドが`TCP`クライアントに送信します。
+* 异步非阻塞モードでも同步阻塞モードでも実行できます。
+* Workerはマルチプロセスで動作します。
+
 ### TaskWorkerプロセス
 
-* 「Worker」プロセスがSwoole\Server->[task](/server/methods?id=task)/[taskwait](/server/methods?id=taskwait)/[taskCo](/server/methods?id=taskCo)/[taskWaitMulti](/server/methods?id=taskWaitMulti)メソッドを通じて投げたタスクを受け取り、タスクを処理し、結果データを「Worker」プロセスに返します。（[Swoole\Server->finish](/server/methods?id=finish)を使用）
-* 完全に「同期ブロッキング」モードです。
-* 「TaskWorker」はマルチプロセスで運用され、「task」の完全な例は[/start/start_task](/start/start_task)です。
+* WorkerプロセスがSwoole\Server->task/[taskwait]/[taskCo]/[taskWaitMulti]メソッドを通じて投与されたタスクを受け取り、タスクを処理し、結果データをWorkerプロセスに戻します（Swoole\Server->finishメソッドを使用）。
+* 完全に**同步阻塞**モードです。
+* TaskWorkerはマルチプロセスで動作し、taskの完全な例は[start/start_task]を参照してください。
+
 ### Managerプロセス
 
-* 「worker」/「task」プロセスの作成/回収を担当します。
+* worker/taskプロセスの作成/回収を担当します。
 
-彼らの関係は、「Reactor」が「nginx」であり、「Worker」が「PHP-FPM」であると理解できます。「Reactor」タイムはネットワークリクエストを非同期的に並行して処理し、その後「Worker」プロセスに転送します。「Reactor」と「Worker」は[unixSocket](/learn?id=何がIPC)を介して通信します。
+彼らの関係はReactorがnginxであり、WorkerがPHP-FPMであると理解できます。Reactorスレッドは异步に並行的にネットワークリクエストを処理し、それらをWorkerプロセスに転送して処理します。ReactorとWorkerの間では[unixSocket](/learn?id=什么是IPC)を使用して通信します。
 
-「PHP-FPM」のアプリケーションでは、しばしばタスクを「Redis」などのキューに非同期的に投げ込み、後台でいくつかの「PHP」プロセスを異步的に実行してこれらのタスクを処理します。「Swoole」が提供する「TaskWorker」は、タスクの投げ込み、キュー、PHPタスク処理プロセスの管理を一体化したより完全なソリューションです。下位レベルのAPIを通じて、非同期的なタスク処理を非常に簡単に実現できます。さらに、「TaskWorker」はタスクが実行された後、結果を「Worker」にフィードバックすることもできます。
+PHP-FPMのアプリケーションでは、よくタスクをRedisなどのキューに异步に投与し、バックグラウンドでいくつかのPHPプロセスを异步にこれらのタスクを処理します。Swooleが提供するTaskWorkerは、タスクの投与、キュー、PHPタスク処理プロセスの管理を一体化したより完全なソリューションです。底层の提供されるAPIを使用して、异步タスクの処理を非常に簡単に実現できます。また、TaskWorkerはタスク実行完了後に、Workerに結果をフィードバックすることもできます。
 
-「Swoole」の「Reactor」、「Worker」、「TaskWorker」は密接に組み合わさり、より高度な使用方法を提供します。
+SwooleのReactor、Worker、TaskWorkerは密接に組み合わさることができ、より高度な使用方法を提供します。
 
-もっと分かりやすい比喩をすると、「Server」は工場であり、「Reactor」は販売であり、顧客の注文を受けます。そして「Worker」は労働者であり、販売が注文を受けた後、「Worker」は仕事をして顧客が欲しいものを生産します。「TaskWorker」は行政スタッフと考えられることができ、労働者が雑用をして、労働者が専門的な仕事に集中できるように手伝います。
+もっと一般的な比喩では、Serverが工場であるならば、Reactorはセールスマンであり、顧客の注文を受け付けます。Workerは労働者であり、セールスマンが注文を受け取った後、Workerが働き、顧客が必要とするものを生産します。TaskWorkerは行政職員と理解でき、Workerが雑事を手伝い、Workerが集中して働くことができます。
 
-図のように：
+図：
 
 ![process_demo](_images/server/process_demo.png)
+
 ## Serverの3つの運用モードの紹介
 
-「Swoole\Server」の構造函数の第三引数には、3つの常量値を埋めることができます -- [SWOOLE_BASE](/learn?id=swoole_base)、[SWOOLE_PROCESS](/learn?id=swoole_process)および[SWOOLE_THREAD](/learn?id=swoole_thread)。以下では、これら3つのモードの違いと利点についてそれぞれ説明します。
+Swoole\Serverのコンストラクタの3番目のパラメータには、3つの定数値を填めることができます -- [SWOOLE_BASE](/learn?id=swoole_base)、[SWOOLE_PROCESS](/learn?id=swoole_process)および[SWOOLE_THREAD](/learn?id=swoole_thread)。以下では、これら3つのモードの違いと利点と欠点をそれぞれ紹介します。
+
 ### SWOOLE_PROCESS
 
-SWOOLE_PROCESSモードの「Server」は、すべてのクライアントのTCP接続が[マスタープロセス](/learn?id=reactor线程)と建立されます。内部実装はかなり複雑で、多くのプロセス間通信、プロセス管理メカニズムが使用されます。ビジネスロジックが非常に複雑なシナリオに適しています。「Swoole」は完全なプロセス管理、メモリ保護メカニズムを提供しています。
-ビジネスロジックが非常に複雑な場合でも、長期にわたって安定して運用できます。
+SWOOLE_PROCESSモードのServerは、すべてのクライアントのTCP接続が[マスタープロセス](/learn?id=reactor线程)と構築されており、内部実装は複雑で、プロセス間の通信やプロセス管理メカニズムが大量に使用されています。ビジネスロジックが非常に複雑なシナリオに適しています。Swooleは完全なプロセス管理とメモリ保護メカニズムを提供しています。
+ビジネスロジックが非常に複雑な場合でも、長期にわたって安定して実行できます。
 
-「Swoole」は[Reactor](/learn?id=reactor线程)线程で「Buffer」機能を提供し、多数の遅い接続や文字一滴ごとの悪意のあるクライアントに対応できます。
+Swooleは[Reactor](/learn?id=reactor线程)スレッド内でBuffer機能を提供しており、多くの低速接続や逐字节的悪意のあるクライアントに対応できます。
 
 #### プロセスモードの利点：
 
-* 接続とデータリクエストの送信は分離しており、特定の接続が多いか少ないかによって「Worker」プロセスが不均衡になることはありません。
-* 「Worker」プロセスが致命的なエラーを発生した場合でも、接続は切断されません。
-* 単一接続の並行性を実現し、わずかな「TCP」接続だけを維持し、リクエストは複数の「Worker」プロセスで並行して処理できます。
+* 接続とデータリクエストの送信は分離されており、一部の接続のデータ量が多く、別の接続のデータ量が少ないためにWorkerプロセスが不均衡にならない
+* Workerプロセスが致命的なエラーが発生した場合でも、接続は切断されない
+* 単一接続の並行性を実現でき、少量のTCP接続のみを維持し、リクエストは複数のWorkerプロセスで並行して処理される
 
 #### プロセスモードの欠点：
 
-* 2回の「IPC」のオーバーヘッドがあり、マスタープロセスと「worker」プロセスは[unixSocket](/learn?id=何がIPC)を使用して通信する必要があります。
-* 「SWOOLE_PROCESS」はPHP ZTSをサポートしていません。この場合は、「SWOOLE_BASE」を使用するか、[single_thread](/server/setting?id=single_thread)をtrueに設定するしかありません。
+* 2回のIPCコストがあり、masterプロセスとworkerプロセスはunixSocket（/learn?id=什么是IPC）を使用して通信する必要がある
+* SWOOLE_PROCESSはPHP ZTSをサポートしていないため、この状況ではSWOOLE_BASEを使用するか、single_thread（/server/setting?id=single_thread）をtrueに設定する必要がある
+
 ### SWOOLE_BASE
 
-SWOOLE_BASEというモードは、従来の非同期非ブロッキング「Server」です。これは「Nginx」や「Node.js」などのプログラムと完全に一致しています。
+SWOOLE_BASEモードは従来の异步非阻塞Serverです。NginxやNode.jsなどのプログラムと完全に同じです。
 
-[worker_num](/server/setting?id=worker_num)のパラメータは「BASE」モードで依然として有効で、複数の「Worker」プロセスが起動します。
+[worker_num](/server/setting?id=worker_num)パラメータはBASEモードでも有効であり、複数のWorkerプロセスを起動します。
 
-TCP接続要求が入ってくると、すべての「Worker」プロセスがこの接続を争い、最終的に「Worker」プロセスが成功して直接クライアントとTCP接続を確立します。その後、この接続のすべてのデータの送受信は、「Worker」プロセスと直接通信し、マスタープロセスのReactor线程を経由して転送されません。
+TCP接続リクエストが来たら、すべてのWorkerプロセスがこの接続を奪い合い、最終的に一つのworkerプロセスが成功して直接クライアントとTCP接続を確立し、その接続のすべてのデータの送受信はこのworkerと直接通信し、masterプロセスのReactorスレッドを経由せずに行われます。
 
-* 「BASE」モードでは「Master」プロセスの役割はなく、「Manager」プロセスの役割だけがあります。
-* 各「Worker」プロセスは、[SWOOLE_PROCESS](/learn?id=swoole_process)モードでの[Reactor](/learn?id=reactor线程)线程と「Worker」プロセスの両方の責任を同時に担っています。
-* 「BASE」モードでは「Manager」プロセスはオプションであり、`worker_num=1`が設定され、`Task`や`MaxRequest`の特性を使用していない場合、下層は単独の「Worker」プロセスを直接作成し、「Manager」プロセスを作成しません。
+* BASEモードにはMasterプロセスの役割はなく、Managerプロセスの役割のみがあります。
+* 各WorkerプロセスはSWOOLE_PROCESSモードのReactorスレッドとWorkerプロセスの2つの役割を同時に担っています。
+* BASEモードではManagerプロセスはオプションであり、worker_num=1を設定し、TaskやMaxRequest特性を使用していない場合、基層は単独のWorkerプロセスを直接作成し、Managerプロセスは作成しません。
 
 #### BASEモードの利点：
 
-* 「BASE」モードは「IPC」のオーバーヘッドがなく、性能が向上します。
-* 「BASE」モードのコードはよりシンプルで、エラーが発生しにくいです。
+* BASEモードにはIPCコストがなく、性能が良い
+* BASEモードのコードはシンプルで、間違いが少ない
 
 #### BASEモードの欠点：
 
-* 「TCP」接続は「Worker」プロセス内で維持されており、特定の「Worker」プロセスが停止した場合、その「Worker」内のすべての接続が閉じられます。
-* 少数の「TCP」長い接続は、すべての「Worker」プロセスを利用できません。
-* 「TCP」接続は「Worker」と結びついており、長い接続アプリケーションでは、接続の大きさによって「Worker」プロセスの負荷が非常に高くなります。しかし、接続の大きさによっては、「Worker」プロセスの負荷が非常に低くなります。異なる「Worker」プロセスでは均等に実現できません。
-* 回调関数にブロッキング操作がある場合、Serverは同期モードに退化し、TCPの[backlog](/server/setting?id=backlog)キューが満たされる問題が発生しやすくなります。
+* TCP接続はWorkerプロセス内で維持されているため、あるWorkerプロセスが落ちた場合、そのWorker内のすべての接続が閉じられる
+* 少量のTCP長接続はすべてのWorkerプロセスを利用できない
+* TCP接続とWorkerは結びついているため、長接続アプリケーションでは一部の接続のデータ量が多く、これらの接続があるWorkerプロセスの負荷は非常に高くなります。しかし、一部の接続のデータ量が少ないため、Workerプロセスの負荷は非常に低くなります。異なるWorkerプロセス間でバランスが取れません。
+* 回调関数にブロック操作が含まれていると、Serverは同期モードに退化し、TCPの[backlog](/server/setting?id=backlog)キューがいっぱいに塞がる問題が発生する可能性があります。
 
 #### BASEモードの適用シナリオ：
 
-* クライアント間のインタラクションが不要な場合は、「BASE」モードを使用できます。例えば、「Memcache」、「HTTP」サーバーなどです。
+クライアント間の対話が必要ない場合は、BASEモードを使用できます。例えばMemcacheやHTTPサーバーなどです。
 
 #### BASEモードの制限：
 
-「BASE」モードでは、「Server」の[方法](/server/methods)は[send](/server/methods?id=send)と[close](/server/methods?id=close)を除いて、他のすべての方法は**プロセス間実行**をサポートしていません。
+BASEモードでは、Serverメソッド（/server/methods）はsend（/server/methods?id=send）とclose（/server/methods?id=close）以外の方法が**跨プロセス実行**をサポートしていません。
 
-!> v4.5.xバージョンの「BASE」モードでは「send」方法のみがプロセス間実行をサポートしています。v4.6.xバージョンでは「send」と「close」のみがサポートしています。
+!> v4.5.xのバージョンでは、BASEモードではsendメソッドのみが跨プロセス実行をサポートしています。v4.6.xバージョンでは、sendとcloseメソッドのみがサポートされています。
 ### SWOOLE_THREAD
 
-SWOOLE_THREADは「Swoole 6.0」によって導入された新しい運用モードで、PHPのztsモードを利用して、多线程モードのサービスを開始することができます。
+SWOOLE_THREADは`Swoole 6.0`で導入された新しい実行モードで、PHPのZTS（Zend Thread Safety）モードを利用して、今ではマルチスレッドモードのサービスを開始することができます。
 
-[worker_num](/server/setting?id=worker_num)のパラメータは「THREAD」モードに依然として有効であり、多プロセスを作成することから多线程を作成することに変わり、複数の「Worker」线程が起動します。
+[worker_num](/server/setting?id=worker_num)パラメータはTHREADモードでも有効ですが、マルチプロセスを生成することからマルチスレッドを生成することになり、複数のWorkerスレッドが起動します。
 
-単一のプロセスだけがあり、子プロセスは子线程に変換され、クライアントのリクエストを受け取る責任があります。
+プロセスは一つだけで、子プロセスは子スレッドに変わり、クライアントからのリクエストを受け付けます。
 
 #### THREADモードの利点：
-* プロセス間のコミュニケーションがよりシンプルで、追加のIPCコミュニケーションのオーバーヘッドがありません。
-* プログラムのデバッグがより容易で、単一のプロセスのため、「gdb -p」がよりシンプルになります。
-* 協程並行IOプログラミングの利点を持ちながら、多线程並行実行や共有メモリスタックの利点もあります。
+* プロセス間の通信が簡単で、追加のIPC通信のコストがありません。
+*デバッグがより簡単で、一つのプロセスがあるため、`gdb -p`がより簡単です。
+* コルoutineの並列IOプログラミングの便利さがありながら、マルチスレッドの並行実行や共有メモリスタックの利点も持っています。
 
 #### THREADモードの欠点：
-* Crashが発生した場合やProcess::exit()が呼ばれた場合、プロセス全体が終了し、クライアント側でエラーのリトラストや接続再接続などの障害復旧ロジックをしっかりと実装する必要があります。また、supervisorやdocker/k8sを使用してプロセスが終了した後に自動的に再起動する必要があります。
-* ZTSとロックの操作には追加のオーバーヘッドがあり、性能がNTS多プロセス並行モデルより約10%劣る可能性があります。無状態サービスの場合は、NTS多プロセス運用方式をお勧めします。
-* プロセス間でオブジェクトやリソースを伝達することはサポートしていません。
+*クラッシュが発生したり、Process::exit()が呼び出されたりすると、プロセス全体が終了します。クライアント側ではエラーの再試行や切断后再接続などのフェイルセーフなロジックを整える必要があります。また、supervisorやdocker/k8sを使用してプロセスが終了した後に自動的に再起動する必要があります。
+* ZTSとロックの操作には追加のコストがかかり、パフォーマンスはNTSのマルチプロセス並行モデルより約10％悪化することがあります。ステートレスなサービスであれば、依然としてNTSマルチプロセスの実行方式を推奨します。
+* スレッド間でオブジェクトやリソースを渡すことはできません。
 
-#### THREADモードの適用シナリオ：
+#### THREADモードの適用シーン：
 * THREADモードはゲームサーバーや通信サーバーの開発により効率的です。
+
 ## Process、Process\Pool、UserProcessの違いは何ですか :id=process-diff
+
 ### Process
 
-[Process](/process/process)は Swooleが提供するプロセス管理モジュールで、PHPの`pcntl`を置き換えるものです。
+[Process](/process/process)はSwooleが提供するプロセス管理モジュールで、PHPの`pcntl`を置き換えます。
+ 
+* プロセス間の通信を容易に実現できます；
+*標準入力と出力をリダイレクトし、子プロセス内の`echo`は画面に印刷されず、パイプに書き出されます。キーボード入力はパイプで読み取ることができます；
+* [exec](/process/process?id=exec)インターフェースを提供し、作成されたプロセスは他のプログラムを実行でき、元のPHP親プロセスと容易に通信できます；
 
-* プロセス間のコミュニケーションを容易に実現できます；
-* 標準入力と出力をリダイレートでき、子プロセス内で`echo`は画面に出力されず、パイプに書き込まれ、キーボード入力はパイプから読み取りデータにリダイレートできます；
-* `exec`インターフェースを提供し、作成されたプロセスは他のプログラムを実行でき、元のPHP親プロセスと容易にコミュニケーションができます；
+!>协程環境では`Process`モジュールを使用することはできませんが、`runtime hook`+`proc_open`を使用して実現できます。参考：[协程プロセス管理](/coroutine/proc_open)
 
-!> 協程環境では`Process`モジュールを使用することはできませんが、`runtime hook`+`proc_open`を使用して実現できます。参考になるのは[協程プロセス管理](/coroutine/proc_open)です。
 ### Process\Pool
 
-[Process\Pool](/process/process_pool)は、Serverのプロセス管理モジュールをPHPクラスとして封じ込め、PHPコード内でSwooleのプロセス管理器を使用することをサポートしています。
+[Process\Pool](/process/process_pool)はServerのプロセス管理モジュールをPHPクラスに封装し、PHPコードでSwooleのプロセス管理器を使用できるようにしました。
 
-実際のプロジェクトでは、より長期間運用するスクリプトを書く必要があります。例えば、「Redis」、「Kafka」、「RabbitMQ」を基にしたマルチプロセスキューシステムの消費者、マルチプロセスのスパイ
+実際のプロジェクトでは、Redis、Kafka、RabbitMQなどに基づいて実装されたマルチプロセスキューのコンシューマーやマルチプロセスクローラーのような長期実行するスクリプトを書くことがよくあります。開発者は`pcntl`と`posix`関連の拡張ライブラリを使用してマルチプロセスプログラミングを実現する必要がありますが、それには深いLinuxシステムプログラミングの知識が必要であり、そうでなければ問題を容易に引き起こす可能性があります。Swooleが提供するプロセス管理器を使用することで、マルチプロセススクリプトプログラミングの作業を大幅に簡略化できます。
+
+* 作業プロセスの安定性を保証します；
+*シグナル処理をサポートします；
+* メッセージキューとTCP-Socketメッセージ配信機能をサポートします；
+
+### UserProcess
+
+`UserProcess`は[addProcess](/server/methods?id=addprocess)を使用して添加されたユーザー定義の作業プロセスで、通常は監視、報告、またはその他の特殊なタスクのために特別な作業プロセスを作成するために使用されます。
+
+`UserProcess`は[Managerプロセス](/learn?id=manager进程)にホストされるものの、[Workerプロセス](/learn?id=worker进程)と比較してより独立したプロセスであり、カスタム機能を実行するために使用されます。
