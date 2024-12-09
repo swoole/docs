@@ -1,6 +1,4 @@
-以下是文本中非代码块部分翻译成日语的内容：
 
-**
 * 安装
   * [Swooleのインストール](environment.md)
   * [拡張の衝突](getting_started/extension.md)
