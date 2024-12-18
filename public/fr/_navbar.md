@@ -1,1 +1,10 @@
-从文档中提到的链接来看，"韩语/朝鲜语"的链接实际上是一个404错误页面，这意味着该链接无法访问，可能是因为链接错误或者对应的页面不存在。因此，可以得出结论，Swoole文档目前不支持韩语/朝鲜语。
+* 语言 / Language
+    * [简体中文](https://wiki.swoole.com/zh-cn/)
+    * [繁體中文](https://wiki.swoole.com/zh-Hant/)
+    * [English](https://wiki.swoole.com/en/)
+    * [Japanese](https://wiki.swoole.com/ja/)
+    * [Korean](https://wiki.swoole.com/ko/)
+    * [French](https://wiki.swoole.com/fr/)
+    * [German](https://wiki.swoole.com/de/)
+    * [Russian](https://wiki.swoole.com/ru/)
+

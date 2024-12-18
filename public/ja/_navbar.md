@@ -1,1 +1,10 @@
-从文档中提到的链接来看，链接1和链接2的内容是相同的，都是关于Swoole文档的介绍，只是更新时间不同。链接3是一个404错误页面，提示找不到韩语/朝鲜语版本的链接。因此，正确的韩语/朝鲜语链接应该是https://wiki.swoole.com/ko/，而不是链接3。
+* 语言 / Language
+    * [简体中文](https://wiki.swoole.com/zh-cn/)
+    * [繁體中文](https://wiki.swoole.com/zh-Hant/)
+    * [English](https://wiki.swoole.com/en/)
+    * [Japanese](https://wiki.swoole.com/ja/)
+    * [Korean](https://wiki.swoole.com/ko/)
+    * [French](https://wiki.swoole.com/fr/)
+    * [German](https://wiki.swoole.com/de/)
+    * [Russian](https://wiki.swoole.com/ru/)
+
