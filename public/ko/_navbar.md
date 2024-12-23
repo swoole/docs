@@ -1,10 +1,9 @@
-* 语言 / Language
-    * [简体中文](https://wiki.swoole.com/zh-cn/)
-    * [繁體中文](https://wiki.swoole.com/zh-Hant/)
-    * [English](https://wiki.swoole.com/en/)
-    * [Japanese](https://wiki.swoole.com/ja/)
-    * [Korean](https://wiki.swoole.com/ko/)
-    * [French](https://wiki.swoole.com/fr/)
-    * [German](https://wiki.swoole.com/de/)
-    * [Russian](https://wiki.swoole.com/ru/)
-
+* 언어 / Language
+    * [간체 중문](https://wiki.swoole.com/zh-cn/)
+    * [번체 중문](https://wiki.swoole.com/zh-Hant/)
+    * [영어](https://wiki.swoole.com/en/)
+    * [일본어](https://wiki.swoole.com/ja/)
+    * [한국어](https://wiki.swoole.com/ko/)
+    * [프랑스어](https://wiki.swoole.com/fr/)
+    * [독일어](https://wiki.swoole.com/de/)
+    * [러시아어](https://wiki.swoole.com/ru/)
