@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>Swoole 文档 (Russian)</title>
+    <title>Swoole Documents (Russian)</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="description" content="由Swoole官方提供的Swoole全量新文档">
     <meta name="keywords" content="php,swoole,swoole4,swoole文档,swoole手册,swoole4文档,swoole扩展,协程">
@@ -59,7 +59,7 @@
                         page = 'README'
                     }
                     const issue =
-                        '📝 更新时间：{docsify-updated} ' + '，[修改](https://github.com/swoole/docs/edit/main/public/ru/' + page + '.md)\n';
+                        '📝 Updated at：{docsify-updated} ' + '，[Edit](https://github.com/swoole/docs/edit/main/public/ru/' + page + '.md)\n';
                     return issue + html
                 })
 
@@ -84,7 +84,7 @@
 
                 hook.doneEach(function () {
                     pangu.spacingElementByClassName('content')
-                    if (document.location.hash !== '#/') document.title += ' | Swoole4 文档'
+                    if (document.location.hash !== '#/') document.title += ' | Swoole Documents'
                 })
             }
         ]
