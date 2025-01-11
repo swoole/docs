@@ -1,10 +1,12 @@
-# Coroutine\Barrier
+# 协程同步执行屏障 Barrier
 
 在 [Swoole Library](https://github.com/swoole/library) 中底层提供了一个更便捷的协程并发管理工具：`Coroutine\Barrier` 协程屏障，或者叫协程栅栏。基于 `PHP` 引用计数和 `Coroutine API` 实现。
 
 相比于[Coroutine\WaitGroup](/coroutine/wait_group)，`Coroutine\Barrier`使用更简单一些，只需通过参数传递或者闭包的`use`语法，引入子协程函数上即可。
 
 !> Swoole 版本 >= v4.5.5 时可用。
+
+!> 该协程屏障只能用于单进程或者单线程中的多协程同步，主要作用还是让主协程等待全部子协程完成任务后再退出。
 
 ## 使用示例
 
@@ -32,6 +34,32 @@ run(function () {
     assert($count == $N);
 });
 ```
+
+## 方法
+
+### make()
+生成一个协程屏障。
+
+```php
+Coroutine\Barrier::make(): self
+```
+
+### wait()
+在所有协程还未完成任务时，主协程在该函数等待所有协程完成任务。
+
+```php
+Coroutine\Barrier::wait(Barrier &$barrier, float $timeout = -1): void
+```
+
+* **参数**
+    * `int $barrier`
+        * 功能：由`Coroutine\Barrier::make()`返回的协程屏障。
+        * 默认值：无。
+        * 其它值：无。
+    * `float $timeout`
+        * 功能：超时时间。
+        * 默认值：-1，表示永不超时。
+        * 其它值：无。
 
 ## 执行流程
 

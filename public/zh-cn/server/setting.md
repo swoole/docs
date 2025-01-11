@@ -166,40 +166,6 @@ $server->set([
 ]);
 ```
 
-### hook_flags
-
-?> **设置`一键协程化`Hook的函数范围。**【默认值：不hook】
-
-!> Swoole版本为 `v4.5+` 或 [4.4LTS](https://github.com/swoole/swoole-src/tree/v4.4.x) 可用，详情参考[一键协程化](/runtime)
-
-```php
-$server->set([
-    'hook_flags' => SWOOLE_HOOK_SLEEP,
-]);
-```
-底层支持以下协程化项，可使用`SWOOLE_HOOK_ALL`表示协程化全部：
-
-* `SWOOLE_HOOK_TCP`
-* `SWOOLE_HOOK_UNIX`
-* `SWOOLE_HOOK_UDP`
-* `SWOOLE_HOOK_UDG`
-* `SWOOLE_HOOK_SSL`
-* `SWOOLE_HOOK_TLS`
-* `SWOOLE_HOOK_SLEEP`
-* `SWOOLE_HOOK_FILE`
-* `SWOOLE_HOOK_STREAM_FUNCTION`
-* `SWOOLE_HOOK_BLOCKING_FUNCTION`
-* `SWOOLE_HOOK_PROC`
-* `SWOOLE_HOOK_CURL`
-* `SWOOLE_HOOK_NATIVE_CURL`
-* `SWOOLE_HOOK_SOCKETS`
-* `SWOOLE_HOOK_STDIO`
-* `SWOOLE_HOOK_PDO_PGSQL`
-* `SWOOLE_HOOK_PDO_ODBC`
-* `SWOOLE_HOOK_PDO_ORACLE`
-* `SWOOLE_HOOK_PDO_SQLITE`
-* `SWOOLE_HOOK_ALL`
-
 ### enable_preemptive_scheduler
 
 ?> 设置打开协程抢占式调度，避免其中一个协程执行时间过长导致其他协程饿死，协程最大执行时间为`10ms`。
@@ -229,6 +195,31 @@ $server->set([
 ### aio_max_idle_time
 
 ?> 工作线程最大空闲时间，单位为秒。
+
+### iouring_entries
+
+?> 设置`io_uring`的队列大小，默认为`8192`，如果传入的值不是`2的次方数`，内核会修改为最接近的，大于该值的`2的次方数`。
+
+!> 如果传入的值过大，内核会抛出异常并且终止程序。
+
+!> 当系统安装了`liburing`和编译`Swoole`开启了`--enable-iouring`之后才能使用。
+
+### iouring_workers
+
+?> 设置`io_uring`的工作线程数，默认值是`CPU 核数 * 4`。
+
+!> 如果传入的值过大，内核会抛出异常并且终止程序。
+
+!> 当系统安装了`liburing`和编译`Swoole`开启了`--enable-iouring`之后才能使用。
+
+### iouring_flag
+
+?> 设置`io_uring`的工作模式，默认值为`SWOOLE_IOURING_DEFAULT`。
+
+- `SWOOLE_IOURING_DEFAULT`，中断驱动模式，可通过系统调用`io_uring_enter`提交`I/O`请求，然后直接检查完成队列状态判断是否完成。
+- `SWOOLE_IOURING_SQPOLL`，内核轮询模式，内核会创建内核线程用于提交和收割`I/O`请求，几乎完全消除用户态内核态上下文切换，性能较好。
+
+!> 如果传入的模式不正确，内核会统一使用`SWOOLE_IOURING_DEFAULT`中断驱动模式。
 
 ### reactor_num
 
@@ -1526,7 +1517,7 @@ $server->set([
 
 * 当`enable_coroutine`设置为`true`时，底层自动在[onRequest](/http_server?id=on)回调中创建协程，开发者无需自行使用`go`函数[创建协程](/coroutine/coroutine?id=create)
 * 当`enable_coroutine`设置为`false`时，底层不会自动创建协程，开发者如果要使用协程，必须使用`go`自行创建协程，如果不需要使用协程特性，则处理方式与`Swoole1.x`是100%一致的
-* 注意，这个开启只是说明Swoole会通过协程去处理请求，如果事件中含有阻塞函数，那需要提前开启[一键协程化](/runtime)，将`sleep`，`mysqlnd`这些阻塞的函数或者扩展开启协程化
+* 注意，这个开启只是说明Swoole会通过协程去处理请求，如果事件中含有阻塞函数，那需要提前配置`hook_flags`或者开启[一键协程化](/runtime)，将`sleep`，`mysqlnd`这些阻塞的函数或者扩展开启协程化
 
 ```php
 $server = new Swoole\Http\Server("127.0.0.1", 9501);
@@ -1551,6 +1542,40 @@ $server->on("request", function ($request, $response) {
 
 $server->start();
 ```
+
+### hook_flags
+
+?> **设置`一键协程化`Hook的函数范围。**【默认值：不hook】
+
+!> Swoole版本为 `v4.5+` 或 [4.4LTS](https://github.com/swoole/swoole-src/tree/v4.4.x) 可用，详情参考[一键协程化](/runtime)
+
+```php
+$server->set([
+    'hook_flags' => SWOOLE_HOOK_SLEEP,
+]);
+```
+底层支持以下协程化项，可使用`SWOOLE_HOOK_ALL`表示协程化全部：
+
+* `SWOOLE_HOOK_TCP`
+* `SWOOLE_HOOK_UNIX`
+* `SWOOLE_HOOK_UDP`
+* `SWOOLE_HOOK_UDG`
+* `SWOOLE_HOOK_SSL`
+* `SWOOLE_HOOK_TLS`
+* `SWOOLE_HOOK_SLEEP`
+* `SWOOLE_HOOK_FILE`
+* `SWOOLE_HOOK_STREAM_FUNCTION`
+* `SWOOLE_HOOK_BLOCKING_FUNCTION`
+* `SWOOLE_HOOK_PROC`
+* `SWOOLE_HOOK_CURL`
+* `SWOOLE_HOOK_NATIVE_CURL`
+* `SWOOLE_HOOK_SOCKETS`
+* `SWOOLE_HOOK_STDIO`
+* `SWOOLE_HOOK_PDO_PGSQL`
+* `SWOOLE_HOOK_PDO_ODBC`
+* `SWOOLE_HOOK_PDO_ORACLE`
+* `SWOOLE_HOOK_PDO_SQLITE`
+* `SWOOLE_HOOK_ALL`
 
 ### send_yield
 

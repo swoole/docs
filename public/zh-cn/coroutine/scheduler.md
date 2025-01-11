@@ -1,65 +1,29 @@
-# Coroutine\Scheduler
+# 协程容器
 
-?> 所有的[协程](/coroutine)必须在`协程容器`里面[创建](/coroutine/coroutine?id=create)，`Swoole`程序启动的时候大部分情况会自动创建`协程容器`，用`Swoole`启动程序的方式一共有三种：
-
+所有的[协程](/coroutine)必须在`协程容器`里面[创建](/coroutine/coroutine?id=create)，`Swoole`程序启动的时候大部分情况会自动创建`协程容器`，用`Swoole`启动程序的方式一共有三种：
    - 调用[异步风格](/server/init)服务端程序的[start](/server/methods?id=start)方法，此种启动方式会在事件回调中创建`协程容器`，参考[enable_coroutine](/server/setting?id=enable_coroutine)。
    - 调用`Swoole`提供的2个进程管理模块[Process](/process/process)和[Process\Pool](/process/process_pool)的[start](/process/process_pool?id=start)方法，此种启动方式会在进程启动的时候创建`协程容器`，参考这两个模块构造函数的`enable_coroutine`参数。
-   - 其他直接裸写协程的方式启动程序，需要先创建一个协程容器(`Coroutine\run()`函数，可以理解为java、c的`main`函数)，例如：
-
-* **启动一个全协程`HTTP`服务**
-
-```php
-use Swoole\Coroutine\Http\Server;
-use function Swoole\Coroutine\run;
-
-run(function () {
-    $server = new Server('127.0.0.1', 9502, false);
-    $server->handle('/', function ($request, $response) {
-        $response->end("<h1>Index</h1>");
-    });
-    $server->handle('/test', function ($request, $response) {
-        $response->end("<h1>Test</h1>");
-    });
-    $server->handle('/stop', function ($request, $response) use ($server) {
-        $response->end("<h1>Stop</h1>");
-        $server->shutdown();
-    });
-    $server->start();
-});
-echo 1;//得不到执行
-```
-
-* **添加2个协程并发的做一些事情**
-
-```php
-use Swoole\Coroutine;
-use function Swoole\Coroutine\run;
-
-run(function () {
-    Coroutine::create(function() {
-        var_dump(file_get_contents("http://www.xinhuanet.com/"));
-    });
-
-    Coroutine::create(function() {
-        Coroutine::sleep(1);
-        echo "done\n";
-    });
-});
-echo 1;//可以得到执行
-```
+   - 其他直接裸写协程的方式启动程序，需要先创建一个协程容器`Coroutine\Scheduler`(可以理解为java、c的`main`函数)，协程容器会初始化完毕运行协程所需的环境。
 
 !> 在`Swoole v4.4+`版本可用。
 
-!> 不可以嵌套`Coroutine\run()`。  
-`Coroutine\run()`里面的逻辑如果有未处理的事件在`Coroutine\run()`之后就进行[EventLoop](learn?id=什么是eventloop)，后面的代码将得不到执行，反之，如果没有事件了将继续向下执行，可以再次`Coroutine\run()`。
+## 使用示例
+```php
+use Swoole\Coroutine\Scheduler;
 
-上文的`Coroutine\run()`函数其实是对`Swoole\Coroutine\Scheduler`类(协程调度器类)的封装，想了解细节的同学可以看`Swoole\Coroutine\Scheduler`的方法：
+$scheduler = new Scheduler();
+$scheduler->set(['hook_flags' => SWOOLE_HOOK_ALL]);
+$scheduler->add(function() {
+  sleep(1);
+});
+return $scheduler->start();
+```
+
+## 方法
 
 ### set()
 
-?> **设置协程运行时参数。** 
-
-?> 是`Coroutine::set`方法的别名。请参考 [Coroutine::set](/coroutine/coroutine?id=set) 文档
+?> **设置协程运行时参数。** ，是`Coroutine::set`方法的别名。请参考 [Coroutine::set](/coroutine/coroutine?id=set) 文档。
 
 ```php
 Swoole\Coroutine\Scheduler->set(array $options): bool
@@ -74,9 +38,7 @@ $sch->set(['max_coroutine' => 100]);
 
 ### getOptions()
 
-?> **获取设置的协程运行时参数。** Swoole版本 >= `v4.6.0` 可用
-
-?> 是`Coroutine::getOptions`方法的别名。请参考 [Coroutine::getOptions](/coroutine/coroutine?id=getoptions) 文档
+?> **获取设置的协程运行时参数。** Swoole版本 >= `v4.6.0` 可用，是`Coroutine::getOptions`方法的别名。请参考 [Coroutine::getOptions](/coroutine/coroutine?id=getoptions) 文档。
 
 ```php
 Swoole\Coroutine\Scheduler->getOptions(): null|array
@@ -178,3 +140,57 @@ Swoole\Coroutine\Scheduler->start(): bool
 
     * 启动成功，会执行所有添加的任务，所有协程退出时`start`会返回`true`
     * 启动失败返回`false`，原因可能是已经启动了或者已经创建了其他调度器无法再次创建
+
+
+## 简化函数
+为了简化创建协程容器的步骤，`Swoole`封装了一个`Coroutine\run()`函数。
+
+### 使用示例
+* **启动一个全协程`HTTP`服务**
+
+```php
+use Swoole\Coroutine\Http\Server;
+use function Swoole\Coroutine\run;
+
+run(function () {
+    $server = new Server('127.0.0.1', 9502, false);
+    $server->handle('/', function ($request, $response) {
+        $response->end("<h1>Index</h1>");
+    });
+    $server->handle('/test', function ($request, $response) {
+        $response->end("<h1>Test</h1>");
+    });
+    $server->handle('/stop', function ($request, $response) use ($server) {
+        $response->end("<h1>Stop</h1>");
+        $server->shutdown();
+    });
+    $server->start();
+});
+echo 1;//得不到执行
+```
+
+* **添加2个协程并发的做一些事情**
+
+```php
+use Swoole\Coroutine;
+use function Swoole\Coroutine\run;
+
+run(function () {
+    Coroutine::create(function() {
+        var_dump(file_get_contents("http://www.xinhuanet.com/"));
+    });
+
+    Coroutine::create(function() {
+        Coroutine::sleep(1);
+        echo "done\n";
+    });
+});
+echo 1;//可以得到执行
+```
+
+!> 使用`Coroutine\run()`函数需要确保`swoole.enable_library=On`（默认为On），因为该函数是通过`library`提供的。
+
+!> 使用协程容器会默认设置一键协程化，使所有的PHP阻塞操作变成非阻塞操作。
+
+!> 不可以嵌套`Coroutine\run()`。`Coroutine\run()`里面的逻辑如果有未处理的事件在`Coroutine\run()`之后就进行[EventLoop](learn?id=什么是eventloop)，后面的代码将得不到执行，反之，如果没有事件了将继续向下执行，可以再次`Coroutine\run()`。
+

@@ -127,3 +127,18 @@ Swoole\Thread\ArrayList()->toArray(): array
 ```php
 Swoole\Thread\ArrayList()->clean(): void
 ```
+
+### find()
+根据值搜索`ArrayList`中对应的数字key。
+
+```php
+Swoole\Thread\ArrayList()->find(mixed $value): int
+```
+* **参数**
+    * `mixed $value`
+        * 功能：需要搜索的值。
+        * 默认值：无。
+        * 其它值：无。
+
+* **返回值**
+    * 返回该值对应的索引。

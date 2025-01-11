@@ -17,7 +17,7 @@ Swoole提供的进程管理模块，用来替代PHP的`pcntl`
 * 可以方便的实现进程间通讯
 * 支持重定向标准输入和输出，在子进程内`echo`不会打印屏幕，而是写入管道，读键盘输入可以重定向为管道读取数据
 * 提供了[exec](/process/process?id=exec)接口，创建的进程可以执行其他程序，与原`PHP`父进程之间可以方便的通信
-* 在协程环境中无法使用`Process`模块，可以使用`runtime hook`+`proc_open`实现，参考[协程进程管理](/coroutine/proc_open)
+* 不能在协程中使用`Process`模块，参考[协程中创建进程](/coroutine/notice?id=协程中创建进程)
 
 ### 使用示例
 
@@ -44,6 +44,22 @@ echo 'Parent #' . getmypid() . ' exit' . PHP_EOL;
 
 ## 属性
 
+### id
+
+当前进程`id`。
+
+```php
+public int $id;
+```
+
+### pid
+
+当前进程的进程`pid`。
+
+```php
+public int $pid;
+```
+
 ### pipe
 
 [unixSocket](/learn?id=什么是IPC)的文件描述符。
@@ -66,22 +82,6 @@ public int $msgQueueId;
 
 ```php
 public string $msgQueueKey;
-```
-
-### pid
-
-当前进程的`pid`。
-
-```php
-public int $pid;
-```
-
-### id
-
-当前进程`id`。
-
-```php
-public int $id;
 ```
 
 ## 常量
@@ -119,7 +119,7 @@ Swoole\Process->__construct(callable $function, bool $redirect_stdin_stdout = fa
     * **其它值**：`0`、`SOCK_STREAM`
 
   * **`bool $enable_coroutine`**
-    * **功能**：在`callback function`中启用协程，开启后可以直接在子进程的函数中使用协程API
+    * **功能**：在`callback function`中启用协程，开启后可以直接在子进程的函数中使用协程API或者开启[一键协程化](/runtime)，避免阻塞函数阻塞进程。
     * **默认值**：`false`
     * **其它值**：`true`
     * **版本影响**：Swoole版本 >= v4.3.0
@@ -266,7 +266,7 @@ Swoole\Process->setTimeout(float $seconds): bool
 设置消息队列套接字是否阻塞。
 
 ```php
-Swoole\Process->setBlocking(bool $$blocking): void
+Swoole\Process->setBlocking(bool $blocking): void
 ```
 
 * **参数** 
