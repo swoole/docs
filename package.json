@@ -14,8 +14,8 @@
   },
   "scripts": {
     "dev": "   cd public && npx docsify start .",
-    "-build": "cd public && npx generate  .",
-    "-prod": " cd public && npx serve  .",
+    "-build": "cd public && npx docsify generate  .",
+    "-prod": " cd public && npx docsify serve  .",
     "authors": "git shortlog --email --format=\"%an####<%ae>\" | xargs -I {} echo {} | grep \"####\" | sort | uniq | awk -F \"####\" '{ print $1 $2 }'"
   }
 }
