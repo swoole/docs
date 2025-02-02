@@ -1,5 +1,21 @@
 {
+  "name": "swoole-docs",
+  "version": "1.0.0",
+  "description": "swoole wiki , swoole document ",
+  "main": "index.js",
+  "author": "swoole",
+  "license": "Apache-2.0",
   "devDependencies": {
     "all-contributors-cli": "^6.17.0"
+  },
+  "dependencies": {
+    "docsify": "^4.13.1",
+    "docsify-cli": "^4.4.4"
+  },
+  "scripts": {
+    "dev": "   cd public && npx docsify start .",
+    "-build": "cd public && npx generate  .",
+    "-prod": " cd public && npx serve  .",
+    "authors": "git shortlog --email --format=\"%an####<%ae>\" | xargs -I {} echo {} | grep \"####\" | sort | uniq | awk -F \"####\" '{ print $1 $2 }'"
   }
 }
