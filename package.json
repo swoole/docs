@@ -13,6 +13,6 @@
     "docsify-cli": "^4.4.4"
   },
   "scripts": {
-    "dev": "   cd public && npx docsify start ."
+    "dev": "cd public && npx docsify start ."
   }
 }
