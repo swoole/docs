@@ -27,7 +27,7 @@ if (empty($args)) {
     $list = new ArrayList;
     $thread = new Thread(__FILE__, $i, $list);
     sleep(1);
-    $list[] = unique();
+    $list[] = uniqid();
     $thread->join();
 } else {
     $list = $args[1];
