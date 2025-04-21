@@ -1,2 +1,5 @@
 /node_modules/
 /.idea
+/package-lock.json
+/public/_sidebar.md
+
