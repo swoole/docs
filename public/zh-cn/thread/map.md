@@ -25,7 +25,7 @@ if (empty($args)) {
     $map = new Map;
     $thread = new Thread(__FILE__, $i, $map);
     sleep(1);
-    $map['test'] = unique();
+    $map['test'] = uniqid();
     $thread->join();
 } else {
     $map = $args[1];
