@@ -127,3 +127,10 @@ Swoole\Thread\ArrayList()->toArray(): array
 ```php
 Swoole\Thread\ArrayList()->clean(): void
 ```
+
+### sort()
+对容器内的元素进行排序。与`sort()`的行为是一致的。
+
+```php
+Swoole\Thread\ArrayList()->sort(): void
+```

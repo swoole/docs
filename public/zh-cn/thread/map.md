@@ -174,3 +174,11 @@ Swoole\Thread\Map()->toArray(): array
 ```php
 Swoole\Thread\Map()->clean(): void
 ```
+
+### sort()
+对容器内的元素进行排序。底层会保存`key`与`value`的映射关系，仅对`value`进行排序。与`asort()`的行为是一致的。
+
+```php
+Swoole\Thread\Map()->sort(): void
+```
+
