@@ -31,11 +31,25 @@ Swoole\Thread->join(): bool
     * 返回`true`表示操作成功，返回`false`表示操作失败。
 
 ### joinable()
-检查子线程是否已退出。
+检查子线程是否可被`join()`，有两种情况此方法返回`false`：
+1. 线程执行了`detach()`，无法使用`join()`等待线程退出
+2. 线程已退出，并且执行了`join()`回收了线程
 
 ```php
 Swoole\Thread->joinable(): bool
 ```
+
+### isAlive()
+检查是否存活，无论线程是否执行了`detach()`或`join()`，始终可以调用此函数。
+
+> 此方法不会引起阻塞
+
+```php
+Swoole\Thread->isAlive(): bool
+```
+
+* **返回值**
+    * 返回`true`表示线程存活，返回`false`表示线程已退出。
 
 #### 返回值
 - `true` 表示子线程已退出，这时调用 `join()` 不会引起阻塞
@@ -95,6 +109,24 @@ Swoole\Thread::getInfo(): array
 - `is_main_thread`：当前的线程是否为主线程
 - `is_shutdown`：线程是否已关闭
 - `thread_num`：当前活跃的线程数量
+
+### activeCount()
+静态方法，获取当前活跃的线程数量
+
+```php
+Swoole\Thread::activeCount(): int
+```
+* **返回值**
+    * 返回`int`类型的整数，表示当前活跃的线程数量，此方法返回值始终为大于或等于`1`的整数
+
+### yield()
+静态方法，让出当前线程的执行时间片。调用后当前线程会被挂起，等待操作系统调度器会优先执行其他线程，
+等待下一个周期时重新分配时间片给当前线程。
+
+```php
+Swoole\Thread::yield(): void
+```
+
 
 ### getPriority()
 静态方法，获取当前线程调度的信息
