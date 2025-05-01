@@ -8,6 +8,7 @@
 * 8.1
 * 8.2
 * 8.3
+* 8.4
 
 ## 建议使用的Swoole版本
 `Swoole6.x`和`Swoole5.x`
@@ -29,7 +30,225 @@
 php --ri swoole
 ```
 
+## v6.0.2
+
+### 新特性：
+- 增加`Swoole\Thread::yield()`，`Swoole\Thread::activeCount()`和`Swoole\Thread::isAlive()`方法。
+
+### Bug修复：
+- 修复在`SWOOLE_THREAD`模式下，使用单线程模式和设置心跳会引发异常的问题。
+- 修复开启`swoole.enable_fiber_mock`后的段错误问题。
+- 修复Redis服务端的整型溢出问题。
+
+### 注意：
+- Redis服务端目前将仅支持`RESP2`协议，当格式化不符合该协议的字符串时，将抛出异常而不是记录日志。
+
+## v6.0.1
+
+### Bug修复：
+- 修复`SWOOLE_THREAD`模式下，因为没有移除监听事件导致进程无法正常退出的问题。
+- 修复当开启`single_thread`配置时，无法上传大文件的问题。
+- 修复如果已经定义了`config.m4`中相同的变量，会导致编译过程找不到具体的文件路径的问题。
+- 修复`Swoole\Process\Pool`中进程超时无法正常退出的问题。
+- 修复`SWOOLE_THREAD`模式下，调用`putenv`导致程序崩溃的问题。
+- 修复`SWOOLE_THREAD`模式下，无法为独立的端口设置事件回调函数的问题。
+- 修复`SWOOLE_THREAD`模式下，`onWorkerStart`等事件中无法获取到运行时的各项参数的问题。
+- 修复Postgresql在协程化下在接收大量数据会退化成同步模式下的问题。
+- 优化`swoole_substr_json_decode`/`swoole_substr_unserialize`函数的参数判断逻辑。
+- 修复`config.m4`中的CPU亲和性设置的问题。
+- 修复`SWOOLE_THREAD`模式下，心跳检测不起作用的问题。
+
+### 注意：
+- 在Http服务中，如果进程重启时，底层会发送500 Internal Server给队列中等待处理的请求，发送完毕就关闭连接并丢弃这些请求。
+- 由于php底层的`stream factory`和`stream ops`依赖的运行时配置不是线程安全的，因此多线程模式下只允许主线程在还没创建子线程之前修改这些运行时配置。
+- 升级nghttp2到最新版本。
+
+## v5.1.7
+
+### Bug修复：
+- 修复Postgresql在协程化下在接收大量数据会退化成同步模式下的问题。
+- 修复`Swoole\Http2\Request`动态创建类的属性抛出异常的问题。
+- 修复一键协程化中发生的致命错误会导致内存错误的问题。
+
 ## v6.0.0
+
+### 新特性：
+- `Swoole`支持多线程模式，当`php`是`zts`模式，编译`Swoole`时开启`--enable-swoole-thread`时，就能使用多线程模式。
+- 新增创建线程类`Swoole\Thread`。 @matyhtf
+- 新增线程锁`Swoole\Thread\Lock`。 @matyhtf
+- 新增线程原子计数`Swoole\Thread\Atomic`，`Swoole\Thread\Atomic\Long`。 @matyhtf
+- 新增安全并发容器`Swoole\Thread\Map`，`Swoole\Thread\ArrayList`，`Swoole\Thread\Queue`。 @matyhtf
+- 文件异步操作支持了使用`iouring作为文件异步操作的底层引擎`，安装了`liburing`和编译`Swoole`时开启`--enable-iouring`，`file_get_contents`，`file_put_contents`，`fopen`，`fclose`，`fread`，`fwrite`，`mkdir`，`unlink`，`fsync`，`fdatasync`，`rename`，`fstat`，`lstat`，`filesize`这些函数的异步操作将会由`iouring`实现。 @matyhtf @NathanFreeman
+- 升级`Boost Context`版本到1.84。现在，龙芯CPU也能够支持协程了。 @NathanFreeman
+- 新增`Swoole\Thread\Map::find()`方法。 @matyhtf
+- 新增`Swoole\Thread\ArrayList::find()`方法。 @matyhtf
+- 新增`Swoole\Thread\ArrayList::offsetUnset()`方法。 @matyhtf
+- 新增`Swoole\Process::getAffinity()`方法。 @matyhtf
+- 新增`Swoole\Thread::setName()`方法。 @matyhtf
+- 新增`Swoole\Thread::setAffinity()`方法。 @matyhtf
+- 新增`Swoole\Thread::getAffinity()`方法。 @matyhtf
+- 新增`Swoole\Thread::setPriority()`方法。 @matyhtf
+- 新增`Swoole\Thread::getPriority()`方法。 @matyhtf
+- 新增`Swoole\Thread::gettid()`方法。
+- 文件异步引擎`iouring`支持多线程轮询模式`IORING_SETUP_SQPOLL`。 @NathanFreeman
+- 新增`iouring_workers`修改`iouring`线程数。 @NathanFreeman
+- 新增`iouring_flags`支持修改`iouring`工作模式。 @NathanFreeman
+- 增加`Swoole\Thead\Barrier`多线程同步屏障。@matyhtf
+- 增加新的设置cookie的函数。 @matyhtf @NathanFreeman
+- 新增`非阻塞，可重入的互斥协程锁”，该锁可以在进程间/线程间使用，且不会阻塞进程/线程。 @NathanFreeman
+- `Swoole\Coroutine\Socket::getOption()`支持了`TCP_INFO`选项。 @matyhtf
+- `Swoole\Client`同步阻塞客户端支持`http`代理。 @matyhtf
+- 新增异步非阻塞的`TCP/UDP/Unixsocket` 客户端`Swoole\Async\Client`。 @matyhtf
+- 优化`Swoole\Redis\Server::format`()方法，支持内存零拷贝，支持`redis`嵌套结构。 @matyhtf
+- 支持高性能压缩工具`Zstd`，只需要在编译`Swoole`时加上`--enable-zstd`，`http`客户端和服务端之间便可使用`zstd`来压缩响应或者解码响应。 @NathanFreeman
+
+### Bug修复：
+- 修复无法通过`pecl`安装的问题。 @remicollet
+- 修复`Swoole\Coroutine\FastCGI\Client`客户端无法设置keepalive。 @NathanFreeman
+- 修复请求参数超过`max_input_vars`时会抛出错误导致进程不断重启的问题。 @NathanFreeman
+- 修复在协程中使用`Swoole\Event::wait()`导致的未知问题。 @matyhtf
+- 修复`proc_open`在协程化的时候不支持pty的问题。 @matyhtf
+- 修复`pdo_sqlite`在PHP8.3会出现段错误的问题。 @NathanFreeman
+- 修复编译`Swoole`时的无用警告。 @Appla @NathanFreeman
+- 修复如果`STDOUT/STDERR`已经关闭时，底层调用zend_fetch_resource2_ex会抛出错误。 @Appla @matyhtf
+- 修复无效的`set_tcp_nodelay`配置。 @matyhtf
+- 修复文件上传的时候偶尔会触发不可达的分支问题。 @NathanFreeman
+- 修复设置了`dispatch_func`，会导致php底层抛出错误的问题。 @NathanFreeman
+- 修复AC_PROG_CC_C99在autoconf >= 2.70版本中已过时。 @petk
+- 当线程创建失败时，捕获其抛出的异常。 @matyhtf
+- 修复`_tsrm_ls_cache`未定义问题。 @jingjingxyk
+- 修复在`GCC 14`编译会导致致命错误。 @remicollet
+- 修复`Swoole\Http2\Request`动态属性问题。 @guandeng
+- 修复`pgsql`协程客户端偶发资源不可用的问题。 @NathanFreeman
+- 修复进程重启，没有重置相关参数导致503错误的问题。@matyhtf
+- 修复开启`HTTP2`时，`$request->server['request_method']` 与 `$request->getMethod()` 的结果不一致。 @matyhtf
+- 修复上传文件时，不正确的`content-type`。 @matyhtf
+- 修复`http2`协程客户端的代码错误。 @matyhtf
+- 修复`Swoole\Server`缺少属性`worker_id`的问题。 @cjavad
+- 修复`config.m4`有关`brotli`错误的问题。 @fundawang
+- 修复 多线程下`Swoole\Http\Response::create`无效。 @matyhtf
+- 修复`macos`环境下编译错误。 @matyhtf
+- 修复线程无法安全退出的问题。 @matyhtf
+- 修复多线程模式下，`Swoole\Http\Response`返回响应时间的静态变量没有各个线程各自生成一份的问题。 @matyhtf @NathanFreeman
+- 修复因为`PHP-8.4`在ZTS模式下的`超时`特性引起的`Fatal error`问题。 @matyhtf
+- 修复`PHP-8.4`的`exit()`函数`hook`。 @remicollet
+- 修复`Swoole\Thread::getNativeId()`在`cygwin`无法工作的问题。 @matyhtf
+- 修复`Swoole\Coroutine::getaddrinfo()`方法会导致`SIGSEGV`的问题。 @matyhtf
+- 修复`runtime tcp`模块不支持动态开启SSL加密的问题。 @matyhtf
+- 修复http客户端长时间运行导致超时时间不正确的问题。 @matyhtf
+- 修复进程退出之前会导致`Swoole\Table`的互斥锁无法使用的问题。 @matyhtf
+- 修复使用命名参数导致`Swoole\Server::stop()`执行失败的问题。 @matyhtf
+- 修复`Swoole\Thread\Map::toArray()`函数未复制`key`导致崩溃的问题。 @matyhtf
+- 修复`Swoole\Thread\Map`无法删除嵌套的数字键的问题。 @matyhtf
+
+### 内核优化：
+- 移除对`socket structs`的无用检查。 @petk
+- 升级swoole Library。 @deminy
+- `Swoole\Http\Response`增加对451状态码的支持。 @abnegate
+- 同步PHP不同版本的`文件`操作代码。 @NathanFreeman
+- 同步PHP不同版本的`pdo`操作代码。 @NathanFreeman
+- 优化`Socket::ssl_recv()`的代码。 @matyhtf
+- 优化了config.m4，一些配置可以通过`pkg-config`设置依赖库位置。 @NathanFreeman
+- 优化`解析请求头`的时候使用动态数组的问题 。 @NathanFreeman
+- 优化在多线程模式下，文件描述符`fd`的生命周期问题。 @matyhtf
+- 优化协程一些基本逻辑。 @matyhtf
+- 升级CI测试的oracle数据库版本。 @gvenzl
+- 优化底层`sendfile`的相关逻辑。 @matyhtf
+- `config.m4`中用`AC_DEFINE_UNQUOTED`替换`PHP_DEF_HAVE`。 @petk
+- 优化多线程模式下，server的`heartbeat`,`shutdown`和`stop`的相关逻辑。 @matyhtf
+- 优化`glibc`版本高于2.17时，不需要链接`librt`。 @matyhtf
+- 加强`http`客户端可以接受重复的请求头。 @matyhtf
+- 优化`Swoole\Http\Response::write()`。 @matyhtf
+- `Swoole\Http\Response::write()`现在可以发送`http2`协议。 @matyhtf
+- 兼容`PHP8.4`。 @matyhtf @NathanFreeman
+- 增加底层`socket`异步写入的能力。 @matyhtf
+- 优化`Swoole\Http\Response`。 @NathanFreeman
+- 多线程模式下，支持共享php原生`socket`。 @matyhtf
+- 优化静态文件服务，修复静态文件路径错误问题。 @matyhtf
+- 异步`Server`多线程模式支持重启工作线程。 @matyhtf
+- 异步`Server`多线程模式支持在`Manager`线程中开启定时器。 @matyhtf
+- 兼容`PHP-8.4`的`curl`扩展。 @matyhtf @NathanFreeman
+- 重新封装`Swoole`底层使用`iouring`的代码。 @matyhtf @NathanFreeman
+- 优化定时器，使同步进程不依赖于信号。 @matyhtf
+- 优化`Swoole\Coroutine\System::waitSignal()`方法，允许同时监听多个信号。 @matyhtf
+
+### 废弃：
+- 不再支持`PHP 8.0`。
+- 不再支持`Swoole\Coroutine\MySQL`协程客户端。
+- 不再支持`Swoole\Coroutine\Redis`协程客户端。
+- 不再支持`Swoole\Coroutine\PostgreSQL`协程客户端。
+- 移除`Swoole\Coroutine\System::fread()`, `Swoole\Coroutine\System::fwrite()`和`Swoole\Coroutine\System::fgets()`方法
+
+## v5.1.5
+
+### Bug修复：
+- 修复php版本大于8.2，需要使用`zend_ini_parse_quantity`解析字符串数字。 @matyhtf
+- 修复`pdo_pgsql`协程化的时候，偶发资源不可用的问题。 @NathanFreeman
+- 修复`pdo_pgsql`协程化的时候，头文件引用问题。 @NathanFreeman
+- 修复不正确的相对路径检查，以避免绕过路径验证。 @matyhtf
+- 修复高并发环境下，进程重启会导致并发数不正确。 @matyhtf
+
+### 内核优化：
+- 同步`php8.3 curl`的一些相关代码。 @NathanFreeman
+- 修复`process`模块核心测试错误。 @NathanFreeman
+- 在`SWOOLE_BASE`模式下，所有的连接都应该在`PHP RSHUTDOWN`阶段都被关闭。 @matyhtf
+- 优化内核代码。 @matyhtf
+
+## v6.0.0-beta
+
+### 新特性:
+- 新增`Swoole\Thread\Map::find()`方法。 @matyhtf
+- 新增`Swoole\Thread\ArrayList::find()`方法。 @matyhtf
+- 新增`Swoole\Thread\ArrayList::offsetUnset()`方法。 @matyhtf
+- 新增`Swoole\Process::getAffinity()`方法。 @matyhtf
+- 新增`Swoole\Thread::setName()`方法。 @matyhtf
+- 新增`Swoole\Thread::setAffinity()`方法。 @matyhtf
+- 新增`Swoole\Thread::getAffinity()`方法。 @matyhtf
+- 新增`Swoole\Thread::setPriority()`方法。 @matyhtf
+- 新增`Swoole\Thread::getPriority()`方法。 @matyhtf
+- 新增`Swoole\Thread::gettid()`方法。
+- 文件异步引擎`iouring`支持多线程轮询模式`IORING_SETUP_SQPOLL`。 @NathanFreeman
+- 新增`iouring_workers`修改`iouring`线程数。 @NathanFreeman
+- 新增`iouring_flags`支持修改`iouring`工作模式。 @NathanFreeman
+- 增加`Swoole\Thead\Barrier`多线程同步屏障。@matyhtf
+- 增加新的设置cookie的函数。 @matyhtf @NathanFreeman
+
+### Bug修复：
+- 修复`Swoole\Http2\Request`动态属性问题。 @guandeng
+- 修复`pgsql`协程客户端偶发资源不可用的问题。 @NathanFreeman
+- 修复进程重启，没有重置相关参数导致503错误的问题。@matyhtf
+- 修复开启`HTTP2`时，$request->server['request_method'] 与 $request->getMethod() 的结果不一致。 @matyhtf
+- 修复上传文件时，不正确的`content-type`。 @matyhtf
+- 修复`http2`协程客户端的代码错误。 @matyhtf
+- 修复`Swoole\Server`缺少属性`worker_id`的问题。 @cjavad
+- 修复`config.m4`有关`brotli`错误的问题。 @fundawang
+- 修复 多线程下`Swoole\Http\Response::create`无效。 @matyhtf
+- 修复`macos`环境下编译错误。 @matyhtf
+- 修复线程无法安全退出的问题。 @matyhtf
+- 修复多线程模式下，`Swoole\Http\Response`返回响应时间的静态变量没有各个线程各自生成一份的问题。 @matyhtf @NathanFreeman
+
+### 内核优化：
+- 升级CI测试的oracle数据库版本。 @gvenzl
+- 重构优化`swoole`底层相关代码。 @matyhtf
+- 优化底层`sendfile`的相关逻辑。 @matyhtf
+- 优化参数解析。 @matyhtf
+- `config.m4`中用`AC_DEFINE_UNQUOTED`替换`PHP_DEF_HAVE`。 @petk
+- 优化多线程模式下，server的`heartbeat`,`shutdown`和`stop`的相关逻辑。 @matyhtf
+- 优化`glibc`版本高于2.17时，不需要链接`librt`。 @matyhtf
+- 加强`http`客户端可以接受重复的请求头。 @matyhtf
+- 优化`Swoole\Http\Response::write()`。 @matyhtf
+- `Swoole\Http\Response::write()`现在可以发送`http2`协议。 @matyhtf
+- 兼容`PHP8.4`。 @matyhtf @NathanFreeman
+- 增加底层`socket`异步写入的能力。 @matyhtf
+- 优化`Swoole\Http\Response`。 @NathanFreeman
+- 优化底层错误信息。 @matyhtf
+- 多线程模式下，支持共享php原生`socket`。 @matyhtf
+- 优化静态文件服务，修复静态文件路径错误问题。 @matyhtf
+
+### 废弃：
+- 移除`Swoole\Coroutine\System::fread()`, `Swoole\Coroutine\System::fwrite()`和`Swoole\Coroutine\System::fgets()`方法
+
+## v6.0.0-alpha
 
 ### 新特性
 - `Swoole`支持多线程模式，当`php`是`zts`模式，编译`Swoole`时开启`--enable-swoole-thread`时，就能使用多线程模式。
