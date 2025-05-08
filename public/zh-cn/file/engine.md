@@ -21,4 +21,4 @@
 
 !> 开启了`io_uring`之后并不会替换掉`线程池`模式，有些`io_uring`没法协程化的函数还是会让`线程池`处理。
 
-!> `io_uring`只能协程化`file_get_contents`，`file_put_contents`，`fopen`，`fclose`，`fread`，`fwrite`，`mkdir`，`unlink`，`fsync`，`fdatasync`，`rename`，`fstat`，`lstat`，`filesize`函数。
+!> `io_uring`只支持`file_get_contents`，`file_put_contents`，`fopen`，`fclose`，`fread`，`fwrite`，`mkdir`，`unlink`，`fsync`，`fdatasync`，`rename`，`fstat`，`lstat`，`filesize`函数。
