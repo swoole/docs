@@ -13,13 +13,12 @@
 
 * `io_uring`是`Swoole v6.0`之后内置的策略，基于`io_uring`和`epoll`实现异步。
 * 吞吐量高，可以处理大量文件异步操作。
-* 对`linux`版本有要求，也需要依赖`liburing`这个共享库，有些操作系统没法使用这个特性。
-* 由于是基于`文件描述符`实现文件异步，只支持少数`PHP`的文件操作函数。
-* 对linux内核版本要求较高。
+* `io_uring`对linux内核版本要求较高，建议在linux 5.12+，liburing 2.6+ 以上的系统使用，有些操作系统没法使用这个特性。
+* 由于是基于`文件描述符`实现文件异步，只支持一些`PHP`的文件操作函数。
 
 
 !> 当系统安装了`liburing`和编译`Swoole`开启了`--enable-iouring`之后才能使用。
 
 !> 开启了`io_uring`之后并不会替换掉`线程池`模式，有些`io_uring`没法协程化的函数还是会让`线程池`处理。
 
-!> `io_uring`只能处理`file_get_contents`，`file_put_contents`，`fopen`，`fclose`，`fread`，`fwrite`，`mkdir`，`unlink`，`fsync`，`fdatasync`，`rename`，`fstat`，`lstat`，`filesize`函数。
+!> `io_uring`只支持`file_get_contents`，`file_put_contents`，`fopen`，`fclose`，`fread`，`fwrite`，`mkdir`，`unlink`，`fsync`，`fdatasync`，`rename`，`fstat`，`lstat`，`filesize`函数。
