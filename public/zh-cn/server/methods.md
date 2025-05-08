@@ -220,7 +220,7 @@ Swoole\Server->addProcess(Swoole\Process $process): int
     -用户进程内不能使用`Server->task/taskwait`接口。              
     -用户进程内可以使用`Server->send/close`等接口。         
     -用户进程内应当进行`while(true)`(如下边的示例)或[EventLoop](/learn?id=什么是eventloop)循环(例如创建个定时器)，否则用户进程会不停地退出重启。         
-    -必须在`Server->start()`执行之前使用`addProcess`，否则用户进程不会启动的。    
+    -必须在`Server->start()`执行之前使用`addProcess`，否则用户进程不会启动。    
 
   * **生命周期**
 
