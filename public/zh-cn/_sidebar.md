@@ -9,7 +9,7 @@
   * [HTTP服务器](start/start_http_server.md)
   * [WebSocket服务器](start/start_ws_server.md)
   * [MQTT(物联网)服务器](start/start_mqtt.md)
-  * [执行异步任务](start/start_task.md)
+  * [执行异步任务(Task)](start/start_task.md)
   * [协程初探](start/coroutine.md)
 
 * [服务端(异步风格)](server/init.md)
@@ -41,6 +41,17 @@
     * [MySQL客户端](coroutine_client/mysql.md)
     * [Redis客户端](coroutine_client/redis.md)
 
+* [协程管理 (Coroutine)](coroutine.md)
+  * [一键协程化](runtime.md)
+  * [协程容器](coroutine/scheduler.md)
+  * [协程API](coroutine/coroutine.md)
+  * [系统API](coroutine/system.md)
+  * [并发调用](coroutine/multi_call.md)
+  * [连接池](coroutine/conn_pool.md)
+  * [Library](library.md)
+  * [调试协程](coroutine/gdb.md)
+  * [编程须知](coroutine/notice.md)
+
 * 进程管理 (Process)
   * [创建进程](process/process.md)
   * [进程池](process/process_pool.md)
@@ -55,26 +66,16 @@
   * [并发Queue](thread/queue.md)
   * [数据类型](thread/transfer.md)
 
-* [协程管理 (Coroutine)](coroutine.md)
-  * [一键协程化](runtime.md)
-  * [协程容器](coroutine/scheduler.md) 
-  * [协程API](coroutine/coroutine.md)
-  * [系统API](coroutine/system.md)
-  * [并发调用](coroutine/multi_call.md)
-  * [连接池](coroutine/conn_pool.md)
-  * [Library](library.md)
-  * [调试协程](coroutine/gdb.md)
-  * [编程须知](coroutine/notice.md)
-
-* 进程/线程/协程同步
-  * [锁](memory/lock.md)
-  * [原子计数](memory/atomic.md)
-  * [同步屏障](thread/barrier.md)
-  * [高性能共享内存](memory/table.md)
+* 协程/进程/线程同步
   * [Channel](coroutine/channel.md)
   * [WaitGroup](coroutine/wait_group.md)
+  * [协程屏障](coroutine/barrier.md)
+  * [锁](memory/lock.md)
+  * [原子计数](memory/atomic.md)
+  * [线程同步屏障](thread/barrier.md)
+  * [高性能共享内存(Table)](memory/table.md)
 
-* 文件异步操作
+* 文件操作协程化
   * [实现](file/engine.md)
   * [配置](file/setting.md)
 
