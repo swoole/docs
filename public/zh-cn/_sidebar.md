@@ -41,46 +41,46 @@
     * [MySQL客户端](coroutine_client/mysql.md)
     * [Redis客户端](coroutine_client/redis.md)
 
-* [协程 (Coroutine)](coroutine.md)
+* [协程管理 (Coroutine)](coroutine.md)
   * [一键协程化](runtime.md)
-  * [核心API](coroutine/coroutine.md)
   * [协程容器](coroutine/scheduler.md)
+  * [协程API](coroutine/coroutine.md)
   * [系统API](coroutine/system.md)
-  * [进程API](coroutine/proc_open.md)
-  * [Channel](coroutine/channel.md)
-  * [WaitGroup](coroutine/wait_group.md)
-  * [Barrier](coroutine/barrier.md)
   * [并发调用](coroutine/multi_call.md)
   * [连接池](coroutine/conn_pool.md)
   * [Library](library.md)
   * [调试协程](coroutine/gdb.md)
   * [编程须知](coroutine/notice.md)
 
-* 文件异步操作
-  * [实现](file/engine.md)
-  * [配置](file/setting.md)
+* 进程管理 (Process)
+  * [创建进程](process/process.md)
+  * [进程池](process/process_pool.md)
+  * [进程管理器](process/process_manager.md)
 
 * 线程管理 (Thread)
   * [创建线程](thread/thread.md)
-  * [线程池(Thread\Pool)](thread/pool.md)
+  * [线程池](thread/pool.md)
   * [方法与属性](thread/info)
   * [并发Map](thread/map.md)
   * [并发List](thread/arraylist.md)
   * [并发Queue](thread/queue.md)
-  * [同步屏障Barrier](thread/barrier.md)
   * [数据类型](thread/transfer.md)
 
-* 进程管理 (Process)
-  * [创建进程](process/process.md)
-  * [进程池(Process\Pool)](process/process_pool.md)
-  * [进程管理器(Process\Manager)](process/process_manager.md)
+* 协程/进程/线程同步
+  * [Channel](coroutine/channel.md)
+  * [WaitGroup](coroutine/wait_group.md)
+  * [协程屏障](coroutine/barrier.md)
+  * [锁](memory/lock.md)
+  * [原子计数](memory/atomic.md)
+  * [线程同步屏障](thread/barrier.md)
   * [高性能共享内存(Table)](memory/table.md)
 
-* 并发管理
-  * [锁(Lock)](memory/lock.md)
-  * [原子计数(Atomic)](memory/atomic.md)
-  * [事件循环(EventLoop)](event.md)
-  * [定时器(Timer)](timer.md)
+* 异步文件操作
+  * [实现](file/engine.md)
+  * [配置](file/setting.md)
+
+* [事件循环(EventLoop)](event.md)
+* [定时器(Timer)](timer.md)
 
 * 其他
   * [常量](consts.md)
