@@ -85,6 +85,20 @@ pecl install -D 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" ena
 pecl install --configureoptions 'enable-sockets="no" enable-openssl="yes" enable-http2="yes" enable-mysqlnd="yes" enable-swoole-json="no" enable-swoole-curl="yes" enable-cares="yes"' swoole
 ```
 
+## PIE
+
+Swoole 项目支持由 PHP 全新的扩展安装工具 PIE 一键下载安装。
+
+```shell
+pie install swoole/swoole:5.1.5
+```
+
+通过 PIE 安装 Swoole 时，在安装过程中它会询问是否要启用某些功能，这也可以在运行安装之前提供，例如：
+
+```shell
+pie install swoole/swoole:5.1.5 --enable-socket --enable-swoole-curl
+```
+
 ## 添加Swoole到php.ini
 
 最后，编译安装成功后，修改`php.ini`加入
@@ -231,6 +245,13 @@ with-swoole-odbc="unixODBC,/usr"
 1. 将`docker`容器的内核版本升级到`5.1.0`以上
 2. 使用`--privileged`参数来运行容器
 3. 运行时增加`--security-opt seccomp:unconfined`参数，允许`docker`容器使用`io_uring`特性
+
+
+#### --enable-zstd
+
+添加这个编译选项后，`http`服务端和客户端之间可以使用高性能压缩工具`Zstd`压缩响应。
+
+>`v6.0`版本后可用，而且需要安装`libzstd`依赖来支持此特性。
 
 ### 特殊参数
 
