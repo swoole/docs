@@ -4,10 +4,20 @@
 
 ```shell
 
-npm install 
+# npm install -g pnpm 
+
+pnpm install 
 # with npm china mirror registry
-# npm install --registry=https://registry.npmmirror.com 
+# pnpm install --registry=https://registry.npmmirror.com 
 
 npm run dev 
+
+```
+
+## generate doc
+
+```shell
+
+npm run build
 
 ```
