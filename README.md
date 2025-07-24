@@ -1,13 +1,26 @@
 # swoole docs
 
-## development
+## run development doc
 
 ```shell
 
-npm install 
+# npm install -g pnpm 
+
+pnpm install 
 # with npm china mirror registry
-# npm install --registry=https://registry.npmmirror.com 
+# pnpm install --registry=https://registry.npmmirror.com 
 
 npm run dev 
+
+```
+
+## generate doc
+
+默认 web 工作目录位于 public
+The default public web directory is public
+
+```shell
+
+npm run build
 
 ```
