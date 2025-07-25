@@ -14,6 +14,7 @@
   },
   "scripts": {
     "dev": "cd public && npx docsify start .",
+    "build": "cd public && { echo 'web working directory: '$(pwd) ; } && { test -f _sidebar.md && rm -f _sidebar.md ; } && npx docsify generate . ",
     "authors": "git log --format=\"%aN <%aE>\" | sort -u"
   }
 }
