@@ -361,7 +361,7 @@ function onClose(Swoole\Server $server, int $fd, int $reactorId);
 
   * **Note**
 
-    !> If a fatal error occurs in the [onClose](/server/events?id=onclose) callback function, it will cause connection leaks. Using the `netstat` command will show a large number of `CLOSE_WAIT` state `TCP` connections. [Refer to Swoole video tutorials](https://course.swoole-cloud.com/course-video/4)  
+    !> If a fatal error occurs in the [onClose](/server/events?id=onclose) callback function, it will cause connection leaks. Using the `netstat` command will show a large number of `CLOSE_WAIT` state `TCP` connections.
     -Whether `close` is initiated by the client or the server actively calls `$server->close()` to close the connection, this event will be triggered. Therefore, as long as the connection is closed, this function will always be called.  
     -[getClientInfo](/server/methods?id=getClientInfo) method can still be called in [onClose](/server/events?id=onclose) to obtain connection information. The `TCP` connection will be closed only after the execution of [onClose](/server/events?id=onclose) callback function is completed.  
     -When [onClose](/server/events?id=onclose) is called here, it means that the client connection has been closed, so there is no need to execute `$server->close($fd)`. Executing `$server->close($fd)` in the code will throw a PHP error warning.

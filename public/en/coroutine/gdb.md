@@ -86,4 +86,3 @@ foreach($coros as $cid)
 }
 ```
 
-You can refer to the [video tutorial in the Swoole micro-course](https://course.swoole-cloud.com/course-video/66).

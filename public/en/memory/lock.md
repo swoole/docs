@@ -43,7 +43,7 @@ echo "[Master]exit\n";
 
 ### Error Example
 
-!> This code will result in `100%` deadlock in coroutine mode. Refer to [this article](https://course.swoole-cloud.com/article/2).
+!> This code will result in `100%` deadlock in coroutine mode.
 
 ```php
 $lock = new Swoole\Lock();

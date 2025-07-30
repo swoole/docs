@@ -238,14 +238,14 @@ However, the more processes that are started, the significantly more memory will
     * If the business code is fully [asynchronous I/O](/learn?id=sync-io-vs-async-io), setting this to `1-4` times the number of CPU cores is the most reasonable.
     * If the business code is [synchronous I/O](/learn?id=sync-io-vs-async-io), it needs to be adjusted based on request response times and system load, for example: `100-500`.
     * Default setting is [swoole_cpu_num()](/functions?id=swoole_cpu_num), with a maximum not to exceed [swoole_cpu_num()](/functions?id=swoole_cpu_num) * 1000.
-    * Assuming each process consumes `40M` memory, `100` processes will require `4G` memory. For how to correctly check the memory usage of processes, please refer to the [official Swoole video tutorial](https://course.swoole-cloud.com/course-video/85).
+    * Assuming each process consumes `40M` memory, `100` processes will require `4G` memory.
 ### max_request
 
 ?> **Set the maximum number of tasks for the `worker` process.** [Default value: `0` means the process will not exit]
 
 ?> A `worker` process will automatically exit after handling more tasks than this value, releasing all memory and resources when it exits.
 
-!> The main purpose of this parameter is to solve PHP process memory leaks caused by improper programming. If a PHP application has slow memory leaks that cannot be identified or resolved, you can temporarily solve it by setting `max_request`. It is necessary to find and fix the memory leak code instead of relying on this solution, or you can use [Swoole Tracker](https://course.swoole-cloud.com/course-video/92) to discover the leaking code.
+!> The main purpose of this parameter is to solve PHP process memory leaks caused by improper programming. If a PHP application has slow memory leaks that cannot be identified or resolved, you can temporarily solve it by setting `max_request`. It is necessary to find and fix the memory leak code instead of relying on this solution, or you can use Swoole Tracker to discover the leaking code.
 
   * **Tips**
 
@@ -588,10 +588,10 @@ For example, `backlog => 128`, this parameter will determine how many connection
     * Note 1: After `linux2.2`, the handshake process is divided into two queues, `syn queue` and `accept queue`, the length of `syn queue` is determined by `tcp_max_syn_backlog`.
     * Note 2: In higher version kernels, `accept4` is called to save one `set no block` system call.
     * Note 3: The client considers the connection successful when it receives a `syn+ack` packet, but in reality, the server is still in a half-connected state and may send an `rst` packet to the client. The client's behavior will be `Connection reset by peer`.
-    * Note 4: Success is determined by TCP's retransmission mechanism, related configurations include `tcp_synack_retries` and `tcp_abort_on_overflow`. If you want to delve deeper into the underlying TCP mechanism, you can watch the [Swoole official video tutorial](https://course.swoole-cloud.com/course-video/3).
+    * Note 4: Success is determined by TCP's retransmission mechanism, related configurations include `tcp_synack_retries` and `tcp_abort_on_overflow`.
 ### open_tcp_keepalive
 
-?> There is a `Keep-Alive` mechanism in `TCP` to detect dead connections. If the application layer is insensitive to dead connections or does not implement a heartbeat mechanism, you can use the operating system's provided `keepalive` mechanism to kick off dead connections. Adding `open_tcp_keepalive => true` in the [Server->set()](/server/methods?id=set) configuration indicates enabling `TCP keepalive`. Additionally, there are `3` options to adjust the details of `keepalive`, refer to the [Swoole official video tutorial](https://course.swoole-cloud.com/course-video/10).
+?> There is a `Keep-Alive` mechanism in `TCP` to detect dead connections. If the application layer is insensitive to dead connections or does not implement a heartbeat mechanism, you can use the operating system's provided `keepalive` mechanism to kick off dead connections. Adding `open_tcp_keepalive => true` in the [Server->set()](/server/methods?id=set) configuration indicates enabling `TCP keepalive`. Additionally, there are `3` options to adjust the details of `keepalive`.
 
   * **Options**
 
@@ -637,7 +637,7 @@ $serv->start();
 
 Enable heartbeat check **[Default: `false`]**
 
-This option indicates how often to poll, in seconds. For example, if `heartbeat_check_interval => 60`, it means every `60` seconds, all connections will be traversed. If a connection has not sent any data to the server within `120` seconds (double the default `heartbeat_idle_time` when not set), the connection will be forcibly closed. If not configured, heartbeat will not be enabled, this configuration is off by default, see [Swoole Official Video Tutorial](https://course.swoole-cloud.com/course-video/10).
+This option indicates how often to poll, in seconds. For example, if `heartbeat_check_interval => 60`, it means every `60` seconds, all connections will be traversed. If a connection has not sent any data to the server within `120` seconds (double the default `heartbeat_idle_time` when not set), the connection will be forcibly closed. If not configured, heartbeat will not be enabled, this configuration is off by default.
 
   * **Tips**
     * The `Server` does not actively send heartbeat packets to the client, but passively waits for the client to send heartbeats. The server's `heartbeat_check` only checks the time of the last data sent on the connection. If it exceeds the limit, the connection will be severed.

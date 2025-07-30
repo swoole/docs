@@ -118,7 +118,7 @@ Database IO operation tests using basic business code with no special optimizati
 **Outperforms all static language frameworks (using MySQL instead of PostgreSQL)**
 ## How does Swoole maintain TCP long connections
 
-There are 2 sets of configurations for maintaining TCP long connections, [tcp_keepalive](/server/setting?id=open_tcp_keepalive) and [heartbeat](/server/setting?id=heartbeat_check_interval). For how to use and precautions, please refer to the [Swoole official video tutorial](https://course.swoole-cloud.com/course-video/10).
+There are 2 sets of configurations for maintaining TCP long connections, [tcp_keepalive](/server/setting?id=open_tcp_keepalive) and [heartbeat](/server/setting?id=heartbeat_check_interval).
 ## How to properly restart the Swoole service
 
 In daily development, after modifying PHP code, it is often necessary to restart the service to make the code effective. A busy backend server is always processing requests. If an administrator terminates/restarts the server program through the `kill` process, it may cause the code to terminate right in the middle of execution, which cannot guarantee the integrity of the entire business logic.
