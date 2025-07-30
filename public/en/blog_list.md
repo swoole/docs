@@ -9,14 +9,6 @@ To facilitate learning Swoole, this section organizes and summarizes a series of
 * [Using Swoole's task feature in PHP-FPM or Apache](https://segmentfault.com/a/1190000007993744)
 * [Discussion on Swoole Coroutines and Asynchronous IO](https://mp.weixin.qq.com/s/pymXJoSHIj3Cvtmi6lzcVw)
 
-## Swoole Micro-courses
-
-* [Troubleshooting PHP hang issues](https://course.swoole-cloud.com/article/2)
-* [Common issues with Swoole long connections](https://course.swoole-cloud.com/article/11)
-* [Swoole and TCP four-way handshake](https://course.swoole-cloud.com/article/10)
-* [PHP Programmer's Inner Skills - Common Tools](https://course.swoole-cloud.com/article/14)
-* [Anecdotes on the role and implementation of in-process connection pools](https://course.swoole-cloud.com/article/13)
-
 ## Swoole Kernel
 
 * [Performance optimization of data delivery from master process to worker processes in Swoole Server](https://segmentfault.com/a/1190000021641401)
