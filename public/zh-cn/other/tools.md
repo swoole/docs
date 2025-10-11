@@ -200,7 +200,7 @@ perf top -p [进程ID]
 
 ### 输出结果
 
-![perf top输出结果](../_images/other/perf.png)
+![perf top输出结果](/_images/other/perf.png)
 
 perf结果中清楚地展示了当前进程运行时各个C函数的执行耗时，可以了解哪个C函数占用CPU资源较多。
 
