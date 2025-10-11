@@ -34,8 +34,12 @@ thread => enabled
 ## Creating Threads
 
 ```php
-Thread::exec(string $script_file, array ...$argv);
+use Swoole\Thread;
+
+$thread = new Thread(__DIR__ . '/task.php',array ...$argv);
 ```
+Arguments passed to the thread can be retrieved inside the script using `Thread::getArguments()`.
+
 
 Please note that the created child thread will not inherit any resources from the parent thread. Therefore, in the child thread, the following contents have been cleared and need to be recreated or set:
 - PHP files that have been loaded need to be reloaded with `include/require`
@@ -63,10 +67,11 @@ use Swoole\Thread;
 $args = Thread::getArguments();
 $c = 4;
 
+$threads = [];
 if (empty($args)) {
     # Parent thread
     for ($i = 0; $i < $c; $i++) {
-        $threads[] = Thread::exec(__FILE__, $i);
+        $threads[] = new Thread(__FILE__ , $i);
     }
     for ($i = 0; $i < $c; $i++) {
         $threads[$i]->join();
@@ -83,3 +88,46 @@ if (empty($args)) {
 
 ## Constants
 - `Thread::HARDWARE_CONCURRENCY` retrieves the number of concurrent threads supported by the hardware system, i.e. the number of CPU cores.
+
+## Methods
+
+### isAlive()
+Check if this thread is still running or not.
+```php
+if ($thread->isAlive()) {
+    echo "Thread is still running.\n";
+}
+```
+
+### join()
+Blocks the main thread until the thread finishes execution.
+```php
+$thread->join();
+echo "Thread finished and joined to current thread.\n";
+```
+
+### joinable()
+Returns true if the thread is joinable (not joined or detached).
+
+### detach()
+Separate this thread from the main thread (the calling thread), allowing its execution to continue independently.
+This thread will run in the background, and the main thread (the calling thread) will not wait for it to finish.
+
+### getExitStatus()
+Retrieve the exit status of the thread after it finishes.
+
+
+* **Scheduling and CPU Control**
+Swoole threads support various scheduling policies. You can combine `setAffinity` and `setPriority` to optimize thread performance on multicore systems.
+
+| Constant           | Description                  |
+|------------------|------------------------------|
+| `SCHED_OTHER`     | Default policy               |
+| `SCHED_FIFO`      | First-in-first-out           |
+| `SCHED_RR`        | Round-robin                  |
+| `SCHED_BATCH`     | Batch scheduling             |
+| `SCHED_ISO`       | ISO scheduling               |
+| `SCHED_IDLE`      | Run when CPU is idle         |
+| `SCHED_DEADLINE`  | Deadline scheduling          |
+
+* 
