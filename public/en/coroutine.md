@@ -1,6 +1,6 @@
 # Coroutine <!-- {docsify-ignore-all} -->
 
-This section introduces some basic concepts and common issues of coroutines, which can also be viewed through the [Swoole video tutorial](https://course.swoole-cloud.com/course-video/6).
+This section introduces some basic concepts and common issues of coroutines.
 
 Starting from version 4.0, `Swoole` provides a complete feature set of `Coroutine` + `Channel`, bringing a brand new `CSP` programming model.
 
