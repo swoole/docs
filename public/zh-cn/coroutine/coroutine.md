@@ -12,28 +12,28 @@
 Swoole\Coroutine::set(array $options);
 ```
 
-参数 | 此版本后稳定 | 作用 
----|---|---
-max_coroutine | - | 设置全局最大协程数，超过限制后底层将无法创建新的协程，Server下会被[server->max_coroutine](/server/setting?id=max_coroutine)覆盖。
-stack_size/c_stack_size | - | 设置单个协程初始C栈的内存尺寸，默认为2M
-log_level | v4.0.0 | 日志等级 [详见](/consts?id=日志等级)
-trace_flags | v4.0.0 | 跟踪标签 [详见](/consts?id=跟踪标签)
-socket_connect_timeout | v4.2.10 | 建立连接超时时间，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**
-socket_read_timeout | v4.3.0 | 读超时，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**
-socket_write_timeout | v4.3.0 | 写超时，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**
-socket_dns_timeout | v4.4.0 | 域名解析超时，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**
-socket_timeout | v4.2.10 | 发送/接收超时，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**
-dns_cache_expire | v4.2.11 | 设置swoole dns缓存失效时间,单位秒,默认60秒
-dns_cache_capacity | v4.2.11 | 设置swoole dns缓存容量,默认1000
-hook_flags | v4.4.0 | 一键协程化的hook范围配置，参考[一键协程化](/runtime)
-enable_preemptive_scheduler | v4.4.0 | 设置打开协程抢占式调度，协程最大执行时间为10ms，会覆盖[ini配置](/other/config)
-dns_server | v4.5.0 | 设置dns查询的server，默认"8.8.8.8"
-exit_condition | v4.5.0 | 传入一个`callable`，返回bool，可自定义reactor退出的条件。如: 我希望协程数量等于0时程序才退出, 则可写`Co::set(['exit_condition' => function () {return Co::stats()['coroutine_num'] === 0;}]);`
-enable_deadlock_check | v4.6.0 | 设置是否开启协程死锁检测，默认开启
-deadlock_check_disable_trace | v4.6.0 | 设置是否输出协程死锁检测的堆栈帧
-deadlock_check_limit | v4.6.0 | 限制协程死锁检测时最大输出数
-deadlock_check_depth | v4.6.0 | 限制协程死锁检测时返回堆栈帧的数量
-max_concurrency | v4.8.2 | 最大并发请求数量
+| 参数                           | 此版本后稳定  | 作用                                                                                                                                                        |
+|------------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| max_coroutine                | -       | 设置全局最大协程数，超过限制后底层将无法创建新的协程，Server下会被[server->max_coroutine](/server/setting?id=max_coroutine)覆盖。                                                          |
+| stack_size/c_stack_size      | -       | 设置单个协程初始C栈的内存尺寸，默认为`2M`                                                                                                                                   |
+| log_level                    | v4.0.0  | 日志等级 [详见](/consts?id=日志等级)                                                                                                                                |
+| trace_flags                  | v4.0.0  | 跟踪标签 [详见](/consts?id=跟踪标签)                                                                                                                                |
+| socket_connect_timeout       | v4.2.10 | 建立连接超时时间，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**                                                                                                  |
+| socket_read_timeout          | v4.3.0  | 读超时，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**                                                                                                       |
+| socket_write_timeout         | v4.3.0  | 写超时，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**                                                                                                       |
+| socket_dns_timeout           | v4.4.0  | 域名解析超时，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**                                                                                                    |
+| socket_timeout               | v4.2.10 | 发送/接收超时，**参考[客户端超时规则](/coroutine_client/init?id=超时规则)**                                                                                                   |
+| dns_cache_expire             | v4.2.11 | 设置swoole dns缓存失效时间,单位秒,默认60秒                                                                                                                              |
+| dns_cache_capacity           | v4.2.11 | 设置swoole dns缓存容量,默认1000                                                                                                                                   |
+| hook_flags                   | v4.4.0  | 一键协程化的hook范围配置，参考[一键协程化](/runtime)                                                                                                                        |
+| enable_preemptive_scheduler  | v4.4.0  | 设置打开协程抢占式调度，协程最大执行时间为10ms，会覆盖[ini配置](/other/config)                                                                                                       |
+| dns_server                   | v4.5.0  | 设置dns查询的server，默认"8.8.8.8"                                                                                                                                |
+| exit_condition               | v4.5.0  | 传入一个`callable`，返回bool，可自定义reactor退出的条件。如: 我希望协程数量等于0时程序才退出, 则可写`Co::set(['exit_condition' => function () {return Co::stats()['coroutine_num'] === 0;}]);` |
+| enable_deadlock_check        | v4.6.0  | 设置是否开启协程死锁检测，默认开启                                                                                                                                         |
+| deadlock_check_disable_trace | v4.6.0  | 设置是否输出协程死锁检测的堆栈帧                                                                                                                                          |
+| deadlock_check_limit         | v4.6.0  | 限制协程死锁检测时最大输出数                                                                                                                                            |
+| deadlock_check_depth         | v4.6.0  | 限制协程死锁检测时返回堆栈帧的数量                                                                                                                                         |
+| max_concurrency              | v4.8.2  | 最大并发请求数量                                                                                                                                                  |
 
 ### getOptions()
 
@@ -570,7 +570,7 @@ Swoole\Coroutine::getElapsed([$cid]): int
 !> Swoole版本 >= `v4.7.0` 可用
 
 ```php
-Swoole\Coroutine::cancel($cid): bool
+Swoole\Coroutine::cancel(int $cid, bool $throw_exception = false): bool
 ```
 * **参数**
 
@@ -578,11 +578,21 @@ Swoole\Coroutine::cancel($cid): bool
         * **功能**：协程的 `CID`
         * **默认值**：无
         * **其它值**：无
+    * **`bool $throw_exception`**
+      * **功能**：取消协程，并在被取消的协程内抛出一个`Swoole\Coroutine\CanceledException`异常
+      * **默认值**：无
+      * **其它值**：无
+      * 在`v6.1.0`版本之后可用
 
 * **返回值**
 
     * 成功时返回 `true`，失败将会返回 `false`
     * 取消失败可以调用 [swoole_last_error()](/functions?id=swoole_last_error) 查看错误信息
+
+#### 注意事项
+* 当协程正在读写文件时，是不可取消的，`cancel()`会返回失败，错误码为`SWOOLE_ERROR_CO_CANNOT_CANCEL`
+* 当设置`$throw_exception`为`true`时，该函数将一直返回`true`
+* 被取消的协程必须捕获`Swoole\Coroutine\CanceledException`异常，否则将产生`Fatal Error`，导致进程退出
 
 ### isCanceled()
 
