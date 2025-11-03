@@ -181,6 +181,47 @@ Swoole\Http\Response->push(string|object $data, int $opcode = WEBSOCKET_OPCODE_T
     * **默认值**：`true`
     * **其它值**：`false`
 
+### ping()
+发送`WebSocket`心跳包。
+
+```php
+Swoole\Http\Response->ping(string $data = ''): bool
+```
+* **参数**
+
+  * **`string $data`**
+    * **功能**：心跳包数据内容
+    * **默认值**：空字符串
+    * **其它值**：无
+
+* **返回值**
+
+  * 发送成功返回`true`
+  * 连接不存在、已关闭、未完成`WebSocket`，发送失败返回`false`
+
+### disconnect()
+断开`WebSocket`连接。
+
+```php
+Swoole\Http\Response->disconnect(int $code = 1000, string $reason = ''): bool
+```
+* **参数**
+
+  * **`int $code`**
+    * **功能**：关闭码
+    * **默认值**：`1000`
+    * **其它值**：无
+
+  * **`string $reason`**
+    * **功能**：关闭原因
+    * **默认值**：空字符串
+    * **其它值**：无
+
+* **返回值**
+
+  * 关闭成功返回`true`
+  * 连接不存在、已关闭、未完成`WebSocket`，关闭失败返回`false`
+
 ### close()
 
 关闭`WebSocket`连接。

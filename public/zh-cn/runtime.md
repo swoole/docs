@@ -394,7 +394,7 @@ Co::set(['hook_flags' => SWOOLE_HOOK_CURL]);
 
 Co\run(function () {
     $ch = curl_init();  
-    curl_setopt($ch, CURLOPT_URL, "http://www.xinhuanet.com/");  
+    curl_setopt($ch, CURLOPT_URL, "https://www.xinhuanet.com/");  
     curl_setopt($ch, CURLOPT_HEADER, false);  
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $result = curl_exec($ch);  
@@ -405,13 +405,13 @@ Co\run(function () {
 
 ### SWOOLE_HOOK_NATIVE_CURL
 
-对原生`CURL`的`协程化处理`。
+对`CURL`的`协程化处理`，与`SWOOLE_HOOK_CURL`不同的是，`SWOOLE_HOOK_NATIVE_CURL`基于`libcurl`库实现，支持所有`CURL`功能。
+
+- 使用前需要在编译时开启 [--enable-swoole-curl](/environment?id=通用参数) 选项
+- 此选项与 [SWOOLE_HOOK_CURL](/runtime?id=swoole_hook_all) 为互斥关系，不能同时开启
+- 在使用`SWOOLE_HOOK_ALL`选项时，优先使用`SWOOLE_HOOK_NATIVE_CURL`
 
 !> `Swoole`版本 >= `v4.6.0` 可用
-
-!> 使用前需要在编译时开启[--enable-swoole-curl](/environment?id=通用参数)选项；  
-开启该选项后将自动设置`SWOOLE_HOOK_NATIVE_CURL`，关闭[SWOOLE_HOOK_CURL](/runtime?id=swoole_hook_all)；  
-同时`SWOOLE_HOOK_ALL`包含`SWOOLE_HOOK_NATIVE_CURL`
 
 ```php
 Co::set(['hook_flags' => SWOOLE_HOOK_NATIVE_CURL]);
@@ -654,32 +654,32 @@ Swoole\Runtime::getHookFlags(): int
 ### 可用列表
 
   * `redis`扩展
-  * 使用`mysqlnd`模式的`pdo_mysql`、`mysqli`扩展，如果未启用`mysqlnd`将不支持协程化
-  * `soap`扩展
+  * `mysqli`扩展、`pdo_mysql`扩展 （需启用`mysqlnd`）
+  * `curl`扩展
   * `file_get_contents`、`fopen`
   * `stream_socket_client` (`predis`、`php-amqplib`)
   * `stream_socket_server`
   * `stream_select` (需要`4.3.2`以上版本)
   * `fsockopen`
   * `proc_open` (需要`4.4.0`以上版本)
-  * `curl`
+  * `soap`扩展
+  * `pdo_pgsql` (需要`v5.1.0`以上版本)
+  * `pdo_oci` (需要`v5.1.0`以上版本)
+  * `pdo_odbc` (需要`v5.1.0`以上版本)
 
 ### 不可用列表
 
 !> **不支持协程化**表示会使协程降级为阻塞模式，此时使用协程无实际意义
 
-  * `mysql`：底层使用`libmysqlclient`
-  * `mongo`：底层使用`mongo-c-client`
-  * `pdo_pgsql`，`Swoole`版本 >= `v5.1.0`之后，使用`pdo_pgsql`可以协程化处理
-  * `pdo_oci`，`Swoole`版本 >= `v5.1.0`之后，使用`pdo_oci`可以协程化处理
-  * `pdo_odbc`，`Swoole`版本 >= `v5.1.0`之后，使用`pdo_odbc`可以协程化处理
+  * `mysql`扩展：底层使用`libmysqlclient`
+  * `mongodb`扩展：底层使用`mongo-c-client`
   * `pdo_firebird`，底层使用`firebird` `C` 客户端库，仅支持同步阻塞`IO`
   * `php-amqp`，底层使用`librabbitmq`，仅支持同步阻塞`IO`
   * `ftp`，底层使用了`poll()`等待`Socket`，不支持协程化
 
 ## API变更
 
-`v4.3`及以前版本，`enableCoroutine`的 `API` 需要`2`个参数
+`v4.3`及以前版本，`Runtime::enableCoroutine()`的 `API` 需要`2`个参数
 
 ```php
 Swoole\Runtime::enableCoroutine(bool $enable = true, int $flags = SWOOLE_HOOK_ALL);
@@ -690,7 +690,7 @@ Swoole\Runtime::enableCoroutine(bool $enable = true, int $flags = SWOOLE_HOOK_AL
 
 !> `Runtime::enableCoroutine(false)`关闭上一次设置的所有选项协程`Hook`设置。
 
-`v4.4`版本后，`enableCoroutine`的 `API` 变更为只需要`1`个参数
+`v4.4`版本后，`Runtime::enableCoroutine()`的 `API` 变更为只需要`1`个参数
 
 ```php
 Swoole\Runtime::enableCoroutine(int $flags = SWOOLE_HOOK_ALL);
