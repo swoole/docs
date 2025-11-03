@@ -1,15 +1,13 @@
 # 进程/线程间锁 Lock
 
-* `PHP`代码中可以很方便地创建一个锁`Swoole\Lock`，用来实现数据同步。`Lock`类支持`5`种锁的类型。
+* `PHP`代码中可以很方便地创建一个锁`Swoole\Lock`，用来实现数据同步。`Lock`类支持`3`种锁的类型。
 * 多线程模式需要使用`Swoole\Thread\Lock`，除了命名空间不一样，其接口与 `Swoole\Lock` 完全一致。
 
-锁类型 | 说明
----|---
-SWOOLE_MUTEX | 互斥锁
-SWOOLE_RWLOCK | 读写锁
-SWOOLE_SPINLOCK | 自旋锁
-SWOOLE_FILELOCK | 文件锁(废弃)
-SWOOLE_SEM | 信号量(废弃)
+| 锁类型             | 说明      |
+|-----------------|---------|
+| SWOOLE_MUTEX    | 互斥锁     |
+| SWOOLE_RWLOCK   | 读写锁     |
+| SWOOLE_SPINLOCK | 自旋锁     |
 
 !> 请勿在[onReceive](/server/events?id=onreceive)等回调函数中创建锁，否则内存会持续增长，造成内存泄漏。
 
@@ -19,13 +17,10 @@ SWOOLE_SEM | 信号量(废弃)
 $lock = new Swoole\Lock(SWOOLE_MUTEX);
 echo "[Master]create lock\n";
 $lock->lock();
-if (pcntl_fork() > 0)
-{
+if (pcntl_fork() > 0) {
   sleep(1);
   $lock->unlock();
-} 
-else
-{
+} else {
   echo "[Child] Wait Lock\n";
   $lock->lock();
   echo "[Child] Get Lock\n";
@@ -66,7 +61,7 @@ while ($c--) {
 构造函数。
 
 ```php
-Swoole\Lock::__construct(int $type = SWOOLE_MUTEX, string $lockfile = '');
+Swoole\Lock::__construct(int $type = SWOOLE_MUTEX);
 ```
 
 !> 不要循环创建/销毁锁的对象，否则会发生内存泄漏。
@@ -78,16 +73,44 @@ Swoole\Lock::__construct(int $type = SWOOLE_MUTEX, string $lockfile = '');
       * **默认值**：`SWOOLE_MUTEX`【互斥锁】
       * **其它值**：无
 
-    * **`string $lockfile`**
-      * **功能**：指定文件锁的路径【当类型为`SWOOLE_FILELOCK`时必须传入】
-      * **默认值**：无
-      * **其它值**：无
-
 !> 每一种类型的锁支持的方法都不一样。如读写锁、文件锁可以支持`$lock->lock_read()`。另外除文件锁外，其他类型的锁必须在父进程内创建，这样`fork`出的子进程之间才可以互相争抢锁。
 
 ### lock()
 
 加锁操作。如果有其他进程持有锁，那这里将进入阻塞，直到持有锁的进程`unlock()`释放锁。
+
+#### 6.1.0 版本之后
+```php
+Swoole\Lock->lock(int $operation, float $timeout = -1): bool
+```
+
+  * **参数** 
+
+    * **`int $operation`**
+      * **功能**：锁操作类型
+      * **默认值**：`LOCK_EX`【独占锁】
+      * **其它值**：
+        * `LOCK_EX`：独占锁
+        * `LOCK_SH`：共享锁（只读锁，仅`SWOOLE_RWLOCK`支持）
+        * `LOCK_NB`：非阻塞锁（如果无法获得锁则立即返回）
+    * **`float $timeout`**
+      * **功能**：指定超时时间
+      * **值单位**：秒【支持浮点型，如`1.5`表示`1s`+`500ms`】
+      * **默认值**：`-1`【表示永不超时】
+      * **其它值**：无
+
+  * **返回值**
+
+    * 在规定的时间内未获得锁，返回`false`
+    * 加锁成功返回`true`
+
+除`unlock()`方法之外，其他方法均已废弃不可用，包括：
+- `trylock()`
+- `lock_read()`
+- `trylock_read()`
+- `lockwait()`
+
+#### 6.1.0 版本之前
 
 ```php
 Swoole\Lock->lock(): bool

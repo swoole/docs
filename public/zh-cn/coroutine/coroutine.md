@@ -594,6 +594,27 @@ Swoole\Coroutine::cancel(int $cid, bool $throw_exception = false): bool
 * 当设置`$throw_exception`为`true`时，该函数将一直返回`true`
 * 被取消的协程必须捕获`Swoole\Coroutine\CanceledException`异常，否则将产生`Fatal Error`，导致进程退出
 
+```php
+Co\run(function () {
+    $cid = Co\go(function () {
+        try {
+            while (true) {
+                System::sleep(0.1);
+                echo "co 2 running\n";
+            }
+            var_dump('end');
+        } catch (Swoole\Coroutine\CanceledException $e) {
+            var_dump('cancelled');
+        }
+    });
+
+    System::sleep(0.3);
+    Co::cancel($cid, true);
+    System::sleep(0.2);
+    echo "co 1 end\n";
+});
+```
+
 ### isCanceled()
 
 用于判断当前操作是否是被手动取消的

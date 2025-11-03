@@ -411,6 +411,7 @@ Swoole\Server->stop(int $workerId = -1, bool $waitEvent = false): bool
       * 功能：控制退出策略，`false`表示立即退出，`true`表示等待事件循环为空时再退出
       * 默认值：false
       * 其它值：true
+      * 在`v6.1.0`版本之后，此参数已被移除，退出逻辑由`reload_async`选项控制
 
   * **返回值**
 
