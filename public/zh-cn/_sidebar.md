@@ -84,6 +84,10 @@
 * [事件循环(EventLoop)](event.md)
 
 * [定时器(Timer)](timer.md)
+* [PHP 标准库扩展](stdext/index.md)
+  * [字符串方法](stdext/string.md)
+  * [数组方法](stdext/array.md)
+  * [Stream 方法](stdext/stream.md)
 
 * 其他
   * [常量](consts.md)

@@ -116,6 +116,14 @@ Swoole\Lock->lock(int $operation, float $timeout = -1): bool
 Swoole\Lock->lock(): bool
 ```
 
+### unlock()
+
+释放锁。
+
+```php
+Swoole\Lock->unlock(): bool
+```
+
 ### trylock()
 
 加锁操作。与`lock`方法不同的是，`trylock()`不会阻塞，它会立即返回。
@@ -129,16 +137,6 @@ Swoole\Lock->trylock(): bool
     * 加锁成功返回`true`，此时可以修改共享变量
     * 加锁失败返回`false`，表示有其他进程持有锁
 
-!> `SWOOlE_SEM` 信号量没有`trylock`方法
-
-### unlock()
-
-释放锁。
-
-```php
-Swoole\Lock->unlock(): bool
-```
-
 ### lock_read()
 
 只读加锁。
@@ -151,7 +149,7 @@ Swoole\Lock->lock_read(): bool
 * 但不能`$lock->lock()`或`$lock->trylock()`，这两个方法是获取独占锁，在独占锁加锁时，其他进程无法再进行任何加锁操作，包括读锁；
 * 当另外一个进程获得了独占锁(调用`$lock->lock()`/`$lock->trylock()`)时，`$lock->lock_read()`会发生阻塞，直到持有独占锁的进程释放锁。
 
-!> 只有`SWOOLE_RWLOCK`和`SWOOLE_FILELOCK`类型的锁支持只读加锁
+!> 只有`SWOOLE_RWLOCK`类型的锁支持只读加锁
 
 ### trylock_read()
 
