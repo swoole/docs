@@ -197,7 +197,7 @@ Co\run(function () {
 
 ### SWOOLE_HOOK_TLS
 
-`v4.2`开始支持。TLS Socket类型的stream，[参考](https://www.php.net/manual/en/context.ssl.php)。
+`v4.2`开始支持。`TLS Socket`类型的`stream`，[参考](https://www.php.net/manual/en/context.ssl.php)。
 
 示例：
 
@@ -221,7 +221,9 @@ Co\run(function () {
         echo '2' . PHP_EOL;
     });
 });
-//输出 
+```
+输出
+```
 2
 1
 ```
@@ -232,13 +234,13 @@ Co\run(function () {
 
 #### 文件操作的`协程化处理`，支持的函数有：
 
-    * `fopen`
-    * `fread`/`fgets`
-    * `fwrite`/`fputs`
-    * `file_get_contents`、`file_put_contents`
-    * `unlink`
-    * `mkdir`
-    * `rmdir`
+* `fopen`
+* `fread`/`fgets`
+* `fwrite`/`fputs`
+* `file_get_contents`、`file_put_contents`
+* `unlink`
+* `mkdir`
+* `rmdir`
 
 示例：
 
@@ -372,18 +374,18 @@ Co\run(function () {
 
 [v4.4LTS](https://github.com/swoole/swoole-src/tree/v4.4.x)后或`v4.5`开始正式支持。
 
-* **CURL的HOOK，支持的函数有：**
+#### 支持的`CURL`函数包括：
 
-     * curl_init
-     * curl_setopt
-     * curl_exec
-     * curl_multi_getcontent
-     * curl_setopt_array
-     * curl_error
-     * curl_getinfo
-     * curl_errno
-     * curl_close
-     * curl_reset
+* `curl_init`
+* `curl_setopt`
+* `curl_exec`
+* `curl_multi_getcontent`
+* `curl_setopt_array`
+* `curl_error`
+* `curl_getinfo`
+* `curl_errno`
+* `curl_close`
+* `curl_reset`
 
 示例：
 
@@ -403,9 +405,9 @@ Co\run(function () {
 
 ### SWOOLE_HOOK_NATIVE_CURL
 
-对原生CURL的`协程化处理`。
+对原生`CURL`的`协程化处理`。
 
-!> Swoole版本 >= `v4.6.0` 可用
+!> `Swoole`版本 >= `v4.6.0` 可用
 
 !> 使用前需要在编译时开启[--enable-swoole-curl](/environment?id=通用参数)选项；  
 开启该选项后将自动设置`SWOOLE_HOOK_NATIVE_CURL`，关闭[SWOOLE_HOOK_CURL](/runtime?id=swoole_hook_all)；  
@@ -435,9 +437,9 @@ Co\run(function () {
 
 ### SWOOLE_HOOK_SOCKETS
 
-对 sockets 扩展的`协程化处理`。
+对 `sockets` 扩展的`协程化处理`。
 
-!> Swoole版本 >= `v4.6.0` 可用
+!> `Swoole`版本 >= `v4.6.0` 可用
 
 ```php
 Co::set(['hook_flags' => SWOOLE_HOOK_SOCKETS]);
@@ -445,7 +447,7 @@ Co::set(['hook_flags' => SWOOLE_HOOK_SOCKETS]);
 
 ### SWOOLE_HOOK_STDIO
 
-对 STDIO 的`协程化处理`。
+对 `STDIO` 的`协程化处理`。
 
 !> Swoole版本 >= `v4.6.2` 可用
 
@@ -481,7 +483,7 @@ Process::wait();
 
 对 `pdo_pgsql` 的`协程化处理`。
 
-!> Swoole版本 >= `v5.1.0` 可用
+!> `Swoole`版本 >= `v5.1.0` 可用
 
 ```php
 Co::set(['hook_flags' => SWOOLE_HOOK_PDO_PGSQL]);
@@ -520,7 +522,7 @@ Co\run(function () {
 
 对 `pdo_odbc` 的`协程化处理`。
 
-!> Swoole版本 >= `v5.1.0` 可用
+!> `Swoole`版本 >= `v5.1.0` 可用
 
 ```php
 Co::set(['hook_flags' => SWOOLE_HOOK_PDO_ODBC]);
@@ -555,7 +557,7 @@ Co\run(function () {
 
 对 `pdo_oci` 的`协程化处理`。
 
-!> Swoole版本 >= `v5.1.0` 可用
+!> `Swoole`版本 >= `v5.1.0` 可用
 
 ```php
 Co::set(['hook_flags' => SWOOLE_HOOK_PDO_ORACLE]);
@@ -592,7 +594,7 @@ Co\run(function () {
 ### SWOOLE_HOOK_PDO_SQLITE
 对 `pdo_sqlite` 的`协程化处理`。
 
-!> Swoole版本 >= `v5.1.0` 可用
+!> `Swoole`版本 >= `v5.1.0` 可用
 
 ```php
 Co::set(['hook_flags' => SWOOLE_HOOK_PDO_SQLITE]);
@@ -631,7 +633,7 @@ run(function() {
 
 通过`flags`设置要`Hook`的函数的范围
 
-!> Swoole版本 >= `v4.5.0` 可用
+!> `Swoole`版本 >= `v4.5.0` 可用
 
 ```php
 Swoole\Runtime::setHookFlags(int $flags): bool
@@ -641,7 +643,7 @@ Swoole\Runtime::setHookFlags(int $flags): bool
 
 获取当前已`Hook`内容的`flags`，可能会与开启`Hook`时传入的`flags`不一致（由于未`Hook`成功的`flags`将会被清除）
 
-!> Swoole版本 >= `v4.4.12` 可用
+!> `Swoole`版本 >= `v4.4.12` 可用
 
 ```php
 Swoole\Runtime::getHookFlags(): int
