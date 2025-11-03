@@ -1,3 +1,5 @@
+# Array 方法
+
 ## 映射关系列表
 例如`$array = [1, 2, 3]` 使用 `$array->count()` 获取数组长度，等同于调用 `count($array)`。
 

@@ -1,3 +1,5 @@
+# String 方法
+
 ## 映射关系列表
 例如`$str = "hello world"` 使用 `$str->length()` 获取字符串长度，等同于调用 `strlen($str)`。
 
