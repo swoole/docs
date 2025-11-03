@@ -1,6 +1,6 @@
 # Runtime
 
-相对于`Swoole1.x`，`Swoole4+`提供了协程这个大杀器，所有业务代码都是同步的，但底层的IO却是异步的，保证并发的同时避免了传统异步回调所带来的离散的代码逻辑和陷入多层回调中导致代码无法维护，要达到这个效果必须所有的`IO`请求都是[异步IO](/learn?id=同步io异步io)，而`Swoole1.x`时代提供的`MySQL`、`Redis`等客户端虽然是异步IO，但是是异步回调的编程方式，不是协程方式，所以在`Swoole4`时代移除了这些客户端。
+相对于`Swoole1.x`，`Swoole4+`提供了协程这个大杀器，所有业务代码都是同步的，但底层的`IO`却是异步的，保证并发的同时避免了传统异步回调所带来的离散的代码逻辑和陷入多层回调中导致代码无法维护，要达到这个效果必须所有的`IO`请求都是[异步IO](/learn?id=同步io异步io)，而`Swoole1.x`时代提供的`MySQL`、`Redis`等客户端虽然是异步IO，但是是异步回调的编程方式，不是协程方式，所以在`Swoole4`时代移除了这些客户端。
 
 为了解决这些客户端的协程支持问题Swoole开发组做了大量的工作：
 
@@ -230,7 +230,7 @@ Co\run(function () {
 
 `v4.3`开始支持。
 
-* **文件操作的`协程化处理`，支持的函数有：**
+#### 文件操作的`协程化处理`，支持的函数有：
 
     * `fopen`
     * `fread`/`fgets`
@@ -250,6 +250,54 @@ Co\run(function () {
     fwrite($fp, str_repeat('A', 2048));
     fwrite($fp, str_repeat('B', 2048));
 });
+```
+
+#### 关闭文件 `HOOK`
+
+由于开启文件`HOOK`后，所有文件操作都会变成异步非阻塞的，包括`autoload`和`include`等操作，
+如果这些操作发生在协程调度点上，可能会引起不可预期的问题，这时可关闭文件`hook`的选项：
+
+```php
+# 开启除了文件 HOOK 之外的所有协程 HOOK 选项
+Swoole\Runtime::enableCoroutine(SWOOLE_HOOK_ALL & ~SWOOLE_HOOK_FILE);
+```
+
+在关闭文件`HOOK`后，所有文件操作将变成同步阻塞的，不会发生协程切换，可安全地用于`autoload`、`include`或其他`PHP`源代码分析处理的逻辑。
+在关闭文件`HOOK`的状态下，可以用下面的方式来实现异步文件读写：
+- `System::readFile()`：异步读取文件内容
+- `System::writeFile()`：异步写入文件内容
+
+在`6.1`版本之后，还可以使用`fopen('async.file://path/to/file', 'rw')`打开异步文件流。
+```php
+Co\run(function () {
+    # 这是一个异步文件流，所有对此资源的读写操作都是异步非阻塞的
+    $fp = fopen("async.file:///tmp/test.txt", "w+");
+    fwrite($fp, "Hello World\n");
+    fdatasync($fp);
+    fclose($fp);
+});
+```
+
+#### 文件锁
+在并发读写文件时，需要使用文件锁来保证数据一致性，在调用`flock()`会产生协程调度，示例：
+
+```php
+Co\run(function () {
+    $fp = fopen("/tmp/test.txt", "w+");
+    flock($fp, LOCK_EX);
+    fwrite($fp, "Hello World\n");
+    flock($fp, LOCK_UN);
+    fclose($fp);
+});
+```
+
+`flock()`支持`LOCK_SH`、`LOCK_EX`、`LOCK_UN`三种锁类型。只读操作时使用`LOCK_SH`，读写操作时使用`LOCK_EX`，释放锁时使用`LOCK_UN`。
+
+请注意`flock()`不受`SWOOLE_HOOK_FILE`选项控制，而是`SWOOLE_HOOK_STDIO`。因此关闭`SWOOLE_HOOK_FILE`后，`flock()`仍然是协程化的。
+如果需要关闭`flock()`的协程化，可以关闭`SWOOLE_HOOK_STDIO`选项。
+
+```php
+Swoole\Runtime::enableCoroutine(SWOOLE_HOOK_ALL & ~SWOOLE_HOOK_FILE & ~SWOOLE_HOOK_STDIO);
 ```
 
 ### SWOOLE_HOOK_STREAM_FUNCTION
@@ -620,15 +668,16 @@ Swoole\Runtime::getHookFlags(): int
 
   * `mysql`：底层使用`libmysqlclient`
   * `mongo`：底层使用`mongo-c-client`
-  * `pdo_pgsql`，Swoole版本 >= `v5.1.0`之后，使用`pdo_pgsql`可以协程化处理
-  * `pdo_oci`，Swoole版本 >= `v5.1.0`之后，使用`pdo_oci`可以协程化处理
-  * `pdo_odbc`，Swoole版本 >= `v5.1.0`之后，使用`pdo_odbc`可以协程化处理
-  * `pdo_firebird`
-  * `php-amqp`
+  * `pdo_pgsql`，`Swoole`版本 >= `v5.1.0`之后，使用`pdo_pgsql`可以协程化处理
+  * `pdo_oci`，`Swoole`版本 >= `v5.1.0`之后，使用`pdo_oci`可以协程化处理
+  * `pdo_odbc`，`Swoole`版本 >= `v5.1.0`之后，使用`pdo_odbc`可以协程化处理
+  * `pdo_firebird`，底层使用`firebird` `C` 客户端库，仅支持同步阻塞`IO`
+  * `php-amqp`，底层使用`librabbitmq`，仅支持同步阻塞`IO`
+  * `ftp`，底层使用了`poll()`等待`Socket`，不支持协程化
 
 ## API变更
 
-`v4.3`及以前版本，`enableCoroutine`的API需要2个参数。
+`v4.3`及以前版本，`enableCoroutine`的 `API` 需要`2`个参数
 
 ```php
 Swoole\Runtime::enableCoroutine(bool $enable = true, int $flags = SWOOLE_HOOK_ALL);
@@ -638,3 +687,10 @@ Swoole\Runtime::enableCoroutine(bool $enable = true, int $flags = SWOOLE_HOOK_AL
 - `$flags`：选择要`协程化`的类型，可以多选，默认为全选。仅在`$enable = true`时有效。
 
 !> `Runtime::enableCoroutine(false)`关闭上一次设置的所有选项协程`Hook`设置。
+
+`v4.4`版本后，`enableCoroutine`的 `API` 变更为只需要`1`个参数
+
+```php
+Swoole\Runtime::enableCoroutine(int $flags = SWOOLE_HOOK_ALL);
+```
+- 变更：移除了`$enable`参数，`$flags`为`0`时表示关闭所有协程`Hook`设置。
