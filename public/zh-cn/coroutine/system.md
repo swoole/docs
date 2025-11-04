@@ -253,7 +253,8 @@ Swoole\Coroutine\System::writeFile(string $filename, string $fileContent, int $f
 
     ```php
     $filename = __DIR__ . "/defer_client.php";
-    Co\run(function () use ($filename) {
+    Swoole\Coroutine\run(function () use ($filename) 
+    {
         $w = Swoole\Coroutine\System::writeFile($filename, "hello swoole!");
         var_dump($w);
     });
