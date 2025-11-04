@@ -190,7 +190,7 @@ Swoole\Coroutine\System::fgets(resource $handle): string|false
 协程方式读取文件。
 
 ```php
-Swoole\Coroutine\System::readFile(string $filename): string|false
+Swoole\Coroutine\System::readFile(string $filename, int $flags = 0): string|false
 ```
 
   * **参数** 
@@ -199,6 +199,9 @@ Swoole\Coroutine\System::readFile(string $filename): string|false
       * **功能**：文件名
       * **默认值**：无
       * **其它值**：无
+    * **`int $flags`**
+      * **功能**：是否使用文件锁，目前仅支持`LOCK_EX`选项，请注意底层在读取文件时会设置为共享锁，其他协程仍然可以读取文件，但无法写入文件
+      * **默认值**：`0`，表示不使用文件锁
 
   * **返回值** 
 
@@ -239,7 +242,7 @@ Swoole\Coroutine\System::writeFile(string $filename, string $fileContent, int $f
     * **`int $flags`**
       * **功能**：写入的选项【默认会清空当前文件内容，可以使用`FILE_APPEND`表示追加到文件末尾】
       * **默认值**：无
-      * **其它值**：无
+      * **其它值**：`LOCK_EX`写入时会对文件加独占锁，防止其他协程读写此文件。多个选项可使用按位或`|`连接，如`FILE_APPEND | LOCK_EX`
 
   * **返回值** 
 
@@ -250,8 +253,7 @@ Swoole\Coroutine\System::writeFile(string $filename, string $fileContent, int $f
 
     ```php
     $filename = __DIR__ . "/defer_client.php";
-    Swoole\Coroutine\run(function () use ($filename)
-    {
+    Co\run(function () use ($filename) {
         $w = Swoole\Coroutine\System::writeFile($filename, "hello swoole!");
         var_dump($w);
     });

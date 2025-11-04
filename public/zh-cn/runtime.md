@@ -235,12 +235,12 @@ Co\run(function () {
 #### 文件操作的`协程化处理`，支持的函数有：
 
 * `fopen`
-* `fread`/`fgets`
-* `fwrite`/`fputs`
-* `file_get_contents`、`file_put_contents`
-* `unlink`
-* `mkdir`
-* `rmdir`
+* `fread`、`fgets`、`fgetc`
+* `fwrite`、`fputs`
+* `file_get_contents`、`file_put_contents`、`readfile`
+* `unlink`、`mkdir`、`rmdir`
+* `opendir`、`readdir`、`closedir`、`scandir`
+* 其他关于磁盘文件操作的`PHP`标准库函数
 
 示例：
 
