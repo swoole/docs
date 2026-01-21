@@ -151,13 +151,14 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 
 #### --enable-openssl
 
-启用`SSL`支持
+启用`SSL`支持，此参数将在`6.2`版本后移除，变更为必选项，`SSL/TLS`将总是可用的。
 
 > 使用操作系统提供的`libssl.so`动态连接库
 
 #### --with-openssl-dir
 
-启用`SSL`支持并指定`openssl`库的路径, 需跟上路径参数，如: `--with-openssl-dir=/opt/openssl/`
+启用`SSL`支持并指定`openssl`库的路径, 需跟上路径参数，如: `--with-openssl-dir=/opt/openssl/`。
+此参数在`6.2`版本后依然有效，但仅用于修改默认的`openssl`库路径，若未设置则使用系统默认的`openssl`库。
 
 #### --enable-http2
 
@@ -206,8 +207,7 @@ cd /etc/php/7.0/fpm/conf.d/ && ln -s ../../mods-available/swoole.ini 20-swoole.i
 启动对`pdo_odbc`协程化，该参数启用之后，所有支持`odbc`接口的数据库都能够协程化了。
 
 
-
->`v5.1.0`版本后可用,需依赖unixodbc-dev
+>`v5.1.0`版本后可用,需依赖`unixodbc-dev`库
 
 示例配置
 
@@ -246,6 +246,24 @@ with-swoole-odbc="unixODBC,/usr"
 2. 使用`--privileged`参数来运行容器
 3. 运行时增加`--security-opt seccomp:unconfined`参数，允许`docker`容器使用`io_uring`特性
 
+#### --enable-uring-socket
+开启后将使用`io_uring`代替`epoll/kqueue`来处理`socket`，并发性能将得到大幅提升。影响所有`Swoole\Coroutine\Socket`的实现。
+
+包括：
+- `Swoole\Coroutine\Socket`
+- `Swoole\Coroutine\Client`
+- `Swoole\Coroutine\Server`
+- `Swoole\Coroutine\Http\Client`
+- `Swoole\Coroutine\Http\Server`
+- `Swoole\Coroutine\Http2\Client`
+- `PHP Stream Runtime Hook`，包括`pdo-mysql`、`mysqli`、`redis`扩展
+
+以上模块均使用`uring-socket`，并发性能将得到大幅提升。
+
+对异步服务器模块，如`Swoole\Server`、`Swoole\Http\Server`、`Swoole\WebSocket\Server`，`Event`、`Timer`，以及`curl`、`pdo_pgsql`等无效，
+将依然使用`epoll/kqueue`来处理`socket`。
+
+> `v6.2`版本后可用
 
 #### --enable-zstd
 
