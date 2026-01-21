@@ -261,9 +261,9 @@ with-swoole-odbc="unixODBC,/usr"
 以上模块均使用`uring-socket`，并发性能将得到大幅提升。
 
 对异步服务器模块，如`Swoole\Server`、`Swoole\Http\Server`、`Swoole\WebSocket\Server`，`Event`、`Timer`，以及`curl`、`pdo_pgsql`等无效，
-将依然使用`epoll/kqueue`来处理`socket`。
+将依然使用`epoll/kqueue`实现。
 
-> `v6.2`版本后可用
+> `v6.2`版本后可用，此选项依赖`liburing`库，仅在开启`--enable-iouring`时有效
 
 #### --enable-zstd
 

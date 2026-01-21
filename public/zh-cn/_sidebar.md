@@ -51,6 +51,7 @@
   * [WaitGroup](coroutine/wait_group.md)
   * [Barrier](coroutine/barrier.md)
   * [并发调用](coroutine/multi_call.md)
+  * [IO-Uring](coroutine/iouring.md)
   * [连接池](coroutine/conn_pool.md)
   * [Library](library.md)
   * [调试协程](coroutine/gdb.md)
