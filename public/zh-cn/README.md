@@ -14,7 +14,6 @@
 
 * [Swoole官网](//www.swoole.com)
 * [商业产品与支持](//business.swoole.com)
-* [Swoole问答](//wenda.swoole.com)
 
 ## 项目地址
 
@@ -38,11 +37,11 @@
 
 * 杨才 [GitHub](https://github.com/TTSimple)
 * 郭新华 [Weibo](https://www.weibo.com/u/2661945152)
-* [鲁飞](https://github.com/sy-records) [Weibo](https://weibo.com/5384435686)
+* [鲁飞](https://github.com/sy-records) [微信公众号](http://go.qq52o.me/a/mp)
 
 ## 问题反馈
 
-关于本文档中的内容问题（如错别字、示例错误、内容缺失等）以及需求建议，请统一至 [swoole-inc/report](https://github.com/swoole-inc/report) 项目中提交`issue`，也可直接点击右上角的 [反馈](/?id=main) 跳转至`issue`页面。
+关于本文档中的内容问题（如错别字、示例错误、内容缺失等）以及需求建议，请提交[issue](https://github.com/swoole/docs/issues/new)，也可直接点击右上角的 [Edit](/?id=main) 跳转至编辑页面提交`Pull request`。
 
 一经采纳，将会添加提交者信息至 [文档贡献者](/CONTRIBUTING) 列表当中以示感谢。
 

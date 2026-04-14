@@ -21,8 +21,9 @@ class A
         echo "hello world";
     }
 }
-$server->on('Request', 'A::Test');
-$server->on('Request', array('A', 'Test'));
+$server->on('Request', 'A::test');
+$server->on('Request', array('A', 'test'));
+$server->on('Request', [A::class, 'test']);
 ```
 !> 对应的静态方法必须为`public`
 

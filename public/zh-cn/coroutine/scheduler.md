@@ -2,7 +2,7 @@
 
 ?> 所有的[协程](/coroutine)必须在`协程容器`里面[创建](/coroutine/coroutine?id=create)，`Swoole`程序启动的时候大部分情况会自动创建`协程容器`，用`Swoole`启动程序的方式一共有三种：
 
-   - 调用[异步风格](/server/init)服务端程序的[start](/server/methods?id=start)方法，此种启动方式会在事件回调中创建`协程容器`，参考[enable_coroutine](/server/setting?id=enable_coroutine)。
+   - 调用[异步风格](/server/init)服务端程序的[start](/server/methods?id=start)方法，此种启动方式会在[事件回调函数](/server/events)中自动创建`协程容器`，参考[enable_coroutine](/server/setting?id=enable_coroutine)。
    - 调用`Swoole`提供的2个进程管理模块[Process](/process/process)和[Process\Pool](/process/process_pool)的[start](/process/process_pool?id=start)方法，此种启动方式会在进程启动的时候创建`协程容器`，参考这两个模块构造函数的`enable_coroutine`参数。
    - 其他直接裸写协程的方式启动程序，需要先创建一个协程容器(`Coroutine\run()`函数，可以理解为java、c的`main`函数)，例如：
 
