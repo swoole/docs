@@ -33,8 +33,11 @@ ab -c 100 -n 1000000 -k http://127.0.0.1:8080/
 ```nginx
 server {
     listen 80 default_server;
-    root /data/webroot;
-    index index.html;
+
+    location / {
+        default_type text/html;
+        return 200 "<h1>Hello World!</h1>";
+    }
 }
 ```
 
