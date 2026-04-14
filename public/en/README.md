@@ -39,7 +39,7 @@ All content in this document, including all text, images, and audiovisual materi
 
 * Yang Cai [GitHub](https://github.com/TTSimple)
 * Guo Xinhua [Weibo](https://www.weibo.com/u/2661945152)
-* [Lu Fei](https://github.com/sy-records) [Weibo](https://weibo.com/5384435686)
+* [Lu Fei](https://github.com/sy-records) [Weixin Official Account](http://go.qq52o.me/a/mp)
 
 ## Issue Feedback
 

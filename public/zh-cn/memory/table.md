@@ -409,7 +409,6 @@ $serv->set(['dispatch_mode' => 1]);
 $serv->table = $table;
 
 $serv->on('receive', function ($serv, $fd, $reactor_id, $data) {
-
 	$cmd = explode(" ", trim($data));
 
 	//get
@@ -427,7 +426,7 @@ $serv->on('receive', function ($serv, $fd, $reactor_id, $data) {
 	//set
 	elseif ($cmd[0] == 'set')
 	{
-		$ret = $serv->table->set($fd, array('reactor_id' => $data, 'fd' => $fd, 'data' => $cmd[1]));
+		$ret = $serv->table->set($fd, array('reactor_id' => $reactor_id, 'fd' => $fd, 'data' => $cmd[1]));
 		if ($ret === false)
 		{
 			$serv->send($fd, "ERROR\n");
