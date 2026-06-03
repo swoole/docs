@@ -61,17 +61,17 @@ Swoole\Async\Client->on(string $event, callable $callback): bool
 
     * `string $event`
       * Fungsi: Nama event callback, tidak sensitif huruf besar/kecil
-      * Nilai Default: Tidak ada
+      * Default: Tidak ada
       * Nilai Lain: Tidak ada
 
     * `callable $callback`
       * Fungsi: Fungsi callback
-      * Nilai Default: Tidak ada
+      * Default: Tidak ada
       * Nilai Lain: Tidak ada
 
       !> Dapat berupa string nama fungsi, method statis kelas, array method objek, fungsi anonim. Lihat [bagian ini](/learn?id=几种设置回调函数的方式).
 
-* **Nilai Kembali**
+* **Return Value**
 
     * Mengembalikan `true` jika operasi berhasil, `false` jika gagal.
 

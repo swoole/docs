@@ -28,22 +28,22 @@ Swoole\Event::add(mixed $sock, callable $read_callback, callable $write_callback
 
   * **`mixed $sock`**
     * **Fungsi**: Deskriptor file, resource `stream`, resource `sockets`, `object`
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`callable $read_callback`**
     * **Fungsi**: Fungsi callback event dapat dibaca
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`callable $write_callback`**
     * **Fungsi**: Fungsi callback event dapat ditulis [parameter ini bisa berupa string nama fungsi, objek+method, method statis kelas, atau fungsi anonim. Saat `socket` ini dapat dibaca atau ditulis, fungsi yang ditentukan akan dipanggil.]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $flags`**
     * **Fungsi**: Masker jenis event
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: `SWOOLE_EVENT_READ` mendengarkan event dapat dibaca, `SWOOLE_EVENT_WRITE` mendengarkan event dapat ditulis, `SWOOLE_EVENT_READ|SWOOLE_EVENT_WRITE` mendengarkan event dapat dibaca dan ditulis secara bersamaan
 
 * **$sock 4 jenis**
@@ -55,7 +55,7 @@ resource stream | Resource yang dibuat oleh `stream_socket_client`/`fsockopen`
 resource sockets | Resource yang dibuat oleh `socket_create` di ekstensi `sockets`, perlu menambahkan [./configure --enable-sockets](/environment?id=编译选项) saat kompilasi
 object | `Swoole\Process` atau `Swoole\Client`, level bawah otomatis dikonversi menjadi [UnixSocket](/learn?id=什么是IPC) (`Process`) atau `socket` koneksi klien (`Swoole\Client`)
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Berhasil menambahkan pendengar event mengembalikan `true`
   * Gagal menambahkan mengembalikan `false`, gunakan `swoole_last_error` untuk mendapatkan kode error
@@ -126,12 +126,12 @@ Swoole\Event::isset(mixed $fd, int $events = SWOOLE_EVENT_READ | SWOOLE_EVENT_WR
 
   * **`mixed $fd`**
     * **Fungsi**: Deskriptor file socket apa pun [lihat dokumentasi [Event::add](/event?id=add)]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $events`**
     * **Fungsi**: Jenis event yang diperiksa
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
 * **$events**
@@ -174,12 +174,12 @@ Swoole\Event::write(mixed $fd, miexd $data): bool
 
   * **`mixed $fd`**
     * **Fungsi**: Deskriptor file socket apa pun [lihat dokumentasi [Event::add](/event?id=add)]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`miexd $data`**
     * **Fungsi**: Data yang akan dikirim [panjang data yang dikirim tidak boleh melebihi ukuran buffer `Socket`]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
 !> `Event::write` tidak dapat digunakan untuk resource `stream/sockets` dengan enkripsi tunnel seperti `SSL/TLS`  
@@ -222,7 +222,7 @@ Swoole\Event::del(mixed $sock): bool
 
   * **`mixed $sock`**
     * **Fungsi**: Deskriptor file `socket`
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
 ### exit()
@@ -249,7 +249,7 @@ Swoole\Event::defer(mixed $callback_function);
 
   * **`mixed $callback_function`**
     * **Fungsi**: Fungsi yang akan dijalankan saat waktu habis [harus dapat dipanggil. Fungsi callback tidak menerima parameter apa pun. Dapat menggunakan sintaks `use` fungsi anonim untuk meneruskan parameter ke fungsi callback; selama eksekusi fungsi `$callback_function`, menambahkan tugas `defer` baru tetap akan selesai dalam event loop saat ini]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
 * **Contoh Penggunaan**
@@ -272,12 +272,12 @@ Swoole\Event::cycle(callable $callback, bool $before = false): bool
 
   * **`callable $callback_function`**
     * **Fungsi**: Fungsi callback yang akan diatur [`$callback` menjadi `null` berarti menghapus fungsi `cycle`, jika sudah ada fungsi cycle, mengatur ulang akan menimpa pengaturan sebelumnya]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`bool $before`**
     * **Fungsi**: Memanggil fungsi ini sebelum [EventLoop](/learn?id=什么是eventloop)
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
 !> Dapat memiliki dua fungsi callback `before=true` dan `before=false` secara bersamaan.

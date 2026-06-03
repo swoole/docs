@@ -83,7 +83,7 @@ Menghubungkan ke server target. Method ini tidak memiliki parameter.
 Swoole\Coroutine\Http2\Client->connect(): bool
 ```
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Koneksi berhasil, mengembalikan `true`
     * Koneksi gagal, mengembalikan `false`, periksa properti `errCode` untuk mendapatkan kode error
@@ -125,10 +125,10 @@ Swoole\Coroutine\Http2\Client->send(Swoole\Http2\Request $request): int|false
       * **Default**: Tidak ada
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan nomor stream, nomor dimulai dari `1` dan bertambah dengan angka ganjil
-    * Gagal mengembalikan `false`
+    * Mengembalikan nomor stream, nomor dimulai dari `1` dan bertambah dengan angka ganjil
+    * Mengembalikan `false`
 
   * **Petunjuk**
 
@@ -226,9 +226,9 @@ Swoole\Coroutine\Http2\Client->recv(float $timeout): Swoole\Http2\Response;
       * **Default**: Tidak ada
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-Berhasil mengembalikan objek Swoole\Http2\Response
+Mengembalikan objek Swoole\Http2\Response
 
 ```php
 /**@var $resp Swoole\Http2\Response */
@@ -259,9 +259,9 @@ Swoole\Coroutine\Http2\Client->read(float $timeout): Swoole\Http2\Response;
       * **Default**: Tidak ada
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    Berhasil mengembalikan objek Swoole\Http2\Response
+    Mengembalikan objek Swoole\Http2\Response
 
 ### goaway()
 

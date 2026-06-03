@@ -132,7 +132,7 @@ Swoole\Coroutine\FastCGI\Client::call(string $url, string $path, $data = '', flo
       * **Default**: `-1`
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan konten utama (body) dari respons server
     * Akan melempar exception `Swoole\Coroutine\FastCGI\Client\Exception` saat terjadi error
@@ -178,7 +178,7 @@ Swoole\Coroutine\FastCGI\Client->execute(Request $request, float $timeout = -1):
       * **Default**: `-1`
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan objek Response yang sesuai dengan tipe objek permintaan. Misalnya, `Swoole\FastCGI\HttpRequest` akan mengembalikan objek `Swoole\FastCGI\HttpResponse`, yang berisi informasi respons dari server FPM
     * Akan melempar exception `Swoole\Coroutine\FastCGI\Client\Exception` saat terjadi error

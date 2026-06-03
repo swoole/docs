@@ -142,10 +142,10 @@ Menerima pesan `WebSocket`.
 Swoole\Http\Response->recv(float $timeout = 0): Swoole\WebSocket\Frame | false | string
 ```
 
-* **Nilai Kembalian**
+* **Return Value**
 
   * Berhasil menerima pesan, mengembalikan objek `Swoole\WebSocket\Frame`, lihat [Swoole\WebSocket\Frame](/websocket_server?id=swoolewebsocketframe)
-  * Gagal mengembalikan `false`, gunakan [swoole_last_error()](/functions?id=swoole_last_error) untuk kode error
+  * Mengembalikan `false`, gunakan [swoole_last_error()](/functions?id=swoole_last_error) untuk kode error
   * Koneksi ditutup mengembalikan string kosong
   * Cara menangani nilai kembali lihat [contoh kirim massal](/coroutine/ws_server?id=contoh-kirim-massal)
 
@@ -194,7 +194,7 @@ Swoole\Http\Response->ping(string $data = ''): bool
     * **Bawaan**: String kosong
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
   * Mengembalikan `true` jika berhasil
   * Koneksi tidak ada, sudah ditutup, atau belum menyelesaikan `WebSocket`, gagal mengirim mengembalikan `false`
@@ -217,7 +217,7 @@ Swoole\Http\Response->disconnect(int $code = 1000, string $reason = ''): bool
     * **Bawaan**: String kosong
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
   * Mengembalikan `true` jika berhasil
   * Koneksi tidak ada, sudah ditutup, atau belum menyelesaikan `WebSocket`, gagal mengembalikan `false`

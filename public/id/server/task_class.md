@@ -64,7 +64,7 @@ Swoole\Server\Task->finish(mixed $data): bool
     * `mixed $data`
 
         * Fungsi: Konten hasil dari pemrosesan tugas
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
 * **Tips**
@@ -90,10 +90,10 @@ Swoole\Server\Task->pack(mixed $data): string|false
     * `mixed $data`
 
         * Fungsi: Konten hasil dari pemrosesan tugas
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
     * Mengembalikan hasil serialisasi jika berhasil.
 
 ### unpack()
@@ -109,10 +109,10 @@ Swoole\Server\Task->unpack(string $data): mixed
     * `string $data`
 
         * Fungsi: Data yang akan dideserialisasi
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
     * Mengembalikan hasil deserialisasi jika berhasil.
 
 ## Contoh Penggunaan

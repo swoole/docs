@@ -87,7 +87,7 @@ Swoole\Coroutine\Channel->push(mixed $data, float $timeout = -1): bool
 
       !> Saat channel penuh, `push` akan menangguhkan coroutine saat ini. Jika dalam waktu yang ditentukan tidak ada konsumen yang mengonsumsi data, akan terjadi timeout, infrastruktur akan melanjutkan coroutine saat ini, panggilan `push` akan segera mengembalikan `false`, gagal menulis.
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil
     * Mengembalikan `false` jika channel ditutup, bisa gunakan `$channel->errCode` untuk kode error
@@ -123,7 +123,7 @@ Swoole\Coroutine\Channel->pop(float $timeout = -1): mixed
       * **Nilai Lain**: Tidak ada
       * **Versi**: Swoole versi >= v4.0.3
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Nilai kembali bisa berupa variabel PHP apa pun, termasuk anonymous function dan resource
     * Mengembalikan `false` jika channel ditutup
@@ -148,7 +148,7 @@ Mendapatkan status channel.
 Swoole\Coroutine\Channel->stats(): array
 ```
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     Mengembalikan array, channel buffer akan mencakup `4` item informasi, channel non-buffer mengembalikan `2` item informasi.
     
@@ -218,7 +218,7 @@ Mendapatkan kode error.
 Swoole\Coroutine\Channel->errCode: int
 ```
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
 Nilai | Konstanta | Fungsi
 ---|---|---

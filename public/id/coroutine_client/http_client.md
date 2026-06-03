@@ -523,7 +523,7 @@ Swoole\Coroutine\Http\Client->push(mixed $data, int $opcode = WEBSOCKET_OPCODE_T
 
       !> Sejak `v4.4.12`, parameter `finish` (tipe `bool`) diubah menjadi `flags` (tipe `int`) untuk mendukung kompresi `WebSocket`. `finish` yang sesuai dengan `SWOOLE_WEBSOCKET_FLAG_FIN` bernilai `1`. Nilai `bool` asli akan secara implisit dikonversi ke `int`, perubahan ini kompatibel ke belakang tanpa dampak. Selain itu, `flag` kompresi adalah `SWOOLE_WEBSOCKET_FLAG_COMPRESS`.
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Jika berhasil dikirim, mengembalikan `true`
     * Jika koneksi tidak ada, ditutup, atau `WebSocket` belum selesai, pengiriman gagal dan mengembalikan `false`
@@ -554,10 +554,10 @@ Swoole\Coroutine\Http\Client->recv(float $timeout = 0)
 
       !> Atur timeout. Parameter yang ditentukan diprioritaskan terlebih dahulu, diikuti oleh konfigurasi `timeout` yang diberikan di method `set`.
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan objek frame
-    * Gagal mengembalikan `false`. Periksa properti `errCode` dari `Swoole\Coroutine\Http\Client`. Klien coroutine tidak memiliki callback `onClose`. Saat koneksi ditutup, `recv` mengembalikan `false` dengan `errCode=0`.
+    * Mengembalikan objek frame
+    * Mengembalikan `false`. Periksa properti `errCode` dari `Swoole\Coroutine\Http\Client`. Klien coroutine tidak memiliki callback `onClose`. Saat koneksi ditutup, `recv` mengembalikan `false` dengan `errCode=0`.
 
   * **Contoh**
 
@@ -592,7 +592,7 @@ Swoole\Coroutine\Http\Client->ping(string $data = ''): bool
       * **Default**: String kosong
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Berhasil mengirim mengembalikan `true`
     * Koneksi tidak ada, ditutup, atau `WebSocket` belum selesai, pengiriman gagal mengembalikan `false`
@@ -615,7 +615,7 @@ Swoole\Coroutine\Http\Client->disconnect(int $code = 1000, string $reason = ''):
       * **Default**: String kosong
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Berhasil menutup mengembalikan `true`
     * Koneksi tidak ada, ditutup, atau `WebSocket` belum selesai, gagal menutup mengembalikan `false`
@@ -649,9 +649,9 @@ Swoole\Coroutine\Http\Client->download(string $path, string $filename, int $offs
 
       !> Saat `$offset` adalah `0`, jika file sudah ada, sistem akan secara otomatis mengosongkan file ini.
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan `true`
+    * Mengembalikan `true`
     * Gagal membuka file atau `fseek()` di tingkat bawah gagal mengembalikan `false`
 
   * **Contoh**

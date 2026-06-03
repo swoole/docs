@@ -174,7 +174,7 @@ $scheduler->start();
 Swoole\Coroutine\Scheduler->start(): bool
 ```
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Jika berhasil dijalankan, semua tugas yang ditambahkan akan dieksekusi, saat semua coroutine keluar, `start` akan mengembalikan `true`
     * Jika gagal, mengembalikan `false`, penyebabnya mungkin sudah berjalan atau sudah ada scheduler lain yang tidak bisa dibuat lagi.

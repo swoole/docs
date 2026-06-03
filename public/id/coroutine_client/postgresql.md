@@ -207,13 +207,13 @@ Swoole\Coroutine\PostgreSQLStatement->fetchAll(int $result_type = SW_PGSQL_ASSOC
       * **Default**: `SW_PGSQL_ASSOC`
       * **Nilai lain**: Tidak ada
 
-      Nilai | Nilai Kembali
+      Nilai | Return Value
       ---|---
       SW_PGSQL_ASSOC | Mengembalikan array asosiatif dengan nama field sebagai kunci
       SW_PGSQL_NUM | Mengembalikan array dengan nomor field sebagai kunci
       SW_PGSQL_BOTH | Mengembalikan array dengan keduanya sebagai kunci
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengambil semua baris dari hasil sebagai array.
 
@@ -302,13 +302,13 @@ Swoole\Coroutine\PostgreSQLStatement->fetchArray(int $row, int $result_type = SW
       * **Default**: `SW_PGSQL_BOTH`
       * **Nilai lain**: Tidak ada
 
-      Nilai | Nilai Kembali
+      Nilai | Return Value
       ---|---
       SW_PGSQL_ASSOC | Mengembalikan array asosiatif dengan nama field sebagai kunci
       SW_PGSQL_NUM | Mengembalikan array dengan nomor field sebagai kunci
       SW_PGSQL_BOTH | Mengembalikan array dengan keduanya sebagai kunci
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan array yang sesuai dengan baris (tuple/record) yang diambil. Jika tidak ada lagi baris yang tersedia, mengembalikan `false`.
 
@@ -345,13 +345,13 @@ Swoole\Coroutine\PostgreSQLStatement->fetchRow(int $row, int $result_type = SW_P
       * **Default**: `SW_PGSQL_NUM`
       * **Nilai lain**: Tidak ada
 
-      Nilai | Nilai Kembali
+      Nilai | Return Value
       ---|---
       SW_PGSQL_ASSOC | Mengembalikan array asosiatif dengan nama field sebagai kunci
       SW_PGSQL_NUM | Mengembalikan array dengan nomor field sebagai kunci
       SW_PGSQL_BOTH | Mengembalikan array dengan keduanya sebagai kunci
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Array yang dikembalikan sesuai dengan baris yang diekstrak. Jika tidak ada lagi baris `row` yang dapat diekstrak, mengembalikan `false`.
 

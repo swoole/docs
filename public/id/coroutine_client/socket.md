@@ -210,10 +210,10 @@ Swoole\Coroutine\Socket->bind(string $address, int $port = 0): bool
       * **Default**: `0`
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan `true`
-    * Gagal mengembalikan `false`, periksa properti `errCode` untuk mendapatkan penyebab kegagalan
+    * Mengembalikan `true`
+    * Mengembalikan `false`, periksa properti `errCode` untuk mendapatkan penyebab kegagalan
 
 ### listen()
 
@@ -234,10 +234,10 @@ Swoole\Coroutine\Socket->listen(int $backlog = 0): bool
 
       !> Jika ada logika blocking atau memakan waktu dalam aplikasi, dan `accept` tidak menerima koneksi tepat waktu, koneksi baru akan menumpuk di antrian pendengaran `backlog`. Jika melebihi panjang `backlog`, layanan akan menolak koneksi baru.
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan `true`
-    * Gagal mengembalikan `false`, periksa properti `errCode` untuk mendapatkan penyebab kegagalan
+    * Mengembalikan `true`
+    * Mengembalikan `false`, periksa properti `errCode` untuk mendapatkan penyebab kegagalan
 
   * **Parameter Kernel**
 
@@ -269,7 +269,7 @@ Swoole\Coroutine\Socket->accept(float $timeout = 0): Coroutine\Socket|false;
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `false` saat timeout atau error dalam panggilan sistem `accept`. Bisa menggunakan properti `errCode` untuk mendapatkan kode error. Untuk error timeout, kode error adalah `ETIMEDOUT`
     * Mengembalikan `socket` koneksi klien saat berhasil, juga bertipe `Swoole\Coroutine\Socket`. Operasi seperti `send`, `recv`, `close` dapat dilakukan padanya.
@@ -327,7 +327,7 @@ Swoole\Coroutine\Socket->connect(string $host, int $port = 0, float $timeout = 0
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `false` saat timeout atau error dalam panggilan sistem `connect`, dan dapat menggunakan properti `errCode` untuk mendapatkan kode error, di mana kode error timeout adalah `ETIMEDOUT`
     * Mengembalikan `true` saat berhasil
@@ -342,7 +342,7 @@ Memeriksa ketersediaan koneksi melalui panggilan sistem (tidak valid saat terput
 Swoole\Coroutine\Socket->checkLiveness(): bool
 ```
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` saat koneksi aktif, sebaliknya `false`
 
@@ -371,7 +371,7 @@ Swoole\Coroutine\Socket->send(string $data, float $timeout = 0): int|false
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Berhasil mengirim mengembalikan jumlah byte yang ditulis, **perhatikan bahwa data yang ditulis mungkin kurang dari panjang parameter `$data`**. Kode lapisan aplikasi perlu membandingkan nilai kembali dengan `strlen($data)` untuk menentukan apakah pengiriman selesai
     * Gagal mengirim mengembalikan `false`, dan mengatur properti `errCode`
@@ -401,7 +401,7 @@ Swoole\Coroutine\Socket->sendAll(string $data, float $timeout = 0) : int | false
       * **Default**: Lihat [Aturan Timeout Klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * `sendAll` memastikan semua data terkirim berhasil. Namun, selama `sendAll`, lawan mungkin memutuskan koneksi. Pada saat itu, sebagian data mungkin telah berhasil terkirim. Nilai kembali akan menjadi panjang data yang berhasil terkirim. Kode lapisan aplikasi perlu membandingkan apakah nilai kembali sama dengan `strlen($data)` untuk menentukan apakah pengiriman selesai, dan berdasarkan kebutuhan bisnis, memutuskan apakah perlu melanjutkan pengiriman.
     * Gagal mengirim mengembalikan `false`, dan mengatur properti `errCode`
@@ -424,7 +424,7 @@ Swoole\Coroutine\Socket->peek(int $length = 65535): string|false
       * **Default**: Tidak ada
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Berhasil mengintip mengembalikan data
     * Gagal mengintip mengembalikan `false`, dan mengatur properti `errCode`
@@ -453,7 +453,7 @@ Swoole\Coroutine\Socket->recv(int $length = 65535, float $timeout = 0): string|f
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Berhasil menerima mengembalikan data aktual
     * Gagal menerima mengembalikan `false`, dan mengatur properti `errCode`
@@ -488,7 +488,7 @@ Swoole\Coroutine\Socket->recvAll(int $length = 65535, float $timeout = 0): strin
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Jika berhasil diterima, mengembalikan data aktual, dan panjang string yang dikembalikan sesuai dengan panjang parameter
     * Jika gagal diterima, mengembalikan `false` dan mengatur properti `errCode`
@@ -520,7 +520,7 @@ Swoole\Coroutine\Socket->readVector(array $io_vector, float $timeout = 0): array
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Data segmen berhasil diterima
     * Mengembalikan array kosong saat gagal menerima, dan mengatur properti `errCode`
@@ -561,7 +561,7 @@ Swoole\Coroutine\Socket->readVectorAll(array $io_vector, float $timeout = 0): ar
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Jika berhasil, mengembalikan data segmen
     * Jika gagal menerima, mengembalikan array kosong dan mengatur properti `errCode`
@@ -593,7 +593,7 @@ Swoole\Coroutine\Socket->writeVector(array $io_vector, float $timeout = 0): int|
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Jika pengiriman berhasil, mengembalikan jumlah byte yang ditulis. **Perhatikan bahwa data yang ditulis mungkin kurang dari total panjang parameter `$io_vector`**. Kode lapisan aplikasi perlu membandingkan apakah nilai kembali sama dengan total panjang parameter `$io_vector` untuk menentukan apakah pengiriman selesai.
     * Jika pengiriman gagal, mengembalikan `false` dan mengatur properti `errCode`.
@@ -632,7 +632,7 @@ Swoole\Coroutine\Socket->writeVectorAll(array $io_vector, float $timeout = 0): i
       * **Default**: Lihat [Aturan Timeout Klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * `writeVectorAll` memastikan semua data terkirim berhasil. Namun, koneksi mungkin ditutup oleh lawan selama `writeVectorAll`. Dalam kasus ini, sebagian data mungkin telah berhasil terkirim. Nilai kembali akan menunjukkan panjang data yang berhasil ini. Kode lapisan aplikasi perlu membandingkan nilai kembali ini dengan total panjang parameter `$io_vector` untuk menentukan apakah pengiriman selesai, dan memutuskan apakah perlu melanjutkan berdasarkan kebutuhan bisnis.
     * Mengembalikan `false` untuk kegagalan pengiriman, dan mengatur properti `errCode`.
@@ -662,7 +662,7 @@ Swoole\Coroutine\Socket->recvPacket(float $timeout = 0): string|false
       * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Berhasil menerima mengembalikan paket data protokol lengkap
     * Gagal menerima mengembalikan `false`, dan mengatur properti `errCode`
@@ -707,7 +707,7 @@ Swoole\Coroutine\Socket->recvfrom(array &$peer, float $timeout = 0): string|fals
         * **Default**: Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)
         * **Nilai lain**: Tidak ada
 
-* **Nilai Kembali**
+* **Return Value**
 
     * Jika data berhasil diterima, mengembalikan konten data dan mengatur `$peer` sebagai array
     * Jika gagal, mengembalikan `false`, mengatur properti `errCode`, dan tidak mengubah konten `$peer`
@@ -757,7 +757,7 @@ Swoole\Coroutine\Socket->sendto(string $address, int $port, string $data): int|f
       * **Default**: Tidak ada
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Berhasil mengirim mengembalikan jumlah byte yang dikirim
     * Gagal mengirim mengembalikan `false`, dan mengatur properti `errCode`
@@ -779,10 +779,10 @@ Mendapatkan informasi alamat dan port socket.
 Swoole\Coroutine\Socket->getsockname(): array|false
 ```
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan array yang berisi `address` dan `port`
-    * Gagal mengembalikan `false`, dan mengatur properti `errCode`
+    * Mengembalikan array yang berisi `address` dan `port`
+    * Mengembalikan `false`, dan mengatur properti `errCode`
 
 ### getpeername()
 
@@ -794,10 +794,10 @@ Mendapatkan informasi alamat dan port lawan dari `socket`, hanya untuk `socket` 
 Swoole\Coroutine\Socket->getpeername(): array|false
 ```
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan array yang berisi `address` dan `port`
-    * Gagal mengembalikan `false`, dengan properti `errCode` diatur
+    * Mengembalikan array yang berisi `address` dan `port`
+    * Mengembalikan `false`, dengan properti `errCode` diatur
 
 ### close()
 
@@ -809,10 +809,10 @@ Menutup `Socket`.
 Swoole\Coroutine\Socket->close(): bool
 ```
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Berhasil menutup mengembalikan `true`
-    * Gagal mengembalikan `false`
+    * Mengembalikan `false`
 
 ### isClosed()
 

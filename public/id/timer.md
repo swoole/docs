@@ -70,17 +70,17 @@ Swoole\Timer::tick(int $msec, callable $callback_function, ...$params): int
     * **`int $msec`**
       * **Fungsi**: Menentukan waktu
       * **Satuan**: Milidetik [misal `1000` berarti `1` detik, di versi `v4.2.10` ke bawah maksimal tidak boleh melebihi `86400000`]
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
     * **`callable $callback_function`**
       * **Fungsi**: Fungsi yang akan dijalankan saat waktu habis, harus dapat dipanggil
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
     * **`...$params`**
       * **Fungsi**: Memberikan data ke fungsi eksekusi [parameter ini juga opsional]
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
       
       !> Dapat menggunakan sintaks `use` fungsi anonim untuk meneruskan parameter ke fungsi callback
@@ -93,12 +93,12 @@ Swoole\Timer::tick(int $msec, callable $callback_function, ...$params): int
 
       * **`int $timer_id`**
         * **Fungsi**: `ID` timer [dapat digunakan untuk [Timer::clear](/timer?id=clear) membersihkan timer ini]
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
       * **`...$params`**
         * **Fungsi**: Parameter ketiga `$param` yang dimasukkan oleh `Timer::tick`
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Ekstensi**
@@ -161,24 +161,24 @@ Swoole\Timer::after(int $msec, callable $callback_function, ...$params): int
     * **`int $msec`**
       * **Fungsi**: Menentukan waktu
       * **Satuan**: Milidetik [misal `1000` berarti `1` detik, di versi `v4.2.10` ke bawah maksimal tidak boleh melebihi `86400000`]
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
     * **`callable $callback_function`**
       * **Fungsi**: Fungsi yang akan dijalankan saat waktu habis, harus dapat dipanggil.
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
     * **`...$params`**
       * **Fungsi**: Memberikan data ke fungsi eksekusi [parameter ini juga opsional]
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
       
       !> Dapat menggunakan sintaks `use` fungsi anonim untuk meneruskan parameter ke fungsi callback
 
-* **Nilai Kembali**
+* **Return Value**
 
-    * Berhasil mengembalikan `ID` timer, jika ingin membatalkan timer, panggil [Swoole\Timer::clear](/timer?id=clear)
+    * Mengembalikan `ID` timer, jika ingin membatalkan timer, panggil [Swoole\Timer::clear](/timer?id=clear)
 
 * **Ekstensi**
 
@@ -209,7 +209,7 @@ Swoole\Timer::clear(int $timer_id): bool
 
     * **`int $timer_id`**
       * **Fungsi**: `ID` timer [setelah memanggil [Timer::tick](/timer?id=tick), [Timer::after](/timer?id=after) akan mengembalikan ID integer]
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
 !> `Swoole\Timer::clear` tidak bisa digunakan untuk menghapus timer di proses lain, hanya berlaku untuk proses saat ini
@@ -248,7 +248,7 @@ Mengembalikan informasi `timer`.
 Swoole\Timer::info(int $timer_id): array
 ```
 
-* **Nilai Kembali**
+* **Return Value**
 
 ```php
 array(5) {
@@ -293,7 +293,7 @@ Melihat status timer.
 Swoole\Timer::stats(): array
 ```
 
-* **Nilai Kembali**
+* **Return Value**
 
 ```php
 array(3) {

@@ -84,10 +84,10 @@ Swoole\Server\Port->getCallback(string $name): ?callback
     * `string $name`
 
         * Fungsi: Nama event callback
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan fungsi callback jika berhasil, mengembalikan `null` jika fungsi callback tidak ada.
 
@@ -99,7 +99,7 @@ Mengubah `fd` socket saat ini menjadi objek `Socket` PHP.
 Swoole\Server\Port->getSocket(): Socket|false
 ```
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan objek `Socket` jika berhasil, mengembalikan `false` jika gagal.
 

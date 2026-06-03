@@ -144,7 +144,7 @@ Swoole\Coroutine\Server->shutdown(): bool
 Swoole\Coroutine\Server->start(): bool
 ```
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Gagal dijalankan akan mengembalikan `false`, dan mengatur properti `errCode`
     * Berhasil dijalankan akan masuk ke loop, `Accept` koneksi

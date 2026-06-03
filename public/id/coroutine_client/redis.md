@@ -108,7 +108,7 @@ Swoole\Coroutine\Redis->request(array $args): void
       * **Default**: Tidak ada
       * **Nilai lain**: Tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
 Tergantung pada cara server `Redis` menangani perintah. Mungkin mengembalikan tipe angka, boolean, string, array, dll.
 

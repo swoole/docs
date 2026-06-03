@@ -282,27 +282,27 @@ Swoole\WebSocket\Server->push(int $fd, \Swoole\WebSocket\Frame|string $data, int
 
   * **`int $fd`**
     * **Fungsi**: `ID` koneksi klien [jika `$fd` yang ditentukan bukan klien `WebSocket`, pengiriman akan gagal]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`Swoole\WebSocket\Frame|string $data`**
     * **Fungsi**: Data yang akan dikirim
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   !> Swoole versi >= v4.2.0, jika `$data` yang dimasukkan adalah objek [Swoole\WebSocket\Frame](/websocket_server?id=swoolewebsocketframe), parameter selanjutnya akan diabaikan
 
   * **`int $opcode`**
     * **Fungsi**: Menentukan format data yang dikirim [default teks. Untuk mengirim konten biner, parameter `$opcode` perlu diatur ke `WEBSOCKET_OPCODE_BINARY`]
-    * **Nilai Default**: `WEBSOCKET_OPCODE_TEXT`
+    * **Default**: `WEBSOCKET_OPCODE_TEXT`
     * **Nilai Lain**: `WEBSOCKET_OPCODE_BINARY`
 
   * **`bool $finish`**
     * **Fungsi**: Apakah pengiriman selesai
-    * **Nilai Default**: `true`
+    * **Default**: `true`
     * **Nilai Lain**: `false`
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Operasi berhasil mengembalikan `true`, gagal mengembalikan `false`
 
@@ -320,7 +320,7 @@ Swoole\WebSocket\Server->push(int $fd, \Swoole\WebSocket\Frame|string $data, int
 Swoole\WebSocket\Server->exist(int $fd): bool
 ```
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Koneksi ada dan sudah menyelesaikan jabat tangan `WebSocket`, mengembalikan `true`
   * Koneksi tidak ada atau belum menyelesaikan jabat tangan, mengembalikan `false`
@@ -342,27 +342,27 @@ Swoole\WebSocket\Frame::pack(\Swoole\WebSocket\Frame|string $data $data, int $op
 
   * **`Swoole\WebSocket\Frame|string $data $data`**
     * **Fungsi**: Konten pesan
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $opcode`**
     * **Fungsi**: Menentukan format data yang akan dikirim [default teks. Untuk mengirim konten biner, parameter `$opcode` perlu diatur ke `WEBSOCKET_OPCODE_BINARY`]
-    * **Nilai Default**: `WEBSOCKET_OPCODE_TEXT`
+    * **Default**: `WEBSOCKET_OPCODE_TEXT`
     * **Nilai Lain**: `WEBSOCKET_OPCODE_BINARY`
 
   * **`bool $finish`**
     * **Fungsi**: Apakah frame selesai
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
     !> Sejak versi `v4.4.12`, parameter `finish` (tipe `bool`) diubah menjadi parameter `flags` (tipe `int`) untuk mendukung kompresi `WebSocket`, `finish` sesuai dengan `SWOOLE_WEBSOCKET_FLAG_FIN` nilai `1`, nilai `bool` asli akan dikonversi implisit ke `int`, perubahan ini kompatibel ke bawah tanpa efek.
 
   * **`bool $mask`**
     * **Fungsi**: Apakah mengatur mask [`v4.4.12` telah menghapus parameter ini]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Mengembalikan paket `WebSocket` yang sudah dikemas, dapat dikirim ke lawan melalui [send()](/server/methods?id=send) dari kelas dasar `Swoole\Server`
 
@@ -401,10 +401,10 @@ Swoole\WebSocket\Server::unpack(string $data): Swoole\WebSocket\Frame|false;
 
   * **`string $data`**
     * **Fungsi**: Konten pesan
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Gagal mengurai mengembalikan `false`, berhasil mengurai mengembalikan objek [Swoole\WebSocket\Frame](/websocket_server?id=swoolewebsocketframe)
 
@@ -422,20 +422,20 @@ Swoole\WebSocket\Server->disconnect(int $fd, int $code = SWOOLE_WEBSOCKET_CLOSE_
 
   * **`int $fd`**
     * **Fungsi**: `ID` koneksi klien [jika `$fd` yang ditentukan bukan klien `WebSocket`, pengiriman akan gagal]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $code`**
     * **Fungsi**: Kode status penutupan koneksi [menurut `RFC6455`, untuk kode status penutupan koneksi aplikasi, rentang nilai `1000` atau antara `4000-4999`]
-    * **Nilai Default**: `SWOOLE_WEBSOCKET_CLOSE_NORMAL`
+    * **Default**: `SWOOLE_WEBSOCKET_CLOSE_NORMAL`
     * **Nilai Lain**: Tidak ada
 
   * **`string $reason`**
     * **Fungsi**: Alasan penutupan koneksi [string format `utf-8`, panjang byte tidak melebihi `125`]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Berhasil dikirim mengembalikan `true`, gagal dikirim atau kode status ilegal mengembalikan `false`
 
@@ -453,10 +453,10 @@ Swoole\WebSocket\Server->isEstablished(int $fd): bool
 
   * **`int $fd`**
     * **Fungsi**: `ID` koneksi klien [jika `$fd` yang ditentukan bukan klien `WebSocket`, pengiriman akan gagal]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Jika koneksi valid mengembalikan `true`, jika tidak mengembalikan `false`
 

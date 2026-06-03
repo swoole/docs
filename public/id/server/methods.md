@@ -121,7 +121,7 @@ Swoole\Server->on(string $event, callable $callback): bool
 
       !> Dapat berupa string nama fungsi, method statis kelas, array method objek, fungsi anonim. Lihat [bagian ini](/learn?id=berbagai-cara-mengatur-fungsi-callback).
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika operasi berhasil, `false` jika gagal.
 
@@ -174,7 +174,7 @@ Klik [di sini](/server/server_port) untuk melihat penjelasan detail `Swoole\Serv
       * Default: Sama dengan `$sockType` di `__construct()`
       * Nilai lain: Sama dengan `$sockType` di `__construct()`
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `Swoole\Server\Port` jika berhasil, mengembalikan `false` jika gagal.
 
@@ -208,7 +208,7 @@ Swoole\Server->addProcess(Swoole\Process $process): int
       * Default: tidak ada
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan nomor id proses jika berhasil, jika tidak program akan melempar fatal error.
 
@@ -296,7 +296,7 @@ Swoole\Server->start(): bool
       * Jika gagal mulai, ekstensi akan melempar fatal error, periksa informasi terkait di `php error_log`. `errno={number}` adalah `Linux Errno` standar, lihat dokumentasi terkait.
       * Jika pengaturan `log_file` diaktifkan, informasi akan dicetak ke file `Log` yang ditentukan.
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -332,7 +332,7 @@ Dalam situasi ini dapat terjadi inkonsistensi data. Dalam sistem transaksi, misa
 -Jika `user/group` diatur, proses `Worker` mungkin tidak memiliki izin untuk mengirim informasi ke proses `master`. Dalam kasus ini, harus menggunakan akun `root` dan menjalankan perintah `kill` di `shell` untuk restart.  
 -Perintah `reload` tidak berlaku untuk user process yang ditambahkan melalui [addProcess](/server/methods?id=addProcess).
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -413,7 +413,7 @@ Swoole\Server->stop(int $workerId = -1, bool $waitEvent = false): bool
       * Nilai lain: true
       * Setelah versi `v6.1.0`, parameter ini telah dihapus, logika keluar dikendalikan oleh opsi `reload_async`
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -430,7 +430,7 @@ Menutup server.
 Swoole\Server->shutdown(): bool
 ```
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -578,7 +578,7 @@ Swoole\Server->clearTimer(int $timerId): bool
       * Default: tidak ada
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -617,7 +617,7 @@ Swoole\Server->close(int $fd, bool $reset = false): bool
       * Default: false
       * Nilai lain: true
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -663,7 +663,7 @@ Swoole\Server->send(int|string $fd, string $data, int $serverSocket = -1): bool
       * Default: -1, berarti port udp yang sedang didengarkan
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -729,7 +729,7 @@ Swoole\Server->sendfile(int $fd, string $filename, int $offset = 0, int $length 
       * Default: ukuran file
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -775,7 +775,7 @@ Swoole\Server->sendto(string $ip, int $port, string $data, int $serverSocket = -
       * Default: -1, berarti port udp yang sedang didengarkan
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -817,7 +817,7 @@ Swoole\Server->sendwait(int $fd, string $data): bool
       * Default: tidak ada
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -913,7 +913,7 @@ Swoole\Server->exist(int $fd): bool
       * Default: tidak ada
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika ada, `false` jika tidak ada.
 
@@ -937,7 +937,7 @@ Swoole\Server->pause(int $fd): bool
       * Default: tidak ada
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -963,7 +963,7 @@ Swoole\Server->resume(int $fd): bool
       * Default: tidak ada
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -987,7 +987,7 @@ Swoole\Server->getCallback(string $event_name): \Closure|string|null|array
       * Default: tidak ada
       * Nilai lain: Lihat [Event](/server/events)
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Jika fungsi callback yang sesuai ada, mengembalikan `Closure` / `string` / `array` berdasarkan [cara pengaturan fungsi callback](/learn?id=empat-cara-mengatur-fungsi-callback).
     * Jika fungsi callback yang sesuai tidak ada, mengembalikan `null`.
@@ -1029,7 +1029,7 @@ Swoole\Server->getClientInfo(int $fd, int $reactorId = -1, bool $ignoreError = f
 
     * Saat menggunakan konfigurasi [dispatch_mode](/server/setting?id=dispatch_mode) = 1/3, karena strategi distribusi paket data ini digunakan untuk layanan tanpa status, informasi terkait akan langsung dihapus dari memori setelah koneksi terputus, sehingga `Server->getClientInfo` tidak dapat memperoleh informasi koneksi terkait.
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `false` jika gagal.
     * Mengembalikan `array` berisi informasi client jika berhasil.
@@ -1115,7 +1115,7 @@ Swoole\Server->getClientList(int $start_fd = 0, int $pageSize = 10): false|array
       * Default: 10
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Jika berhasil, mengembalikan array indeks numerik, dengan elemen adalah `$fd` yang diperoleh. Array akan diurutkan dari kecil ke besar. `$fd` terakhir digunakan sebagai `start_fd` baru untuk pengambilan selanjutnya.
     * Mengembalikan `false` jika gagal.
@@ -1166,7 +1166,7 @@ Swoole\Server->bind(int $fd, int $uid): bool
       * Default: tidak ada
       * Nilai lain: `UID` maksimum tidak boleh melebihi `4294967295`, minimum tidak boleh kurang dari `-2147483648`
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal.
 
@@ -1373,7 +1373,7 @@ Swoole\Server->task(mixed $data, int $dstWorkerId = -1, callable $finishCallback
       * Default: `null`
       * Nilai lain: tidak ada
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Jika berhasil, mengembalikan integer `$task_id`, yang merupakan `ID` tugas ini. Jika ada callback finish, [onFinish](/server/events?id=onfinish) akan membawa parameter `$task_id`.
     * Jika gagal, mengembalikan `false`. `$task_id` mungkin `0`, jadi harus menggunakan `===` untuk memeriksa kegagalan.
@@ -1449,22 +1449,22 @@ Swoole\Server->taskwait(mixed $data, float $timeout = 0.5, int $dstWorkerId = -1
     * `mixed $data`
 
         * Fungsi: Data tugas yang akan dikirim, bisa berupa tipe apa pun, tipe non-string akan diserialisasi secara otomatis oleh sistem.
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
     * `float $timeout`
 
         * Fungsi: Durasi timeout, tipe float, dalam detik, mendukung granularitas minimal `1ms`. Jika tidak ada data yang dikembalikan dari [task worker](/learn?id=taskworker-process) yang ditentukan dalam waktu yang ditentukan, `taskwait` akan mengembalikan `false` dan tidak akan memproses data hasil tugas berikutnya.
-        * Nilai Default: 0.5
+        * Default: 0.5
         * Nilai Lain: Tidak ada
 
     * `int $dstWorkerId`
 
         * Fungsi: Tentukan [task worker](/learn?id=taskworker-process) yang akan menerima tugas. Cukup berikan ID task worker, dalam rentang `[0, $server->setting['task_worker_num']-1]`.
-        * Nilai Default: -1 (Nilai default `-1` berarti kirim secara acak, sistem akan secara otomatis memilih [task worker](/learn?id=taskworker-process) yang sedang tidak sibuk.)
+        * Default: -1 (Nilai default `-1` berarti kirim secara acak, sistem akan secara otomatis memilih [task worker](/learn?id=taskworker-process) yang sedang tidak sibuk.)
         * Nilai Lain: `[0, $server->setting['task_worker_num']-1]`
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `false` menunjukkan kegagalan pengiriman tugas.
     * Jika method `finish` dijalankan dalam event `onTask` atau melakukan `return`, maka `taskwait` akan mengembalikan hasil yang dikirim oleh event `onTask`.
@@ -1502,16 +1502,16 @@ Swoole\Server->taskWaitMulti(array $tasks, float $timeout = 0.5): false|array
     * `array $tasks`
 
         * Fungsi: Harus berupa array dengan indeks numerik, tidak mendukung array asosiatif. Sistem akan melakukan iterasi melalui `$tasks` dan mengirimkan setiap tugas ke [Task Worker Process](/learn?id=taskworker-process) satu per satu.
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
     * `float $timeout`
 
         * Fungsi: Angka floating point yang menunjukkan waktu dalam detik.
-        * Nilai Default: 0.5 detik
+        * Default: 0.5 detik
         * Nilai Lain: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Ketika tugas selesai atau timeout, ia mengembalikan array hasil. Urutan hasil dalam array sesuai dengan urutan tugas dalam `$tasks`, contoh: `$result[2]` sesuai dengan `$tasks[2]`.
     * Timeout dari tugas tertentu tidak akan memengaruhi tugas lain. Array hasil tidak akan menyertakan tugas yang timeout.
@@ -1602,10 +1602,10 @@ Swoole\Server->finish(mixed $data): bool
     * `mixed $data`
 
         * Fungsi: Konten hasil dari pemrosesan tugas
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal
 
@@ -1631,10 +1631,10 @@ Swoole\Server->heartbeat(bool $ifCloseConnection = true): bool|array
     * `bool $ifCloseConnection`
 
         * Fungsi: Apakah akan menutup koneksi yang timeout
-        * Nilai Default: true
+        * Default: true
         * Nilai Lain: false
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Jika berhasil, akan mengembalikan array kontinu yang berisi `$fd` yang ditutup
     * Jika tidak berhasil, akan mengembalikan `false`
@@ -1652,7 +1652,7 @@ Mendapatkan kode error dari kesalahan operasi terbaru. Dalam kode bisnis, logika
 Swoole\Server->getLastError(): int
 ```
 
-* **Nilai Kembalian**
+* **Return Value**
 
 Kode Error | Penjelasan
 ---|---
@@ -1736,16 +1736,16 @@ Swoole\Server->protect(int $fd, bool $is_protected = true): bool
     * `int $fd`
 
         * Fungsi: menentukan `fd` koneksi klien
-        * Nilai Default: tidak ada
+        * Default: tidak ada
         * Nilai Lain: tidak ada
 
     * `bool $is_protected`
 
         * Fungsi: status yang akan diatur
-        * Nilai Default: true (menunjukkan status terlindungi)
+        * Default: true (menunjukkan status terlindungi)
         * Nilai Lain: false (menunjukkan status tidak terlindungi)
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `true` menunjukkan operasi berhasil, mengembalikan `false` menunjukkan operasi gagal.
 ## confirm()
@@ -1763,10 +1763,10 @@ Swoole\Server->confirm(int $fd): bool
     * `int $fd`
 
         * Fungsi: Pengidentifikasi unik koneksi
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Lainnya: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `true` jika konfirmasi berhasil
     * Mengembalikan `false` jika koneksi yang sesuai dengan `$fd` tidak ada, ditutup, atau sudah dalam status mendengarkan; menunjukkan kegagalan konfirmasi
@@ -1825,7 +1825,7 @@ Swoole\Server->getWorkerPid(int $worker_id = -1): int|false
     * `int $worker_id`
 
         * Fungsi: mendapatkan `pid` dari proses yang ditentukan
-        * Nilai Default: -1 (mewakili proses saat ini)
+        * Default: -1 (mewakili proses saat ini)
         * Nilai Lain: N/A
 
 !> Tersedia sejak Swoole versi >= `v4.5.0RC1`
@@ -1844,10 +1844,10 @@ Swoole\Server->getWorkerStatus(int $worker_id = -1): int|false
     * `int $worker_id`
 
         * Fungsi: Mendapatkan status proses
-        * Nilai Default: -1, [-1 mewakili proses saat ini]
+        * Default: -1, [-1 mewakili proses saat ini]
         * Nilai Lain: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan status proses `Worker`, lihat nilai status proses
     * Mengembalikan `false` jika bukan proses `Worker` atau proses tidak ada
@@ -1893,13 +1893,13 @@ Swoole\Server->addCommand(string $name, int $accepted_process_types, Callable $c
     * `string $name`
 
         * Fungsi: Nama `command`
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
     * `int $accepted_process_types`
 
         * Fungsi: Tipe proses yang menerima permintaan. Jika Anda ingin mendukung beberapa tipe proses, Anda dapat menghubungkannya dengan `|`, contoh, `SWOOLE_SERVER_COMMAND_MASTER | SWOOLE_SERVER_COMMAND_MANAGER`
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain:
             * `SWOOLE_SERVER_COMMAND_MASTER` proses master
             * `SWOOLE_SERVER_COMMAND_MANAGER` proses manager
@@ -1909,10 +1909,10 @@ Swoole\Server->addCommand(string $name, int $accepted_process_types, Callable $c
     * `callable $callback`
 
         * Fungsi: Fungsi callback. Memiliki dua parameter, satu adalah kelas `Swoole\Server`, dan yang lainnya adalah variabel yang ditentukan pengguna. Variabel ini dilewatkan melalui parameter keempat dari `Swoole\Server::command()`.
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `true` menunjukkan penambahan perintah kustom berhasil, mengembalikan `false` menunjukkan kegagalan
 ## command()
@@ -1930,19 +1930,19 @@ Swoole\Server->command(string $name, int $process_id, int $process_type, mixed $
     * `string $name`
 
         * Deskripsi: Nama `command`
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Lainnya: Tidak ada
 
     * `int $process_id`
 
         * Deskripsi: ID Proses
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Lainnya: Tidak ada
 
     * `int $process_type`
 
         * Deskripsi: Tipe permintaan proses, hanya salah satu dari nilai berikut yang dapat dipilih.
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Nilai Lain:
             * `SWOOLE_SERVER_COMMAND_MASTER` proses master
             * `SWOOLE_SERVER_COMMAND_MANAGER` proses manager
@@ -1952,13 +1952,13 @@ Swoole\Server->command(string $name, int $process_id, int $process_type, mixed $
     * `mixed $data`
 
         * Deskripsi: Data permintaan, data ini harus dapat diserialisasi
-        * Nilai Default: Tidak ada
+        * Default: Tidak ada
         * Lainnya: Tidak ada
 
     * `bool $json_decode`
 
         * Deskripsi: Apakah akan mendekode menggunakan `json_decode`
-        * Nilai Default: true
+        * Default: true
         * Nilai Lain: false
 
 * **Contoh Penggunaan**

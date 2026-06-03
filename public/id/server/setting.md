@@ -76,7 +76,7 @@ Setelah mengaktifkan mode daemon `(daemonize => true)`, output standar akan dial
 
 ### log_level
 
-?> **Mengatur level pencetakan log error `Server`, rentang `0-6`. Informasi log di bawah level `log_level` tidak akan dikeluarkan.** 【Nilai Default：`SWOOLE_LOG_INFO`】
+?> **Mengatur level pencetakan log error `Server`, rentang `0-6`. Informasi log di bawah level `log_level` tidak akan dikeluarkan.** 【Default：`SWOOLE_LOG_INFO`】
 
 Konstanta level terkait lihat [Tingkat Log](/consts?id=tingkat-log)
 
@@ -97,11 +97,11 @@ $server->set([
 
 ### log_date_with_microseconds
 
-?> **Mengatur presisi log `Server`, apakah menyertakan mikrodetik**【Nilai Default：`false`】
+?> **Mengatur presisi log `Server`, apakah menyertakan mikrodetik**【Default：`false`】
 
 ### log_rotation
 
-?> **Mengatur rotasi log `Server`**【Nilai Default：`SWOOLE_LOG_ROTATION_SINGLE`】
+?> **Mengatur rotasi log `Server`**【Default：`SWOOLE_LOG_ROTATION_SINGLE`】
 
 | Konstanta                        | Keterangan | Informasi Versi |
 | -------------------------------- | ---------- | --------------- |
@@ -144,7 +144,7 @@ Konfigurasi ini juga dapat digunakan untuk mengontrol waktu timeout eksekusi `sh
 
 ### max_coroutine / max_coro_num :id=max_coroutine
 
-?> **Mengatur jumlah maksimum coroutine dalam proses kerja saat ini.**【Nilai Default：`100000`，untuk versi Swoole lebih kecil dari `v4.4.0-beta` nilai default adalah `3000`】
+?> **Mengatur jumlah maksimum coroutine dalam proses kerja saat ini.**【Default：`100000`，untuk versi Swoole lebih kecil dari `v4.4.0-beta` nilai default adalah `3000`】
 
 ?> Melebihi `max_coroutine`, level bawah tidak dapat membuat coroutine baru. Swoole di sisi server akan melempar error `exceed max number of coroutine`, `TCP Server` akan langsung menutup koneksi, `Http Server` akan mengembalikan kode status HTTP 503.
 
@@ -223,7 +223,7 @@ $server->set([
 
 ### reactor_num
 
-?> **Mengatur jumlah thread [Reactor](/learn?id=reactor-thread) yang akan dimulai.**【Nilai Default：jumlah inti `CPU`】
+?> **Mengatur jumlah thread [Reactor](/learn?id=reactor-thread) yang akan dimulai.**【Default：jumlah inti `CPU`】
 
 ?> Melalui parameter ini, jumlah thread pemrosesan event dalam proses utama dapat diatur untuk memanfaatkan multi-core secara penuh. Default akan mengaktifkan jumlah yang sama dengan jumlah inti `CPU`.  
 Thread `Reactor` dapat memanfaatkan multi-core, misalnya: mesin memiliki `128` core, maka level bawah akan memulai `128` thread.  
@@ -243,7 +243,7 @@ Mengingat penjadwalan sistem operasi memiliki tingkat penurunan kinerja tertentu
 
 ### worker_num
 
-?> **Mengatur jumlah proses `Worker` yang akan dimulai.**【Nilai Default：jumlah inti `CPU`】
+?> **Mengatur jumlah proses `Worker` yang akan dimulai.**【Default：jumlah inti `CPU`】
 
 ?> Jika `1` permintaan memakan waktu `100ms`, untuk menyediakan kapasitas pemrosesan `1000QPS`, harus mengkonfigurasi `100` proses atau lebih.  
 Tetapi semakin banyak proses yang dibuka, memori yang digunakan akan meningkat secara signifikan, dan overhead perpindahan antar proses akan semakin besar. Jadi atur secukupnya saja. Jangan terlalu besar.
@@ -257,7 +257,7 @@ Tetapi semakin banyak proses yang dibuka, memori yang digunakan akan meningkat s
 
 ### max_request
 
-?> **Mengatur jumlah maksimum tugas untuk proses `worker`.**【Nilai Default：`0` yaitu proses tidak akan keluar】
+?> **Mengatur jumlah maksimum tugas untuk proses `worker`.**【Default：`0` yaitu proses tidak akan keluar】
 
 ?> Setelah proses `worker` selesai memproses melebihi jumlah tugas ini, akan otomatis keluar. Setelah keluar, proses akan membebaskan semua memori dan resource.
 
@@ -272,7 +272,7 @@ Tetapi semakin banyak proses yang dibuka, memori yang digunakan akan meningkat s
 
 ### max_conn / max_connection
 
-?> **Jumlah maksimum koneksi yang diizinkan untuk program server.**【Nilai Default：`ulimit -n`】
+?> **Jumlah maksimum koneksi yang diizinkan untuk program server.**【Default：`ulimit -n`】
 
 ?> Misalnya `max_connection => 10000`, parameter ini digunakan untuk mengatur berapa banyak koneksi `TCP` maksimum yang dapat dipertahankan oleh `Server`. Setelah melebihi jumlah ini, koneksi yang baru masuk akan ditolak.
 
@@ -333,7 +333,7 @@ Tetapi semakin banyak proses yang dibuka, memori yang digunakan akan meningkat s
 
 ### task_ipc_mode
 
-?> **Mengatur cara komunikasi antara [Task process](/learn?id=taskworker-process) dan proses `Worker`.**【Nilai Default：`1`】
+?> **Mengatur cara komunikasi antara [Task process](/learn?id=taskworker-process) dan proses `Worker`.**【Default：`1`】
 
 ?> Silakan baca terlebih dahulu [Komunikasi IPC di Swoole](/learn?id=apa-itu-ipc).
 
@@ -363,13 +363,13 @@ Mode | Fungsi
 
 ### task_max_request
 
-?> **Mengatur jumlah maksimum tugas untuk [task process](/learn?id=taskworker-process).**【Nilai Default：`0`】
+?> **Mengatur jumlah maksimum tugas untuk [task process](/learn?id=taskworker-process).**【Default：`0`】
 
 Mengatur jumlah maksimum tugas untuk proses task. Setelah proses task selesai memproses melebihi jumlah tugas ini, akan otomatis keluar. Parameter ini untuk mencegah overflow memori proses PHP. Jika tidak ingin proses keluar otomatis, dapat diatur ke 0.
 
 ### task_tmpdir
 
-?> **Mengatur direktori sementara data task.**【Nilai Default：direktori Linux `/tmp`】
+?> **Mengatur direktori sementara data task.**【Default：direktori Linux `/tmp`】
 
 ?> Di `Server`, jika data yang dikirim melebihi `8180` byte, file sementara akan digunakan untuk menyimpan data. `task_tmpdir` di sini digunakan untuk mengatur lokasi penyimpanan file sementara.
 
@@ -384,7 +384,7 @@ Mengatur jumlah maksimum tugas untuk proses task. Setelah proses task selesai me
 
 ### task_enable_coroutine
 
-?> **Mengaktifkan dukungan coroutine `Task`.**【Nilai Default：`false`】，didukung sejak v4.2.12
+?> **Mengaktifkan dukungan coroutine `Task`.**【Default：`false`】，didukung sejak v4.2.12
 
 ?> Setelah diaktifkan, secara otomatis akan membuat coroutine dan [coroutine container](/coroutine/scheduler) dalam callback [onTask](/server/events?id=ontask). Kode `PHP` dapat langsung menggunakan `API` coroutine.
 
@@ -417,7 +417,7 @@ $server->on('Task', function ($serv, Swoole\Server\Task $task) {
 
 ### task_use_object/task_object :id=task_use_object
 
-?> **Menggunakan format callback Task berorientasi objek.**【Nilai Default：`false`】
+?> **Menggunakan format callback Task berorientasi objek.**【Default：`false`】
 
 ?> Jika diatur ke `true`, callback [onTask](/server/events?id=ontask) akan berubah menjadi mode objek.
 
@@ -445,7 +445,7 @@ $server->start();
 
 ### dispatch_mode
 
-?> **Strategi distribusi paket data.**【Nilai Default：`2`】
+?> **Strategi distribusi paket data.**【Default：`2`】
 
 Nilai Mode | Mode | Fungsi
 ---|---|---
@@ -566,7 +566,7 @@ $server->set(array(
 
 ### message_queue_key
 
-?> **Mengatur `KEY` antrian pesan.**【Nilai Default：`ftok($php_script_file, 1)`】
+?> **Mengatur `KEY` antrian pesan.**【Default：`ftok($php_script_file, 1)`】
 
 ?> Hanya digunakan saat [task_ipc_mode](/server/setting?id=task_ipc_mode) = 2/3. `Key` yang diatur hanya sebagai `KEY` antrian tugas `Task`, lihat [Komunikasi IPC di Swoole](/learn?id=apa-itu-ipc).
 
@@ -579,7 +579,7 @@ ipcrm -Q [msgkey]
 
 ### daemonize
 
-?> **Menjalankan sebagai daemon**【Nilai Default：`false`】
+?> **Menjalankan sebagai daemon**【Default：`false`】
 
 ?> Saat mengatur `daemonize => true`, program akan berjalan di latar belakang sebagai proses daemon. Program server yang berjalan lama harus mengaktifkan ini.  
 Jika tidak mengaktifkan daemon, saat terminal ssh keluar, program akan dihentikan.
@@ -663,7 +663,7 @@ $serv->start();
 
 ### heartbeat_check_interval
 
-?> **Mengaktifkan deteksi heartbeat**【Nilai Default：`false`】
+?> **Mengaktifkan deteksi heartbeat**【Default：`false`】
 
 ?> Opsi ini menunjukkan seberapa sering melakukan polling, satuan detik. Misalnya `heartbeat_check_interval => 60`, berarti setiap `60` detik, melintasi semua koneksi. Jika koneksi dalam `120` detik (saat `heartbeat_idle_time` tidak diatur, default adalah dua kali interval), tidak mengirim data apa pun ke server, koneksi ini akan dipaksa ditutup. Jika tidak dikonfigurasi, heartbeat tidak akan diaktifkan. Konfigurasi ini default dimatikan.
 
@@ -695,7 +695,7 @@ array(
 
 ### open_eof_check
 
-?> **Mengaktifkan deteksi `EOF`**【Nilai Default：`false`】，lihat [Masalah Batas Paket Data TCP](/learn?id=masalah-batas-paket-data-tcp)
+?> **Mengaktifkan deteksi `EOF`**【Default：`false`】，lihat [Masalah Batas Paket Data TCP](/learn?id=masalah-batas-paket-data-tcp)
 
 ?> Opsi ini akan mendeteksi data yang dikirim dari koneksi klien. Hanya saat akhir paket data adalah string yang ditentukan, data akan dikirim ke proses `Worker`. Jika tidak, data akan terus digabungkan, sampai melebihi buffer atau timeout baru akan dihentikan. Saat terjadi error, level bawah akan menganggapnya sebagai koneksi berbahaya, membuang data dan memaksa menutup koneksi.  
 Protokol umum seperti `Memcache/SMTP/POP` semuanya diakhiri dengan `\r\n`, dapat menggunakan konfigurasi ini. Setelah diaktifkan, dapat memastikan proses `Worker` selalu menerima satu atau lebih paket data lengkap sekaligus.
@@ -750,7 +750,7 @@ array(
 
 ### open_length_check
 
-?> **Mengaktifkan fitur deteksi panjang paket**【Nilai Default：`false`】，lihat [Masalah Batas Paket Data TCP](/learn?id=masalah-batas-paket-data-tcp)
+?> **Mengaktifkan fitur deteksi panjang paket**【Default：`false`】，lihat [Masalah Batas Paket Data TCP](/learn?id=masalah-batas-paket-data-tcp)
 
 ?> Deteksi panjang paket menyediakan parsing format protokol header tetap + body. Setelah diaktifkan, dapat memastikan proses `Worker` [onReceive](/server/events?id=onreceive) setiap kali menerima satu paket data lengkap.  
 Protokol deteksi panjang hanya perlu menghitung panjang sekali, pemrosesan data hanya melakukan offset pointer, kinerja sangat tinggi, **disarankan digunakan**.
@@ -901,7 +901,7 @@ Mengembalikan nilai panjang paket (termasuk total panjang header dan body) | Lev
 
 ### package_max_length
 
-?> **Mengatur ukuran maksimum paket data, dalam satuan byte.**【Nilai Default：`2M` yaitu `2 * 1024 * 1024`, minimum `64K`】
+?> **Mengatur ukuran maksimum paket data, dalam satuan byte.**【Default：`2M` yaitu `2 * 1024 * 1024`, minimum `64K`】
 
 ?> Setelah mengaktifkan parsing protokol [open_length_check](/server/setting?id=open_length_check)/[open_eof_check](/server/setting?id=open_eof_check)/[open_eof_split](/server/setting?id=open_eof_split)/[open_http_protocol](/server/setting?id=open_http_protocol)/[open_http2_protocol](/http_server?id=open_http2_protocol)/[open_websocket_protocol](/server/setting?id=open_websocket_protocol)/[open_mqtt_protocol](/server/setting?id=open_mqtt_protocol) dll., level bawah `Swoole` akan melakukan penggabungan paket data. Saat paket data belum diterima lengkap, semua data disimpan di memori.  
 Oleh karena itu perlu mengatur `package_max_length`, ukuran memori maksimum yang diizinkan untuk satu paket data. Jika ada 10.000 koneksi `TCP` yang mengirim data secara bersamaan, setiap paket data `2M`, maka dalam kondisi paling ekstrem, akan memakan `20G` ruang memori.
@@ -918,13 +918,13 @@ Oleh karena itu perlu mengatur `package_max_length`, ukuran memori maksimum yang
 
 ### open_http_protocol
 
-?> **Mengaktifkan pemrosesan protokol `HTTP`.**【Nilai Default：`false`】
+?> **Mengaktifkan pemrosesan protokol `HTTP`.**【Default：`false`】
 
 ?> Mengaktifkan pemrosesan protokol `HTTP`, [Swoole\Http\Server](/http_server) akan otomatis mengaktifkan opsi ini. Diatur ke `false` berarti menonaktifkan pemrosesan protokol `HTTP`.
 
 ### open_mqtt_protocol
 
-?> **Mengaktifkan pemrosesan protokol `MQTT`.**【Nilai Default：`false`】
+?> **Mengaktifkan pemrosesan protokol `MQTT`.**【Default：`false`】
 
 ?> Setelah diaktifkan, akan mem-parsing header `MQTT`, proses `worker` [onReceive](/server/events?id=onreceive) setiap kali akan mengembalikan satu paket data `MQTT` lengkap.
 
@@ -936,7 +936,7 @@ $server->set(array(
 
 ### open_redis_protocol
 
-?> **Mengaktifkan pemrosesan protokol `Redis`.**【Nilai Default：`false`】
+?> **Mengaktifkan pemrosesan protokol `Redis`.**【Default：`false`】
 
 ?> Setelah diaktifkan, akan mem-parsing protokol `Redis`, proses `worker` [onReceive](/server/events?id=onreceive) setiap kali akan mengembalikan satu paket `Redis` lengkap. Disarankan langsung menggunakan [Redis\Server](/redis_server)
 
@@ -948,14 +948,14 @@ $server->set(array(
 
 ### open_websocket_protocol
 
-?> **Mengaktifkan pemrosesan protokol `WebSocket`.**【Nilai Default：`false`】
+?> **Mengaktifkan pemrosesan protokol `WebSocket`.**【Default：`false`】
 
 ?> Mengaktifkan pemrosesan protokol `WebSocket`, [Swoole\WebSocket\Server](websocket_server) akan otomatis mengaktifkan opsi ini. Diatur ke `false` berarti menonaktifkan pemrosesan protokol `websocket`.  
 Mengatur opsi `open_websocket_protocol` ke `true` setelahnya, akan otomatis mengatur protokol `open_http_protocol` juga menjadi `true`.
 
 ### open_websocket_close_frame
 
-?> **Mengaktifkan frame penutup dalam protokol websocket.**【Nilai Default：`false`】
+?> **Mengaktifkan frame penutup dalam protokol websocket.**【Default：`false`】
 
 ?> (Frame dengan `opcode` `0x08`) diterima dalam callback `onMessage`
 
@@ -983,7 +983,7 @@ $server->start();
 
 ### open_tcp_nodelay
 
-?> **Mengaktifkan `open_tcp_nodelay`.**【Nilai Default：`false`】
+?> **Mengaktifkan `open_tcp_nodelay`.**【Default：`false`】
 
 ?> Setelah diaktifkan, saat koneksi `TCP` mengirim data, algoritma penggabungan `Nagle` akan dimatikan, data akan segera dikirim ke koneksi TCP lawan. Dalam beberapa skenario, seperti terminal command line, mengetik perintah perlu segera dikirim ke server, dapat meningkatkan kecepatan respons. Silakan Google algoritma Nagle sendiri.
 
@@ -1056,7 +1056,7 @@ Seperti pada gambar di atas, harus diatur `cpu_affinity_ignore => array(0)`
 
 ### tcp_defer_accept
 
-?> **Mengaktifkan fitur `tcp_defer_accept`**【Nilai Default：`false`】
+?> **Mengaktifkan fitur `tcp_defer_accept`**【Default：`false`】
 
 ?> Dapat diatur ke nilai numerik, menunjukkan bahwa `accept` hanya dipicu saat koneksi `TCP` memiliki data yang dikirim.
 
@@ -1115,7 +1115,7 @@ $server->set(array(
 
 !> Parameter ini telah dihapus di versi [v4.5.4](/version/bc?id=_454), gunakan `ssl_protocols`
 
-?> **Mengatur algoritma enkripsi tunnel OpenSSL.**【Nilai Default：`SWOOLE_SSLv23_METHOD`], jenis yang didukung lihat [Metode Enkripsi SSL](/consts?id=metode-enkripsi-ssl)
+?> **Mengatur algoritma enkripsi tunnel OpenSSL.**【Default：`SWOOLE_SSLv23_METHOD`], jenis yang didukung lihat [Metode Enkripsi SSL](/consts?id=metode-enkripsi-ssl)
 
 ?> Algoritma yang digunakan `Server` dan `Client` harus konsisten, jika tidak, handshake `SSL/TLS` akan gagal, koneksi akan diputus.
 
@@ -1127,7 +1127,7 @@ $server->set(array(
 
 ### ssl_protocols
 
-?> **Mengatur protokol enkripsi tunnel OpenSSL.**【Nilai Default：`0`, mendukung semua protokol], jenis yang didukung lihat [Protokol SSL](/consts?id=protokol-ssl)
+?> **Mengatur protokol enkripsi tunnel OpenSSL.**【Default：`0`, mendukung semua protokol], jenis yang didukung lihat [Protokol SSL](/consts?id=protokol-ssl)
 
 !> Tersedia di Swoole versi >= `v4.5.4`
 
@@ -1167,7 +1167,7 @@ $server->set([
 
 ### ssl_ciphers
 
-?> **Mengatur algoritma enkripsi openssl.**【Nilai Default：`EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH`】
+?> **Mengatur algoritma enkripsi openssl.**【Default：`EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH`】
 
 ```php
 $server->set(array(
@@ -1181,13 +1181,13 @@ $server->set(array(
 
 ### ssl_verify_peer
 
-?> **Pengaturan SSL server untuk memverifikasi certificate lawan.**【Nilai Default：`false`】
+?> **Pengaturan SSL server untuk memverifikasi certificate lawan.**【Default：`false`】
 
 ?> Default dimatikan, yaitu tidak memverifikasi certificate klien. Jika diaktifkan, harus mengatur opsi `ssl_client_cert_file` secara bersamaan.
 
 ### ssl_allow_self_signed
 
-?> **Mengizinkan self-signed certificate.**【Nilai Default：`false`】
+?> **Mengizinkan self-signed certificate.**【Default：`false`】
 
 ### ssl_client_cert_file
 
@@ -1239,7 +1239,7 @@ $server->set([
 
 ### user
 
-?> **Mengatur pengguna yang memiliki proses `Worker/TaskWorker`.**【Nilai Default：pengguna yang menjalankan script】
+?> **Mengatur pengguna yang memiliki proses `Worker/TaskWorker`.**【Default：pengguna yang menjalankan script】
 
 ?> Jika server perlu mendengarkan port di bawah `1024`, harus memiliki hak `root`. Tetapi jika program berjalan di bawah pengguna `root`, begitu ada celah dalam kode, penyerang dapat menjalankan perintah jarak jauh sebagai `root`, risikonya besar. Setelah mengonfigurasi item `user`, proses utama dapat berjalan dengan hak `root`, sementara proses anak berjalan dengan hak pengguna biasa.
 
@@ -1256,7 +1256,7 @@ $server->set(array(
 
 ### group
 
-?> **Mengatur grup pengguna proses `Worker/TaskWorker`.**【Nilai Default：grup pengguna yang menjalankan script】
+?> **Mengatur grup pengguna proses `Worker/TaskWorker`.**【Default：grup pengguna yang menjalankan script】
 
 ?> Sama seperti konfigurasi `user`, konfigurasi ini mengubah grup pengguna proses, meningkatkan keamanan program server.
 
@@ -1300,7 +1300,7 @@ $server->set(array(
 
 ### buffer_input_size / input_buffer_size :id=buffer_input_size
 
-?> **Mengatur ukuran memori buffer input.**【Nilai Default：`2M`】
+?> **Mengatur ukuran memori buffer input.**【Default：`2M`】
 
 ```php
 $server->set([
@@ -1310,7 +1310,7 @@ $server->set([
 
 ### buffer_output_size / output_buffer_size :id=buffer_output_size
 
-?> **Mengatur ukuran memori buffer output pengiriman.**【Nilai Default：`2M`】
+?> **Mengatur ukuran memori buffer output pengiriman.**【Default：`2M`】
 
 ```php
 $server->set([
@@ -1329,7 +1329,7 @@ $server->set([
 
 ### socket_buffer_size
 
-?> **Mengatur panjang buffer koneksi klien.**【Nilai Default：`2M`】
+?> **Mengatur panjang buffer koneksi klien.**【Default：`2M`】
 
 ?> Berbeda dengan `buffer_output_size`, `buffer_output_size` adalah batasan ukuran `sekali` send dari proses worker. `socket_buffer_size` digunakan untuk mengatur total ukuran buffer komunikasi antara proses `Worker` dan `Master`, lihat mode [SWOOLE_PROCESS](/learn?id=swoole_process).
 
@@ -1360,14 +1360,14 @@ $server->set([
 
 ### enable_unsafe_event
 
-?> **Mengaktifkan event `onConnect/onClose`.**【Nilai Default：`false`】
+?> **Mengaktifkan event `onConnect/onClose`.**【Default：`false`】
 
 ?> Setelah `Swoole` mengkonfigurasi [dispatch_mode](/server/setting?id=dispatch_mode)=1 atau `3`, karena sistem tidak dapat menjamin urutan `onConnect/onReceive/onClose`, event `onConnect/onClose` dimatikan secara default.  
 Jika aplikasi memerlukan event `onConnect/onClose`, dan dapat menerima risiko keamanan yang mungkin ditimbulkan oleh masalah urutan, dapat mengatur `enable_unsafe_event` menjadi `true` untuk mengaktifkan event `onConnect/onClose`.
 
 ### discard_timeout_request
 
-?> **Membuang permintaan data dari koneksi yang sudah ditutup.**【Nilai Default：`true`】
+?> **Membuang permintaan data dari koneksi yang sudah ditutup.**【Default：`true`】
 
 ?> Setelah `Swoole` mengkonfigurasi [dispatch_mode](/server/setting?id=dispatch_mode)=`1` atau `3`, sistem tidak dapat menjamin urutan `onConnect/onReceive/onClose`, sehingga mungkin ada beberapa data permintaan yang sampai ke proses `Worker` setelah koneksi ditutup.
 
@@ -1378,7 +1378,7 @@ Jika aplikasi memerlukan event `onConnect/onClose`, dan dapat menerima risiko ke
 
 ### enable_reuse_port
 
-?> **Mengatur reuse port.**【Nilai Default：`false`】
+?> **Mengatur reuse port.**【Default：`false`】
 
 ?> Setelah mengaktifkan reuse port, dapat memulai ulang program Server yang mendengarkan port yang sama.
 
@@ -1391,7 +1391,7 @@ Jika aplikasi memerlukan event `onConnect/onClose`, dan dapat menerima risiko ke
 
 ### enable_delay_receive
 
-?> **Mengatur agar setelah `accept` koneksi klien, tidak akan otomatis bergabung ke [EventLoop](/learn?id=apa-itu-eventloop).**【Nilai Default：`false`】
+?> **Mengatur agar setelah `accept` koneksi klien, tidak akan otomatis bergabung ke [EventLoop](/learn?id=apa-itu-eventloop).**【Default：`false`】
 
 ?> Setelah mengatur opsi ini ke `true`, setelah `accept` koneksi klien, tidak akan otomatis bergabung ke [EventLoop](/learn?id=apa-itu-eventloop), hanya memicu callback [onConnect](/server/events?id=onconnect). Proses `worker` dapat memanggil [$server->confirm($fd)](/server/methods?id=confirm) untuk mengonfirmasi koneksi. Saat itu, `fd` akan ditambahkan ke [EventLoop](/learn?id=apa-itu-eventloop) untuk mulai melakukan pengiriman dan penerimaan data. Juga dapat memanggil `$server->close($fd)` untuk menutup koneksi ini.
 
@@ -1411,7 +1411,7 @@ $server->on("Connect", function ($server, $fd, $reactorId) {
 
 ### reload_async
 
-?> **Mengatur sakelar restart asynchronous.**【Nilai Default：`true`】
+?> **Mengatur sakelar restart asynchronous.**【Default：`true`】
 
 ?> Mengatur sakelar restart asynchronous. Jika diatur ke `true`, fitur restart aman asynchronous akan diaktifkan. Proses `Worker` akan menunggu event asynchronous selesai sebelum keluar. Informasi detail lihat [Cara me-restart service dengan benar](/question/use?id=cara-me-restart-service-swoole-dengan-benar)
 
@@ -1429,7 +1429,7 @@ $server->set([
 
 ### max_wait_time
 
-?> **Mengatur waktu tunggu maksimum setelah proses `Worker` menerima notifikasi penghentian service**【Nilai Default：`3`】
+?> **Mengatur waktu tunggu maksimum setelah proses `Worker` menerima notifikasi penghentian service**【Default：`3`】
 
 ?> Sering ditemui masalah karena `worker` terblokir sehingga `worker` tidak dapat `reload` secara normal, tidak dapat memenuhi beberapa skenario produksi, seperti merilis pembaruan kode panas yang perlu `reload` proses. Oleh karena itu, Swoole menambahkan opsi waktu timeout restart proses. Informasi detail lihat [Cara me-restart service dengan benar](/question/use?id=cara-me-restart-service-swoole-dengan-benar)
 
@@ -1447,7 +1447,7 @@ $server->set([
 
 ### tcp_fastopen
 
-?> **Mengaktifkan fitur TCP fast open.**【Nilai Default：`false`】
+?> **Mengaktifkan fitur TCP fast open.**【Default：`false`】
 
 ?> Fitur ini dapat meningkatkan kecepatan respons koneksi pendek `TCP`. Saat klien menyelesaikan langkah ketiga handshake, mengirim paket `SYN` sambil membawa data.
 
@@ -1546,7 +1546,7 @@ $server->start();
 
 ### hook_flags
 
-?> **Mengatur ruang lingkup fungsi Hook `one-click coroutine`.**【Nilai Default：tidak hook】
+?> **Mengatur ruang lingkup fungsi Hook `one-click coroutine`.**【Default：tidak hook】
 
 !> Tersedia di Swoole versi `v4.5+` atau [4.4LTS](https://github.com/swoole/swoole-src/tree/v4.4.x). Detail lihat [One-click Coroutine](/runtime)
 
@@ -1581,7 +1581,7 @@ Level bawah mendukung item coroutine berikut, dapat menggunakan `SWOOLE_HOOK_ALL
 
 ### send_yield
 
-?> **Saat memori buffer tidak mencukupi saat mengirim data, langsung [yield](/coroutine?id=penjadwalan-coroutine) dalam coroutine saat ini, menunggu pengiriman data selesai. Saat buffer kosong, secara otomatis [resume](/coroutine?id=penjadwalan-coroutine) coroutine saat ini, melanjutkan `send` data.**【Nilai Default: tersedia saat [dispatch_mode](/server/setting?id=dispatch_mode) 2/4, dan default aktif】
+?> **Saat memori buffer tidak mencukupi saat mengirim data, langsung [yield](/coroutine?id=penjadwalan-coroutine) dalam coroutine saat ini, menunggu pengiriman data selesai. Saat buffer kosong, secara otomatis [resume](/coroutine?id=penjadwalan-coroutine) coroutine saat ini, melanjutkan `send` data.**【Default: tersedia saat [dispatch_mode](/server/setting?id=dispatch_mode) 2/4, dan default aktif】
 
 * Jika `Server/Client->send` mengembalikan `false` dan kode error adalah `SW_ERROR_OUTPUT_BUFFER_OVERFLOW`, tidak mengembalikan `false` ke lapisan `PHP`, tetapi [yield](/coroutine?id=penjadwalan-coroutine) untuk menangguhkan coroutine saat ini.
 * `Server/Client` memonitor apakah event buffer kosong. Setelah event ini terpicu, data dalam buffer telah dikirim selesai. Pada saat ini, [resume](/coroutine?id=penjadwalan-coroutine) coroutine yang sesuai.
@@ -1686,7 +1686,7 @@ $server->set([
 
 ### event_object
 
-?> **Setelah mengatur opsi ini, callback event akan menggunakan [gaya objek](/server/events?id=callback-object).**【Nilai Default：`false`】
+?> **Setelah mengatur opsi ini, callback event akan menggunakan [gaya objek](/server/events?id=callback-object).**【Default：`false`】
 
 ```php
 $server->set([

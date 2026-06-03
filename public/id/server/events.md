@@ -14,7 +14,7 @@ function onStart(Swoole\Server $server);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Sebelum event ini `Server` telah melakukan operasi berikut:**
@@ -68,7 +68,7 @@ function onBeforeShutdown(Swoole\Server $server);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 ## onShutdown
@@ -83,7 +83,7 @@ function onShutdown(Swoole\Server $server);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Sebelum ini `Swoole\Server` telah melakukan operasi berikut:**
@@ -114,12 +114,12 @@ function onWorkerStart(Swoole\Server $server, int $workerId);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $workerId`**
         * **Fungsi**: `id` proses `Worker` (bukan PID proses)
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * `onWorkerStart/onStart` dieksekusi secara concurrent, tidak ada urutan
@@ -168,12 +168,12 @@ function onWorkerStop(Swoole\Server $server, int $workerId);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $workerId`**
         * **Fungsi**: `id` proses `Worker` (bukan PID proses)
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Catatan**
@@ -193,12 +193,12 @@ function onWorkerExit(Swoole\Server $server, int $workerId);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $workerId`**
         * **Fungsi**: `id` proses `Worker` (bukan PID proses)
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Catatan**
@@ -221,17 +221,17 @@ function onConnect(Swoole\Server $server, int $fd, int $reactorId);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $fd`**
         * **Fungsi**: File descriptor koneksi
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $reactorId`**
         * **Fungsi**: `ID` thread [Reactor](/learn?id=reactor-thread) tempat koneksi berada
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Catatan**
@@ -256,22 +256,22 @@ function onReceive(Swoole\Server $server, int $fd, int $reactorId, string $data)
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $fd`**
         * **Fungsi**: File descriptor koneksi
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $reactorId`**
         * **Fungsi**: `ID` thread [Reactor](/learn?id=reactor-thread) tempat koneksi `TCP` berada
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`string $data`**
         * **Fungsi**: Isi data yang diterima, bisa berupa teks atau konten biner
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Tentang integritas paket dalam protokol `TCP`, lihat [TCP Data Packet Boundary Issue](/learn?id=masalah-batas-paket-data-tcp)**
@@ -315,17 +315,17 @@ function onPacket(Swoole\Server $server, string $data, array $clientInfo);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`string $data`**
         * **Fungsi**: Isi data yang diterima, bisa berupa teks atau konten biner
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`array $clientInfo`**
         * **Fungsi**: Informasi klien mencakup `address/port/server_socket` dan berbagai data informasi klien lainnya, [lihat Server UDP](/start/start_udp_server)
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Catatan**
@@ -344,17 +344,17 @@ function onClose(Swoole\Server $server, int $fd, int $reactorId);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $fd`**
         * **Fungsi**: File descriptor koneksi
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $reactorId`**
         * **Fungsi**: Berasal dari thread `reactor` mana, bernilai negatif saat `close` dilakukan secara aktif
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Tips**
@@ -387,22 +387,22 @@ function onTask(Swoole\Server $server, int $task_id, int $src_worker_id, mixed $
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $task_id`**
         * **Fungsi**: `id` proses `task` yang menjalankan tugas【`$task_id` dan `$src_worker_id` digabungkan baru bersifat unik secara global, `ID` tugas yang dikirim oleh proses `worker` yang berbeda mungkin sama】
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $src_worker_id`**
         * **Fungsi**: `id` proses `worker` yang mengirim tugas【`$task_id` dan `$src_worker_id` digabungkan baru bersifat unik secara global, `ID` tugas yang dikirim oleh proses `worker` yang berbeda mungkin sama】
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`mixed $data`**
         * **Fungsi**: Konten data tugas
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Tips**
@@ -438,17 +438,17 @@ function onFinish(Swoole\Server $server, int $task_id, mixed $data)
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $task_id`**
         * **Fungsi**: `id` proses `task` yang menjalankan tugas
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`mixed $data`**
         * **Fungsi**: Konten hasil pemrosesan tugas
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Catatan**
@@ -468,17 +468,17 @@ function onPipeMessage(Swoole\Server $server, int $src_worker_id, mixed $message
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $src_worker_id`**
         * **Fungsi**: Dari proses `Worker` mana pesan berasal
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`mixed $message`**
         * **Fungsi**: Konten pesan, bisa berupa tipe PHP apa pun
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 ## onWorkerError
@@ -495,27 +495,27 @@ function onWorkerError(Swoole\Server $server, int $worker_id, int $worker_pid, i
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $worker_id`**
         * **Fungsi**: `id` proses `worker` yang mengalami error
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $worker_pid`**
         * **Fungsi**: `pid` proses `worker` yang mengalami error
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $exit_code`**
         * **Fungsi**: Kode status keluar, rentang `0～255`
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
     * **`int $signal`**
         * **Fungsi**: Sinyal keluar proses
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 * **Kesalahan Umum**
@@ -573,7 +573,7 @@ function onBeforeReload(Swoole\Server $server);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 ## onAfterReload
@@ -588,7 +588,7 @@ function onAfterReload(Swoole\Server $server);
 
     * **`Swoole\Server $server`**
         * **Fungsi**: Objek Swoole\Server
-        * **Nilai Default**: Tidak ada
+        * **Default**: Tidak ada
         * **Nilai Lain**: Tidak ada
 
 ## Urutan Eksekusi Event

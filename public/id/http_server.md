@@ -242,9 +242,9 @@ Array
 Swoole\Http\Request->getContent(): string|false
 ```
 
-* **Nilai Kembali**
+* **Return Value**
 
-    * Berhasil mengembalikan pesan, jika konteks koneksi tidak ada mengembalikan `false`
+    * Mengembalikan pesan, jika konteks koneksi tidak ada mengembalikan `false`
 
 !> Beberapa situasi server tidak perlu mengurai parameter request HTTP `POST`, melalui konfigurasi [http_parse_post](/http_server?id=http_parse_post), dapat menonaktifkan penguraian data `POST`.
 
@@ -256,9 +256,9 @@ Swoole\Http\Request->getContent(): string|false
 Swoole\Http\Request->getData(): string|false
 ```
 
-* **Nilai Kembali**
+* **Return Value**
 
-    * Berhasil mengembalikan pesan, jika konteks koneksi tidak ada atau dalam mode `Http2` mengembalikan `false`
+    * Mengembalikan pesan, jika konteks koneksi tidak ada atau dalam mode `Http2` mengembalikan `false`
 
 ### create()
 
@@ -275,7 +275,7 @@ Swoole\Http\Request->create(array $options): Swoole\Http\Request
     * **`array $options`**
       * **Fungsi**: Parameter opsional, digunakan untuk mengatur konfigurasi objek `Request`
 
-| Parameter                                            | Nilai Default | Penjelasan                                                          |
+| Parameter                                            | Default | Penjelasan                                                          |
 | ---------------------------------------------------- | ------------- | ------------------------------------------------------------------ |
 | [parse_cookie](/http_server?id=http_parse_cookie)    | true          | Mengatur apakah mengurai `Cookie`                                    |
 | [parse_body](/http_server?id=http_parse_post)        | true          | Mengatur apakah mengurai `Http Body`                                 |
@@ -284,7 +284,7 @@ Swoole\Http\Request->create(array $options): Swoole\Http\Request
 | compression_level                                    | 1             | Mengatur level kompresi, rentang 1-9, semakin tinggi level semakin kecil ukuran setelah kompresi, tetapi konsumsi CPU lebih banyak |
 | upload_tmp_dir                                       | /tmp          | Lokasi penyimpanan file sementara, untuk upload file |
 
-* **Nilai Kembali**
+* **Return Value**
 
     * Mengembalikan objek `Swoole\Http\Request`
 
@@ -315,7 +315,7 @@ Swoole\Http\Request->parse(string $data): int|false
     * **`string $data`**
       * Pesan yang akan diurai
 
-* **Nilai Kembali**
+* **Return Value**
 
     * Berhasil mengurai mengembalikan panjang pesan yang diurai, konteks koneksi tidak ada atau konteks sudah berakhir mengembalikan `false`
 
@@ -329,7 +329,7 @@ Swoole\Http\Request->parse(string $data): int|false
 Swoole\Http\Request->isCompleted(): bool
 ```
 
-* **Nilai Kembali**
+* **Return Value**
 
     * `true` berarti sudah akhir, `false` berarti konteks koneksi sudah berakhir atau belum sampai akhir
 
@@ -374,9 +374,9 @@ var_dump($req->cookie);
 ```php
 Swoole\Http\Request->getMethod(): string|false
 ```
-* **Nilai Kembali**
+* **Return Value**
 
-    * Berhasil mengembalikan method request huruf besar, `false` berarti konteks koneksi tidak ada
+    * Mengembalikan method request huruf besar, `false` berarti konteks koneksi tidak ada
 
 ```php
 var_dump($request->server['request_method']);
@@ -403,20 +403,20 @@ Swoole\Http\Response->header(string $key, string $value, bool $format = true): b
 
   * **`string $key`**
     * **Fungsi**: `Key` dari `HTTP` header
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`string $value`**
     * **Fungsi**: `Value` dari `HTTP` header
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`bool $format`**
     * **Fungsi**: Apakah perlu memformat `Key` sesuai konvensi `HTTP` [default `true` akan otomatis diformat]
-    * **Nilai Default**: `true`
+    * **Default**: `true`
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali** 
+* **Return Value** 
 
   * Gagal mengatur, mengembalikan `false`
   * Berhasil mengatur, mengembalikan `true`
@@ -462,15 +462,15 @@ Swoole\Http\Response->trailer(string $key, string $value): bool;
 
   * **`string $key`**
     * **Fungsi**: `Key` dari `HTTP` header
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`string $value`**
     * **Fungsi**: `Value` dari `HTTP` header
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali** 
+* **Return Value** 
 
   * Gagal mengatur, mengembalikan `false`
   * Berhasil mengatur, mengembalikan `true`
@@ -498,50 +498,50 @@ Swoole\Http\Response->cookie(string $key, string $value = '', int $expire = 0 , 
 
     * **`string $key`**
       * **Fungsi**: `Key` dari `Cookie`
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
     * **`string $value`**
       * **Fungsi**: `Value` dari `Cookie`
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
     * **`int $expire`**
       * **Fungsi**: `Waktu kedaluwarsa` dari `Cookie`
-      * **Nilai Default**: 0, tidak kedaluwarsa
+      * **Default**: 0, tidak kedaluwarsa
       * **Nilai Lain**: Tidak ada
 
     * **`string $path`**
       * **Fungsi**: `Path server untuk Cookie`
-      * **Nilai Default**: /
+      * **Default**: /
       * **Nilai Lain**: Tidak ada
 
     * **`string $domain`**
       * **Fungsi**: `Domain untuk Cookie`
-      * **Nilai Default**: ''
+      * **Default**: ''
       * **Nilai Lain**: Tidak ada
 
     * **`bool $secure`**
       * **Fungsi**: `Apakah mentransmisikan Cookie melalui koneksi HTTPS yang aman`
-      * **Nilai Default**: ''
+      * **Default**: ''
       * **Nilai Lain**: Tidak ada
 
     * **`bool $httponly`**
       * **Fungsi**: `Apakah mengizinkan JavaScript browser mengakses Cookie dengan atribut HttpOnly`, `true` berarti tidak mengizinkan, `false` berarti mengizinkan
-      * **Nilai Default**: false
+      * **Default**: false
       * **Nilai Lain**: Tidak ada
 
     * **`string $samesite`**
       * **Fungsi**: `Membatasi Cookie pihak ketiga untuk mengurangi risiko keamanan`, nilai opsional `Strict`, `Lax`, `None`
-      * **Nilai Default**: ''
+      * **Default**: ''
       * **Nilai Lain**: Tidak ada
 
     * **`string $priority`**
       * **Fungsi**: `Prioritas Cookie, saat jumlah Cookie melebihi batas, prioritas rendah akan dihapus lebih dulu`, nilai opsional `Low`, `Medium`, `High`
-      * **Nilai Default**: ''
+      * **Default**: ''
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali** 
+* **Return Value** 
 
     * Gagal mengatur, mengembalikan `false`
     * Berhasil mengatur, mengembalikan `true`
@@ -571,15 +571,15 @@ Swoole\Http\Response->status(int $http_status_code, string $reason = ''): bool
 
   * **`int $http_status_code`**
     * **Fungsi**: Mengatur `HttpCode`
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`string $reason`**
     * **Fungsi**: Alasan kode status
-    * **Nilai Default**: ''
+    * **Default**: ''
     * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembali** 
+  * **Return Value** 
 
     * Gagal mengatur, mengembalikan `false`
     * Berhasil mengatur, mengembalikan `true`
@@ -605,7 +605,7 @@ Swoole\Http\Response->gzip(int $level = 1);
     
      * **`int $level`**
        * **Fungsi**: Level kompresi, semakin tinggi level semakin kecil ukuran setelah kompresi, tetapi konsumsi `CPU` lebih banyak.
-       * **Nilai Default**: 1
+       * **Default**: 1
        * **Nilai Lain**: `1-9`
 
 !> Setelah memanggil method `gzip`, level bawah akan otomatis menambahkan header pengkodean `Http`, kode PHP seharusnya tidak mengatur header `Http` terkait lagi; gambar format `jpg/png/gif` sudah terkompresi, tidak perlu kompresi lagi
@@ -628,15 +628,15 @@ Swoole\Http\Response->redirect(string $url, int $http_code = 302): bool
 
     * **`string $url`**
       * **Fungsi**: Alamat baru pengalihan, dikirim sebagai header `Location`
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
     * **`int $http_code`**
       * **Fungsi**: Kode status [default `302` pengalihan sementara, masukkan `301` berarti pengalihan permanen]
-      * **Nilai Default**: `302`
+      * **Default**: `302`
       * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembali** 
+  * **Return Value** 
 
     * Berhasil dipanggil, mengembalikan `true`, gagal atau konteks koneksi tidak ada, mengembalikan `false`
 
@@ -666,10 +666,10 @@ Swoole\Http\Response->write(string $data): bool
 
     * **`string $data`**
       * **Fungsi**: Data yang akan dikirim [panjang maksimum tidak boleh melebihi `2M`, dikontrol oleh opsi konfigurasi [buffer_output_size](/server/setting?id=buffer_output_size)]
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali** 
+* **Return Value** 
 
     * Berhasil dipanggil, mengembalikan `true`, gagal atau konteks koneksi tidak ada, mengembalikan `false`
 
@@ -692,20 +692,20 @@ Swoole\Http\Response->sendfile(string $filename, int $offset = 0, int $length = 
 
     * **`string $filename`**
       * **Fungsi**: Nama file yang akan dikirim [file tidak ada atau tidak ada izin akses `sendfile` akan gagal]
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
     * **`int $offset`**
       * **Fungsi**: Offset upload file [dapat menentukan mulai transmisi data dari bagian tengah file. Fitur ini dapat digunakan untuk mendukung resumable upload]
-      * **Nilai Default**: `0`
+      * **Default**: `0`
       * **Nilai Lain**: Tidak ada
 
     * **`int $length`**
       * **Fungsi**: Ukuran data yang dikirim
-      * **Nilai Default**: Ukuran file
+      * **Default**: Ukuran file
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali** 
+* **Return Value** 
 
       * Berhasil dipanggil, mengembalikan `true`, gagal atau konteks koneksi tidak ada, mengembalikan `false`
 
@@ -735,10 +735,10 @@ Swoole\Http\Response->end(string $html): bool
 
     * **`string $html`**
       * **Fungsi**: Konten yang akan dikirim
-      * **Nilai Default**: Tidak ada
+      * **Default**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali** 
+* **Return Value** 
 
     * Berhasil dipanggil, mengembalikan `true`, gagal atau konteks koneksi tidak ada, mengembalikan `false`
 
@@ -763,7 +763,7 @@ WARNING finish (ERRNO 1203): The length of data [262144] exceeds the output buff
 Swoole\Http\Response->detach(): bool
 ```
 
-* **Nilai Kembali** 
+* **Return Value** 
 
     * Berhasil dipanggil, mengembalikan `true`, gagal atau konteks koneksi tidak ada, mengembalikan `false`
 
@@ -826,15 +826,15 @@ Swoole\Http\Response::create(object|array|int $server = -1, int $fd = -1): Swool
 
     * **`int $server`**
       * **Fungsi**: Objek `Swoole\Server` atau `Swoole\Coroutine\Socket`, array (array hanya bisa dua parameter, pertama objek `Swoole\Server`, kedua objek `Swoole\Http\Request`), atau deskriptor file
-      * **Nilai Default**: -1
+      * **Default**: -1
       * **Nilai Lain**: Tidak ada
 
     * **`int $fd`**
       * **Fungsi**: Deskriptor file. Jika parameter `$server` adalah objek `Swoole\Server`, `$fd` wajib diisi
-      * **Nilai Default**: -1
+      * **Default**: -1
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali** 
+* **Return Value** 
 
     * Berhasil dipanggil mengembalikan objek `Swoole\Http\Response` baru, gagal mengembalikan `false`
 
@@ -869,7 +869,7 @@ $http->start();
 Swoole\Http\Response->isWritable(): bool
 ```
 
-* **Nilai Kembali** 
+* **Return Value** 
 
     * Objek `Swoole\Http\Response` belum berakhir atau belum dipisahkan mengembalikan `true`, jika tidak mengembalikan `false`
 

@@ -36,17 +36,17 @@ Swoole\Client::__construct(int $sock_type, bool $is_sync = false, string $key);
 
   * **`int $sock_type`**
     * **Fungsi**: Menentukan jenis `socket` [mendukung `SWOOLE_SOCK_TCP`, `SWOOLE_SOCK_TCP6`, `SWOOLE_SOCK_UDP`, `SWOOLE_SOCK_UDP6`]. Lihat [bagian ini](/server/methods?id=__construct) untuk penjelasan lebih lanjut
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`bool $is_sync`**
     * **Fungsi**: Mode sinkron blocking, hanya bisa diisi `false`. Untuk mode asynchronous callback, gunakan `Swoole\Async\Client`
-    * **Nilai Default**: `false`
+    * **Default**: `false`
     * **Nilai Lain**: Tidak ada
 
   * **`string $key`**
     * **Fungsi**: `Key` untuk koneksi panjang [secara default menggunakan `IP:PORT` sebagai `key`. `key` yang sama, meskipun new dua kali, tetap hanya menggunakan satu koneksi TCP]
-    * **Nilai Default**: `IP:PORT`
+    * **Default**: `IP:PORT`
     * **Nilai Lain**: Tidak ada
 
 !> Gunakan makro yang disediakan oleh level bawah untuk menentukan jenis, lihat [definisi konstanta](/consts)
@@ -90,28 +90,28 @@ Swoole\Client->connect(string $host, int $port, float $timeout = 0.5, int $sock_
 
   * **`string $host`**
     * **Fungsi**: Alamat server [mendukung resolusi domain asinkron otomatis, `$host` bisa langsung diisi domain]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $port`**
     * **Fungsi**: Port server
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`float $timeout`**
     * **Fungsi**: Mengatur waktu tunggu
     * **Satuan**: Detik [mendukung float, misal `1.5` berarti `1s` + `500ms`]
-    * **Nilai Default**: `0.5`
+    * **Default**: `0.5`
     * **Nilai Lain**: Tidak ada
 
   * **`int $sock_flag`**
     * Untuk tipe `UDP`, menandakan apakah mengaktifkan `udp_connect`. Setelah diaktifkan, `$host` dan `$port` akan diikat, paket dari `host/port` yang tidak ditentukan akan dibuang.
     * Untuk tipe `TCP`, `$sock_flag=1` berarti mengatur `socket` non-blocking, setelah itu fd ini akan menjadi [IO asinkron](/learn?id=同步io异步io), `connect` akan segera kembali. Jika `$sock_flag` diatur ke `1`, maka sebelum `send/recv` harus menggunakan [swoole_client_select](/client?id=swoole_client_select) untuk memeriksa apakah koneksi selesai.
 
-* **Nilai Kembali**
+* **Return Value**
 
-  * Berhasil mengembalikan `true`
-  * Gagal mengembalikan `false`, periksa properti `errCode` untuk penyebab kegagalan
+  * Mengembalikan `true`
+  * Mengembalikan `false`, periksa properti `errCode` untuk penyebab kegagalan
 
 * **Mode Sinkron**
 
@@ -164,19 +164,19 @@ Swoole\Client->recv(int $size = 65535, int $flags = 0): string | false
 
   * **`int $size`**
     * **Fungsi**: Panjang maksimum buffer data yang diterima [jangan diatur terlalu besar, karena akan memakan banyak memori]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $flags`**
     * **Fungsi**: Parameter tambahan [seperti [Client::MSG_WAITALL](/client?id=clientmsg_waitall)], lihat [bagian ini](/client?id=常量) untuk parameter spesifik
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Berhasil menerima data mengembalikan string
   * Koneksi ditutup mengembalikan string kosong
-  * Gagal mengembalikan `false`, dan mengatur properti `$client->errCode`
+  * Mengembalikan `false`, dan mengatur properti `$client->errCode`
 
 * **Protokol EOF/Length**
 
@@ -195,13 +195,13 @@ Swoole\Client->send(string $data): int|false
 
   * **`string $data`**
     * **Fungsi**: Konten yang dikirim [mendukung data biner]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Berhasil mengirim, mengembalikan panjang data terkirim
-  * Gagal mengembalikan `false`, dan mengatur properti `errCode`
+  * Mengembalikan `false`, dan mengatur properti `errCode`
 
 * **Catatan**
 
@@ -223,20 +223,20 @@ Swoole\Client->sendfile(string $filename, int $offset = 0, int $length = 0): boo
 
   * **`string $filename`**
     * **Fungsi**: Menentukan path file yang akan dikirim
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $offset`**
     * **Fungsi**: Offset upload file [dapat menentukan mulai transmisi data dari bagian tengah file. Fitur ini dapat digunakan untuk mendukung resumable upload]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $length`**
     * **Fungsi**: Ukuran data yang dikirim [default ukuran seluruh file]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembali**
+* **Return Value**
 
   * Jika file yang dimasukkan tidak ada, akan mengembalikan `false`
   * Eksekusi berhasil mengembalikan `true`
@@ -257,17 +257,17 @@ Swoole\Client->sendto(string $ip, int $port, string $data): bool
 
   * **`string $ip`**
     * **Fungsi**: Alamat `IP` host tujuan, mendukung `IPv4/IPv6`
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`int $port`**
     * **Fungsi**: Port host tujuan
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
   * **`string $data`**
     * **Fungsi**: Data yang akan dikirim [tidak boleh melebihi `64K`]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
 ### enableSSL()
@@ -313,10 +313,10 @@ Mendapatkan informasi sertifikat server, hanya dapat digunakan jika mengompilasi
 Swoole\Client->getPeerCert(): string|false
 ```
 
-* **Nilai Kembali**
+* **Return Value**
 
-  * Berhasil mengembalikan string informasi sertifikat `X509`
-  * Gagal mengembalikan `false`
+  * Mengembalikan string informasi sertifikat `X509`
+  * Mengembalikan `false`
 
 !> Method ini hanya bisa dipanggil setelah jabat tangan SSL selesai.
 
@@ -356,7 +356,7 @@ Digunakan untuk mendapatkan host:port lokal socket klien.
 Swoole\Client->getsockname(): array|false
 ```
 
-* **Nilai Kembali**
+* **Return Value**
 
 ```php
 array('host' => '127.0.0.1', 'port' => 53652);
@@ -388,7 +388,7 @@ Swoole\Client->close(bool $force = false): bool
 
   * **`bool $force`**
     * **Fungsi**: Memaksa menutup koneksi [dapat digunakan untuk menutup koneksi panjang [SWOOLE_KEEP](/client?id=swoole_keep)]
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Tidak ada
 
 Setelah koneksi `swoole_client` di-`close`, jangan melakukan `connect` lagi. Cara yang benar adalah menghancurkan `Client` saat ini, membuat `Client` baru, dan membuat koneksi baru.
@@ -407,7 +407,7 @@ Swoole\Client->shutdown(int $how): bool
 
   * **`int $how`**
     * **Fungsi**: Mengatur cara menutup klien
-    * **Nilai Default**: Tidak ada
+    * **Default**: Tidak ada
     * **Nilai Lain**: Swoole\Client::SHUT_RDWR (tutup baca dan tulis), SHUT_RD (tutup baca), Swoole\Client::SHUT_WR (tutup tulis)
 
 ### getSocket()

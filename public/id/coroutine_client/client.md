@@ -115,7 +115,7 @@ Mengembalikan status koneksi Client
 Swoole\Coroutine\Client->isConnected(): bool
 ```
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Mengembalikan `false`, berarti saat ini tidak terhubung ke server
     * Mengembalikan `true`, berarti saat ini terhubung ke server
@@ -160,7 +160,7 @@ Swoole\Coroutine\Client->recv(float $timeout = 0): string|bool
 
     !> Saat mengatur timeout, prioritaskan parameter yang ditentukan, lalu gunakan konfigurasi `timeout` yang diberikan di method `set`. Kode error untuk timeout adalah `ETIMEDOUT`
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Dengan pengaturan [protokol komunikasi](/client?id=protokol-parsing), `recv` akan mengembalikan data lengkap, panjang dibatasi oleh [package_max_length](/server/setting?id=package_max_length)
     * Tanpa pengaturan protokol komunikasi, `recv` mengembalikan maksimum data `64K`

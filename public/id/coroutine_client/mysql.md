@@ -138,7 +138,7 @@ Swoole\Coroutine\MySQL->query(string $sql, float $timeout = 0): array|false
       * **Nilai lain**: Tidak ada
       * **Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)**
 
-  * **Nilai Kembali**
+  * **Return Value**
 
     * Timeout/error mengembalikan `false`, selain itu mengembalikan hasil query dalam bentuk `array`
 
@@ -193,10 +193,10 @@ Swoole\Coroutine\MySQL->prepare(string $sql, float $timeout): Swoole\Coroutine\M
       * **Nilai lain**: Tidak ada
       * **Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)**
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Gagal mengembalikan `false`, dapat memeriksa `$db->error` dan `$db->errno` untuk menentukan penyebab error
-    * Berhasil mengembalikan objek `Coroutine\MySQL\Statement`, dapat memanggil method [execute](/coroutine_client/mysql?id=statement-execute) objek untuk mengirim parameter
+    * Mengembalikan `false`, dapat memeriksa `$db->error` dan `$db->errno` untuk menentukan penyebab error
+    * Mengembalikan objek `Coroutine\MySQL\Statement`, dapat memanggil method [execute](/coroutine_client/mysql?id=statement-execute) objek untuk mengirim parameter
 
   * **Contoh**
 
@@ -267,7 +267,7 @@ Memulai transaksi. Digabungkan dengan `commit` dan `rollback` untuk menangani tr
 Swoole\Coroutine\MySQL->begin(): bool
 ```
 
-!> Memulai transaksi `MySQL`. Berhasil mengembalikan `true`, gagal mengembalikan `false`. Periksa `$db->errno` untuk mendapatkan kode error.
+!> Memulai transaksi `MySQL`. Mengembalikan `true`, gagal mengembalikan `false`. Periksa `$db->errno` untuk mendapatkan kode error.
 
 !> Dengan objek koneksi `MySQL` yang sama, hanya satu transaksi yang dapat dimulai dalam satu waktu;  
 harus menunggu transaksi sebelumnya di-`commit` atau di-`rollback` untuk memulai transaksi baru;  
@@ -291,7 +291,7 @@ Menyelesaikan transaksi.
 Swoole\Coroutine\MySQL->commit(): bool
 ```
 
-!> Berhasil mengembalikan `true`, gagal mengembalikan `false`. Periksa `$db->errno` untuk mendapatkan kode error.
+!> Mengembalikan `true`, gagal mengembalikan `false`. Periksa `$db->errno` untuk mendapatkan kode error.
 
 ### rollback()
 
@@ -303,7 +303,7 @@ Membatalkan transaksi.
 Swoole\Coroutine\MySQL->rollback(): bool
 ```
 
-!> Berhasil mengembalikan `true`, gagal mengembalikan `false`. Periksa `$db->errno` untuk mendapatkan kode error.
+!> Mengembalikan `true`, gagal mengembalikan `false`. Periksa `$db->errno` untuk mendapatkan kode error.
 
 ### Statement->execute()
 
@@ -331,11 +331,11 @@ Swoole\Coroutine\MySQL\Statement->execute(array $params, float $timeout = -1): a
       * **Nilai lain**: Tidak ada
       * **Lihat [aturan timeout klien](/coroutine_client/init?id=aturan-timeout)**
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan `true`, jika parameter `fetch_mode` di `connect` diatur ke `true`
-    * Berhasil mengembalikan array dataset, jika bukan kasus di atas
-    * Gagal mengembalikan `false`, dapat memeriksa `$db->error` dan `$db->errno` untuk menentukan penyebab error
+    * Mengembalikan `true`, jika parameter `fetch_mode` di `connect` diatur ke `true`
+    * Mengembalikan array dataset, jika bukan kasus di atas
+    * Mengembalikan `false`, dapat memeriksa `$db->error` dan `$db->errno` untuk menentukan penyebab error
 
   * **Contoh Penggunaan**
 
@@ -413,10 +413,10 @@ Maju ke hasil respons berikutnya dalam handle statement multi-respons (misalnya,
 Swoole\Coroutine\MySQL\Statement->nextResult():? bool
 ```
 
-  * **Nilai Kembali**
+  * **Return Value**
 
-    * Berhasil mengembalikan `TRUE`
-    * Gagal mengembalikan `FALSE`
+    * Mengembalikan `TRUE`
+    * Mengembalikan `FALSE`
     * Tidak ada hasil berikutnya mengembalikan `NULL`
 
   * **Contoh**

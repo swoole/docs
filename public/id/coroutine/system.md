@@ -86,7 +86,7 @@ Di versi `v4.0.4` ke atas, method `fread` mendukung resource `stream` non-file. 
       * **Bawaan**: `0`
       * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembalian** 
+  * **Return Value** 
 
     * Mengembalikan string jika berhasil, `false` jika gagal.
 
@@ -131,7 +131,7 @@ Di versi `v4.0.4` ke atas, method `fwrite` mendukung resource `stream` non-file.
       * **Bawaan**: `0`
       * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembalian** 
+  * **Return Value** 
 
     * Mengembalikan panjang data jika berhasil, `false` jika gagal.
 
@@ -167,7 +167,7 @@ Swoole\Coroutine\System::fgets(resource $handle): string|false
       * **Bawaan**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembalian** 
+  * **Return Value** 
 
     * Jika membaca `EOL` (`\r` atau `\n`), akan mengembalikan satu baris data termasuk `EOL`
     * Jika tidak membaca `EOL` tapi konten melebihi buffer `php_stream` `8192` byte, akan mengembalikan `8192` byte data tanpa `EOL`
@@ -203,7 +203,7 @@ Swoole\Coroutine\System::readFile(string $filename, int $flags = 0): string|fals
       * **Fungsi**: Apakah menggunakan file lock, saat ini hanya mendukung opsi `LOCK_EX`. Perhatikan bahwa infrastruktur akan mengatur shared lock saat membaca file, coroutine lain tetap bisa membaca file tapi tidak bisa menulis.
       * **Bawaan**: `0`, berarti tidak menggunakan file lock
 
-  * **Nilai Kembalian** 
+  * **Return Value** 
 
     * Mengembalikan string konten jika berhasil, `false` jika gagal. Bisa gunakan [swoole_last_error](/functions?id=swoole_last_error) untuk info error.
     * Method `readFile` tidak memiliki batasan ukuran, konten yang dibaca akan disimpan di memori, jadi membaca file yang sangat besar bisa menghabiskan banyak memori.
@@ -244,7 +244,7 @@ Swoole\Coroutine\System::writeFile(string $filename, string $fileContent, int $f
       * **Bawaan**: Tidak ada
       * **Nilai Lain**: `LOCK_EX` akan mengunci file secara eksklusif saat menulis, mencegah coroutine lain membaca/menulis file ini. Banyak opsi bisa digabung dengan bitwise OR `|`, seperti `FILE_APPEND | LOCK_EX`
 
-  * **Nilai Kembalian** 
+  * **Return Value** 
 
     * Mengembalikan `true` jika berhasil
     * Mengembalikan `false` jika gagal
@@ -309,7 +309,7 @@ Swoole\Coroutine\System::exec(string $cmd): array
       * **Bawaan**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Mengembalikan `false` jika gagal, mengembalikan array jika berhasil, berisi kode status keluar proses, sinyal, dan konten output.
 
@@ -359,7 +359,7 @@ Swoole\Coroutine\System::gethostbyname(string $domain, int $family = AF_INET, fl
       * **Bawaan**: `-1`
       * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Mengembalikan alamat `IP` yang sesuai dengan domain jika berhasil, `false` jika gagal. Bisa gunakan [swoole_last_error](/functions?id=swoole_last_error) untuk info error.
 
@@ -425,7 +425,7 @@ Swoole\Coroutine\System::getaddrinfo(string $domain, int $family = AF_INET, int 
       * **Bawaan**: `-1`
       * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Mengembalikan array berisi banyak alamat `IP` jika berhasil, `false` jika gagal.
 
@@ -470,7 +470,7 @@ Swoole\Coroutine\System::dnsLookup(string $domain, float $timeout = 5, int $type
 
     !> Parameter `$type` tersedia sejak Swoole versi >= `v4.7`.
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Mengembalikan alamat IP yang sesuai jika berhasil
     * Mengembalikan `false` jika gagal, bisa gunakan [swoole_last_error](/functions?id=swoole_last_error) untuk info error
@@ -507,7 +507,7 @@ Swoole\Coroutine\System::wait(float $timeout = -1): array|false
       * **Bawaan**: `-1`
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
   * Jika berhasil, mengembalikan array berisi `PID` proses anak, kode status keluar, dan sinyal `KILL`
   * Jika gagal, mengembalikan `false`
@@ -557,7 +557,7 @@ Swoole\Coroutine\System::waitPid(int $pid, float $timeout = -1): array|false
       * **Bawaan**: `-1`
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
   * Jika berhasil, mengembalikan array berisi `PID` proses anak, kode status keluar, dan sinyal `KILL`
   * Jika gagal, mengembalikan `false`
@@ -605,7 +605,7 @@ Swoole\Coroutine\System::waitSignal(int $signo, float $timeout = -1): bool
       * **Bawaan**: `-1`
       * **Nilai Lain**: Tidak ada
 
-  * **Nilai Kembalian**
+  * **Return Value**
 
     * Mengembalikan `true` jika menerima sinyal
     * Mengembalikan `false` jika timeout tidak menerima sinyal
@@ -656,7 +656,7 @@ Swoole\Coroutine\System::waitEvent(mixed $socket, int $events = SWOOLE_EVENT_REA
       * **Bawaan**: `-1`
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
   * Mengembalikan jumlah tipe event yang terpicu (mungkin beberapa bit), terkait dengan nilai yang dimasukkan di parameter `$events`
   * Mengembalikan `false` jika gagal, bisa gunakan [swoole_last_error](/functions?id=swoole_last_error) untuk info error

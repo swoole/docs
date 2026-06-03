@@ -1,6 +1,6 @@
 # Konfigurasi ini
 
-Konfigurasi | Nilai Default | Fungsi
+Konfigurasi | Default | Fungsi
 ---|---|---
 swoole.enable_coroutine | On | `On`, `Off` mengaktifkan/mematikan korutin bawaan, [detail](/server/setting?id=enable_coroutine).
 swoole.display_errors | On | Mengaktifkan/menonaktifkan pesan error `Swoole`.

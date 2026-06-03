@@ -95,7 +95,7 @@ Contoh penggunaan:
 $list = swoole_get_local_ip();
 print_r($list);
 /**
-Nilai Kembalian
+Return Value
 Array
 (
       [eno1] => 10.10.28.228

@@ -156,7 +156,7 @@ Swoole\Thread->setPriority(int $priority, int $policy = -1): bool
 
 * **Return value**
     * Sukses mengembalikan `true`
-    * Gagal mengembalikan `false`, gunakan `swoole_last_error()` untuk mendapatkan informasi error
+    * Mengembalikan `false`, gunakan `swoole_last_error()` untuk mendapatkan informasi error
 
 > `SCHED_BATCH/SCHED_ISO/SCHED_IDLE/SCHED_DEADLINE` hanya tersedia di sistem `Linux`
 
@@ -185,7 +185,7 @@ Swoole\Thread->setAffinity(array $cpu_set): bool
 
 * **Return value**
     * Sukses mengembalikan `true`
-    * Gagal mengembalikan `false`, gunakan `swoole_last_error()` untuk mendapatkan informasi error
+    * Mengembalikan `false`, gunakan `swoole_last_error()` untuk mendapatkan informasi error
 
 ### setName()
 Static method, mengatur nama thread saat ini. Memberikan tampilan yang lebih ramah saat menggunakan alat seperti `ps` dan `gdb`.
@@ -202,7 +202,7 @@ Swoole\Thread->setName(string $name): bool
 
 * **Return value**
     * Sukses mengembalikan `true`
-    * Gagal mengembalikan `false`, gunakan `swoole_last_error()` untuk mendapatkan informasi error
+    * Mengembalikan `false`, gunakan `swoole_last_error()` untuk mendapatkan informasi error
 
 ```shell
 $ ps aux|grep -v grep|grep pool.php

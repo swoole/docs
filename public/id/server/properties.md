@@ -206,7 +206,7 @@ Apakah proses saat ini adalah proses `Task`. Properti ini adalah `bool`.
 Swoole\Server->taskworker
 ```
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * `true` berarti proses saat ini adalah proses kerja `Task`
     * `false` berarti proses saat ini adalah proses `Worker`

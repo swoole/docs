@@ -61,7 +61,7 @@ go(callable $function, ...$args): int|false // Lihat konfigurasi use_shortname d
       * **Bawaan**: Tidak ada
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `false` jika gagal dibuat
     * Mengembalikan `ID` coroutine jika berhasil dibuat
@@ -160,7 +160,7 @@ Mendapatkan `ID` unik dari coroutine saat ini, aliasnya adalah `getuid`, merupak
 Swoole\Coroutine::getCid(): int
 ```
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `ID` coroutine saat ini jika berhasil
     * Mengembalikan `-1` jika sedang tidak berada di lingkungan coroutine
@@ -421,7 +421,7 @@ Swoole\Coroutine::listCoroutines(): Swoole\Coroitine\Iterator
 
 !> Sebelum `v4.3.0` gunakan `listCoroutines`. `list` tersedia mulai `v4.1.0`.
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan iterator, bisa ditelusuri dengan `foreach`, atau dikonversi ke array dengan `iterator_to_array`
 
@@ -441,7 +441,7 @@ Mendapatkan status coroutine.
 Swoole\Coroutine::stats(): array
 ```
 
-* **Nilai Kembalian**
+* **Return Value**
 
 key | Fungsi
 ---|---
@@ -496,7 +496,7 @@ Swoole\Coroutine::getBackTrace(int $cid = 0, int $options = DEBUG_BACKTRACE_PROV
       * **Bawaan**: `0`
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Jika coroutine yang ditentukan tidak ada, akan mengembalikan `false`
     * Jika berhasil mengembalikan array, formatnya sama dengan nilai kembali fungsi [debug_backtrace](https://www.php.net/manual/zh/function.debug-backtrace.php)
@@ -556,7 +556,7 @@ Swoole\Coroutine::getElapsed([$cid]): int
       * **Bawaan**: `CID` coroutine saat ini
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Waktu berjalan coroutine dalam float, presisi milidetik
 
@@ -581,7 +581,7 @@ Swoole\Coroutine::cancel(int $cid, bool $throw_exception = false): bool
       * **Nilai Lain**: Tidak ada
       * Tersedia setelah versi `v6.1.0`
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal
     * Jika gagal, panggil [swoole_last_error()](/functions?id=swoole_last_error) untuk melihat info error
@@ -622,7 +622,7 @@ Digunakan untuk mengecek apakah operasi saat ini dibatalkan secara manual.
 Swoole\Coroutine::isCanceled(): bool
 ```
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Jika pembatalan manual berakhir normal, mengembalikan `true`, jika gagal mengembalikan `false`
 
@@ -713,7 +713,7 @@ Swoole\Coroutine::join(array $cid_array, float $timeout = -1): bool
         * **Bawaan**: -1
         * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan `true` jika berhasil, `false` jika gagal
     * Jika gagal, panggil [swoole_last_error()](/functions?id=swoole_last_error) untuk info error
@@ -763,7 +763,7 @@ Swoole\Coroutine\batch(array $tasks, float $timeout = -1): array
       * **Bawaan**: -1
       * **Nilai Lain**: Tidak ada
 
-* **Nilai Kembalian**
+* **Return Value**
 
     * Mengembalikan array berisi nilai kembali callback. Jika parameter `$tasks` menentukan `key`, nilai kembali akan diarahkan oleh `key` tersebut.
 
