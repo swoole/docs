@@ -1,0 +1,10 @@
+* Bahasa / Language
+    * [Chinese Sederhana](https://wiki.swoole.com/zh-cn/)
+    * [Chinese Tradisional](https://wiki.swoole.com/zh-Hant/)
+    * [English](https://wiki.swoole.com/en/)
+    * [Japanese](https://wiki.swoole.com/ja/)
+    * [Korean](https://wiki.swoole.com/ko/)
+    * [French](https://wiki.swoole.com/fr/)
+    * [German](https://wiki.swoole.com/de/)
+    * [Russian](https://wiki.swoole.com/ru/)
+    * [Indonesia](https://wiki.swoole.com/id/)
