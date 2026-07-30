@@ -1064,13 +1064,18 @@ $server->set([
 ```
 ### http2_max_concurrent_streams
 
-?> Sets the maximum number of multiplexed streams accepted in each HTTP/2 network connection.
+?> Sets the maximum number of streams that may be active concurrently on a single HTTP/2 connection. The default value is `128`.
 
 ```php
 $server->set([
-  'http2_max_concurrent_streams' => 0x3
-])
+    'http2_max_concurrent_streams' => 128,
+]);
 ```
+
+After the limit is reached, the server rejects new streams with `REFUSED_STREAM`. Existing streams continue to be processed, and the HTTP/2 connection remains open.
+
+!> Since Swoole `v6.3.0`, the server enforces this limit and the default value has changed from the maximum unsigned integer value to `128`
+
 ### http2_init_window_size
 
 ?> Set the initial size of the HTTP/2 traffic control window.
@@ -1098,3 +1103,19 @@ $server->set([
   'http2_max_header_list_size' => 0x6
 ])
 ```
+
+### http2_max_headers
+
+?> Sets the maximum number of decoded header fields allowed in a single HTTP/2 request. The default value is `1000`.
+
+```php
+$server->set([
+    'http2_max_headers' => 1000,
+]);
+```
+
+HTTP/2 pseudo-header fields and `Cookie` fields split into multiple HPACK entries are counted individually. If the limit is exceeded, the server rejects the request and closes the corresponding HTTP/2 connection.
+
+This option limits the **number** of header fields, while [http2_max_header_list_size](/http_server?id=http2_max_header_list_size) limits their decoded **total size**. Set both options to reduce the risk of resource exhaustion caused by a large number of small headers or HPACK indexed references.
+
+!> Available since Swoole version >= `v6.3.0`

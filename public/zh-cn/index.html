@@ -41,10 +41,7 @@
             '/process': '/process/process.md',
             '/process_pool': '/process/process_pool.md',
         },
-        ad: {
-            'image': 'https://wenda-1252906962.file.myqcloud.com/images/ad/crmeb-3.jpg',
-            'link': 'https://github.crmeb.net/u/Swoole'
-        },
+        ad: null,
         formatUpdated: '{YYYY}-{MM}-{DD} {HH}:{mm}',
         plugins: [
             function (hook, vm) {
@@ -64,6 +61,9 @@
                 })
 
                 hook.afterEach(function (html) {
+                    if (!window.$docsify.ad) {
+                        return html
+                    }
                     const top = [
                         '<div class="wiki-resource" style="padding: 0px 0px 20px;">' +
                         '<a href="' + window.$docsify.ad.link + '" target="_blank">' +

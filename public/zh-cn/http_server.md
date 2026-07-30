@@ -1121,13 +1121,17 @@ $server->set([
 
 ### http2_max_concurrent_streams
 
-?> 设置每个HTTP/2网络连接中接受的多路复用流的最大数量。
+?> 设置单个HTTP/2连接允许同时处于活动状态的流的最大数量。【默认值：`128`】
 
 ```php
 $server->set([
-  'http2_max_concurrent_streams' => 0x3
-])
+    'http2_max_concurrent_streams' => 128,
+]);
 ```
+
+达到限制后，服务器会使用`REFUSED_STREAM`拒绝新建流，现有流可以继续处理，HTTP/2连接不会因此关闭。
+
+!> 从 Swoole `v6.3.0` 起，服务器会强制执行此限制，默认值由无符号整数最大值调整为`128`
 
 ### http2_init_window_size
 
@@ -1158,3 +1162,19 @@ $server->set([
   'http2_max_header_list_size' => 0x6
 ])
 ```
+
+### http2_max_headers
+
+?> 设置单个HTTP/2请求允许解码的Header字段最大数量。【默认值：`1000`】
+
+```php
+$server->set([
+    'http2_max_headers' => 1000,
+]);
+```
+
+HTTP/2伪Header和拆分为多个HPACK条目的`Cookie`字段也会分别计数。超过限制时，服务器会拒绝请求并关闭对应的HTTP/2连接。
+
+该配置限制Header的**数量**；[http2_max_header_list_size](/http_server?id=http2_max_header_list_size)限制解码后Header列表的**总大小**。建议同时设置这两个配置，以降低大量小Header或HPACK索引引用造成资源耗尽的风险。
+
+!> Swoole 版本 >= `v6.3.0` 可用
