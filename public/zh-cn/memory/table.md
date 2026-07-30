@@ -230,6 +230,132 @@ $table->set('3', ['id' => 3, 'name' => 'test3', 'age' => 19]);
 
 !> 从`v4.3`版本开始，底层对内存长度做了对齐处理。字符串长度必须为8的整数倍，如长度为5会自动对齐到8字节，所以`str_value`的值为`world 12`
 
+### add()
+
+仅当`$key`对应的行不存在时，原子地插入一行数据。
+
+```php
+Swoole\Table->add(string $key, array $values): bool
+```
+
+!> Swoole 版本 >= `v6.3.0` 可用
+
+  * **参数**
+
+    * **`string $key`**
+      * **功能**：数据的`key`
+      * **默认值**：无
+      * **其它值**：无
+
+    * **`array $values`**
+      * **功能**：需要写入的字段和值，可以只指定部分字段
+      * **默认值**：无
+      * **其它值**：无
+
+  * **返回值**
+
+    * 行不存在并且插入成功时返回`true`
+    * 行已经存在或者内存分配失败时返回`false`
+
+未在`$values`中指定的字段会使用该字段的默认空值。检查行是否存在和插入数据在同一个行锁内完成，不需要在应用层额外加锁。
+
+```php
+if ($table->add('user:1', ['id' => 1, 'name' => 'Alice'])) {
+    echo "created\n";
+}
+```
+
+### update()
+
+仅当`$key`对应的行已经存在时，原子地更新指定字段。
+
+```php
+Swoole\Table->update(string $key, array $values): bool
+```
+
+!> Swoole 版本 >= `v6.3.0` 可用
+
+  * **参数**
+
+    * **`string $key`**
+      * **功能**：数据的`key`
+      * **默认值**：无
+      * **其它值**：无
+
+    * **`array $values`**
+      * **功能**：需要更新的字段和值，未指定的字段保持不变
+      * **默认值**：无
+      * **其它值**：无
+
+  * **返回值**
+
+    * 行存在并且更新成功时返回`true`
+    * 行不存在时返回`false`，不会创建新行
+
+```php
+$table->update('user:1', ['name' => 'Bob']);
+```
+
+`set()`、`add()`和`update()`的区别：
+
+方法 | 行不存在 | 行已存在
+---|---|---
+`set()` | 插入 | 更新
+`add()` | 插入 | 返回`false`
+`update()` | 返回`false` | 更新
+
+### cmpset()
+
+比较指定字段的当前值，全部匹配时原子地更新数据。
+
+```php
+Swoole\Table->cmpset(string $key, array $expected, array $values): bool
+```
+
+!> Swoole 版本 >= `v6.3.0` 可用
+
+  * **参数**
+
+    * **`string $key`**
+      * **功能**：数据的`key`
+      * **默认值**：无
+      * **其它值**：无
+
+    * **`array $expected`**
+      * **功能**：需要比较的字段及其期望值，至少包含一个已经定义的字段
+      * **默认值**：无
+      * **其它值**：无
+
+    * **`array $values`**
+      * **功能**：比较成功后需要更新的字段和值，未指定的字段保持不变
+      * **默认值**：无
+      * **其它值**：无
+
+  * **返回值**
+
+    * 行存在、所有期望值都匹配并且更新成功时返回`true`
+    * 行不存在、任意期望值不匹配或者`$expected`无效时返回`false`
+
+比较和更新在同一个行锁内完成，适合实现版本号校验和无锁重试：
+
+```php
+do {
+    $row = $table->get('counter');
+    if ($row === false) {
+        break;
+    }
+} while (!$table->cmpset(
+    'counter',
+    ['version' => $row['version']],
+    [
+        'value' => $row['value'] + 1,
+        'version' => $row['version'] + 1,
+    ]
+));
+```
+
+?> 比较使用`Table`中保存的值。字符串按照实际长度和字节内容比较；整数和浮点数按照底层保存的值精确比较。用于比较的字符串不会按照字段容量自动截断。
+
 ### incr()
 
 原子自增操作。
@@ -316,6 +442,41 @@ Swoole\Table->get(string $key, string $field = null): array|false
     * 成功返回结果数组
     * 当指定了`$field`时仅返回该字段的值，而不是整个记录
 
+### getdel()
+
+原子地读取并删除一行数据。
+
+```php
+Swoole\Table->getdel(string $key, ?string $field = null): array|false|string|float|int
+```
+
+!> Swoole 版本 >= `v6.3.0` 可用
+
+  * **参数**
+
+    * **`string $key`**
+      * **功能**：数据的`key`
+      * **默认值**：无
+      * **其它值**：无
+
+    * **`?string $field`**
+      * **功能**：指定时仅返回该字段的值；此参数只影响返回值，成功后仍会删除整行
+      * **默认值**：`null`
+      * **其它值**：已经定义的字段名
+
+  * **返回值**
+
+    * `$key`不存在或者指定的`$field`不存在时返回`false`
+    * 未指定`$field`时返回删除前的整行数据
+    * 指定`$field`时返回删除前的字段值
+
+```php
+$row = $table->getdel('user:1');
+
+// 只返回 name 字段的值，但仍然删除 user:2 整行
+$name = $table->getdel('user:2', 'name');
+```
+
 ### exist()
 
 检查table中是否存在某一个key。
@@ -353,6 +514,37 @@ Swoole\Table->del(string $key): bool
 
     * `$key`对应的数据不存在，将返回`false`
     * 成功删除返回`true`
+
+### cmpdel()
+
+比较指定字段的当前值，全部匹配时原子地删除整行。
+
+```php
+Swoole\Table->cmpdel(string $key, array $expected): bool
+```
+
+!> Swoole 版本 >= `v6.3.0` 可用
+
+  * **参数**
+
+    * **`string $key`**
+      * **功能**：数据的`key`
+      * **默认值**：无
+      * **其它值**：无
+
+    * **`array $expected`**
+      * **功能**：需要比较的字段及其期望值，至少包含一个已经定义的字段
+      * **默认值**：无
+      * **其它值**：无
+
+  * **返回值**
+
+    * 行存在、所有期望值都匹配并且删除成功时返回`true`
+    * 行不存在、任意期望值不匹配或者`$expected`无效时返回`false`
+
+```php
+$table->cmpdel('user:1', ['version' => 3]);
+```
 
 ### stats()
 

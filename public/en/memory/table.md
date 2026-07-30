@@ -220,6 +220,133 @@ $table->set('3', ['id' => 3, 'name' => 'test3', 'age' => 19]);
     * The system automatically truncates the data to 5 bytes, so the final value of `str_value` will be `world`.
 
 !> Starting from `v4.3`, the underlying system aligns the length of memory. The string length must be a multiple of 8, so a length of 5 will be automatically aligned to 8 bytes. Hence the value of `str_value` will be `world 12`.
+
+### add()
+
+Atomically inserts a row only when no row exists for `$key`.
+
+```php
+Swoole\Table->add(string $key, array $values): bool
+```
+
+!> Available since Swoole version >= `v6.3.0`
+
+  * **Parameters**
+
+    * **`string $key`**
+      * **Description**: The key of the row
+      * **Default value**: None
+      * **Other values**: None
+
+    * **`array $values`**
+      * **Description**: The columns and values to write; partial rows are supported
+      * **Default value**: None
+      * **Other values**: None
+
+  * **Return Value**
+
+    * Returns `true` when the row does not exist and is inserted successfully
+    * Returns `false` when the row already exists or memory allocation fails
+
+Columns omitted from `$values` receive their default empty values. The existence check and insertion are performed under the same row lock, so no additional application-level lock is required.
+
+```php
+if ($table->add('user:1', ['id' => 1, 'name' => 'Alice'])) {
+    echo "created\n";
+}
+```
+
+### update()
+
+Atomically updates the specified columns only when a row already exists for `$key`.
+
+```php
+Swoole\Table->update(string $key, array $values): bool
+```
+
+!> Available since Swoole version >= `v6.3.0`
+
+  * **Parameters**
+
+    * **`string $key`**
+      * **Description**: The key of the row
+      * **Default value**: None
+      * **Other values**: None
+
+    * **`array $values`**
+      * **Description**: The columns and values to update; omitted columns remain unchanged
+      * **Default value**: None
+      * **Other values**: None
+
+  * **Return Value**
+
+    * Returns `true` when the row exists and is updated successfully
+    * Returns `false` when the row does not exist; a new row is not created
+
+```php
+$table->update('user:1', ['name' => 'Bob']);
+```
+
+The difference between `set()`, `add()`, and `update()`:
+
+Method | Row does not exist | Row exists
+---|---|---
+`set()` | Insert | Update
+`add()` | Insert | Return `false`
+`update()` | Return `false` | Update
+
+### cmpset()
+
+Compares the current values of selected columns and atomically updates the row when every value matches.
+
+```php
+Swoole\Table->cmpset(string $key, array $expected, array $values): bool
+```
+
+!> Available since Swoole version >= `v6.3.0`
+
+  * **Parameters**
+
+    * **`string $key`**
+      * **Description**: The key of the row
+      * **Default value**: None
+      * **Other values**: None
+
+    * **`array $expected`**
+      * **Description**: The columns and expected values to compare; at least one declared column is required
+      * **Default value**: None
+      * **Other values**: None
+
+    * **`array $values`**
+      * **Description**: The columns and values to update after a successful comparison; omitted columns remain unchanged
+      * **Default value**: None
+      * **Other values**: None
+
+  * **Return Value**
+
+    * Returns `true` when the row exists, every expected value matches, and the update succeeds
+    * Returns `false` when the row does not exist, any expected value differs, or `$expected` is invalid
+
+The comparison and update are performed under the same row lock. This can be used for version checks and lock-free retry loops:
+
+```php
+do {
+    $row = $table->get('counter');
+    if ($row === false) {
+        break;
+    }
+} while (!$table->cmpset(
+    'counter',
+    ['version' => $row['version']],
+    [
+        'value' => $row['value'] + 1,
+        'version' => $row['version'] + 1,
+    ]
+));
+```
+
+?> Comparisons use the values stored in the `Table`. Strings are compared by their logical length and byte contents; integers and floating-point values are compared using their exact stored representation. Expected strings are not automatically truncated to the column capacity.
+
 ### incr()
 
 Atomic increment operation.
@@ -303,6 +430,42 @@ Swoole\Table->get(string $key, string $field = null): array|false
     * If `$key` does not exist, `false` will be returned
     * Return the result array if successful
     * If `$field` is specified, only return the value of that field, not the entire record
+
+### getdel()
+
+Atomically reads and deletes a row.
+
+```php
+Swoole\Table->getdel(string $key, ?string $field = null): array|false|string|float|int
+```
+
+!> Available since Swoole version >= `v6.3.0`
+
+  * **Parameters**
+
+    * **`string $key`**
+      * **Description**: The key of the row
+      * **Default value**: None
+      * **Other values**: None
+
+    * **`?string $field`**
+      * **Description**: When specified, return only this field. This parameter affects only the return value; the complete row is still deleted on success
+      * **Default value**: `null`
+      * **Other values**: A declared column name
+
+  * **Return Value**
+
+    * Returns `false` when `$key` does not exist or the specified `$field` is unknown
+    * Returns the complete row before deletion when `$field` is omitted
+    * Returns the field value before deletion when `$field` is specified
+
+```php
+$row = $table->getdel('user:1');
+
+// Returns only the name, but still deletes the complete user:2 row
+$name = $table->getdel('user:2', 'name');
+```
+
 ### exist()
 
 Check if a key exists in the table.
@@ -338,6 +501,38 @@ Swoole\Table->del(string $key): bool
 
     * If the data corresponding to `$key` does not exist, `false` will be returned.
     * If deletion is successful, `true` will be returned.
+
+### cmpdel()
+
+Compares the current values of selected columns and atomically deletes the complete row when every value matches.
+
+```php
+Swoole\Table->cmpdel(string $key, array $expected): bool
+```
+
+!> Available since Swoole version >= `v6.3.0`
+
+  * **Parameters**
+
+    * **`string $key`**
+      * **Description**: The key of the row
+      * **Default value**: None
+      * **Other values**: None
+
+    * **`array $expected`**
+      * **Description**: The columns and expected values to compare; at least one declared column is required
+      * **Default value**: None
+      * **Other values**: None
+
+  * **Return Value**
+
+    * Returns `true` when the row exists, every expected value matches, and deletion succeeds
+    * Returns `false` when the row does not exist, any expected value differs, or `$expected` is invalid
+
+```php
+$table->cmpdel('user:1', ['version' => 3]);
+```
+
 ### stats()
 
 Get the `Swoole\Table` status.
