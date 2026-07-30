@@ -151,7 +151,7 @@ echo swoole_strerror(SWOOLE_ERROR_MALLOC_FAIL, 9) . PHP_EOL;
 ## Swoole错误码列表 :id=swoole
 
 | Constants Name                                 | Value | Description                       |
-| ---------------------------------------------- |-------|-----------------------------------|
+| ---------------------------------------------- | ----- | --------------------------------- |
 | SWOOLE_ERROR_MALLOC_FAIL                       | 501   | Malloc fail                       |
 | SWOOLE_ERROR_SYSTEM_CALL_FAIL                  | 502   | System call fail                  |
 | SWOOLE_ERROR_PHP_FATAL_ERROR                   | 503   | PHP fatal error                   |
@@ -161,6 +161,12 @@ echo swoole_strerror(SWOOLE_ERROR_MALLOC_FAIL, 9) . PHP_EOL;
 | SWOOLE_ERROR_OPERATION_NOT_SUPPORT             | 507   | Operation not support             |
 | SWOOLE_ERROR_PROTOCOL_ERROR                    | 508   | Protocol error                    |
 | SWOOLE_ERROR_WRONG_OPERATION                   | 509   | Wrong operation                   |
+| SWOOLE_ERROR_PHP_RUNTIME_NOTICE                | 510   | PHP runtime notice                |
+| SWOOLE_ERROR_FOR_TEST                          | 511   | For test                          |
+| SWOOLE_ERROR_NO_PAYLOAD                        | 550   | No payload                        |
+| -                                              |       |                                   |
+| SWOOLE_ERROR_UNDEFINED_BEHAVIOR                | 600   | Undefined behavior                |
+| SWOOLE_ERROR_NOT_THREAD_SAFETY                 | 601   | Not thread safety                 |
 | -                                              |       |                                   |
 | SWOOLE_ERROR_FILE_NOT_EXIST                    | 700   | File not exist                    |
 | SWOOLE_ERROR_FILE_TOO_LARGE                    | 701   | File too large                    |
@@ -172,6 +178,7 @@ echo swoole_strerror(SWOOLE_ERROR_MALLOC_FAIL, 9) . PHP_EOL;
 | SWOOLE_ERROR_DNSLOOKUP_NO_SERVER               | 714   | DNS Lookup no server              |
 | SWOOLE_ERROR_BAD_IPV6_ADDRESS                  | 720   | Bad ipv6 address                  |
 | SWOOLE_ERROR_UNREGISTERED_SIGNAL               | 721   | Unregistered signal               |
+| SWOOLE_ERROR_BAD_HOST_ADDR                     | 722   | Bad host addr                     |
 | -                                              |       |                                   |
 | SWOOLE_ERROR_EVENT_SOCKET_REMOVED              | 800   | Event socket removed              |
 | -                                              |       |                                   |
@@ -197,6 +204,7 @@ echo swoole_strerror(SWOOLE_ERROR_MALLOC_FAIL, 9) . PHP_EOL;
 | SWOOLE_ERROR_PACKAGE_LENGTH_TOO_LARGE          | 1201  | Package length too large          |
 | SWOOLE_ERROR_PACKAGE_LENGTH_NOT_FOUND          | 1202  | Package length not found          |
 | SWOOLE_ERROR_DATA_LENGTH_TOO_LARGE             | 1203  | Data length too large             |
+| SWOOLE_ERROR_PACKAGE_MALFORMED_DATA            | 1204  | Package malformed data            |
 | -                                              |       |                                   |
 | SWOOLE_ERROR_TASK_PACKAGE_TOO_BIG              | 2001  | Task package too big              |
 | SWOOLE_ERROR_TASK_DISPATCH_FAIL                | 2002  | Task dispatch fail                |
@@ -227,12 +235,17 @@ echo swoole_strerror(SWOOLE_ERROR_MALLOC_FAIL, 9) . PHP_EOL;
 | SWOOLE_ERROR_HTTP_INVALID_PROTOCOL             | 7102  | Http invalid protocol             |
 | SWOOLE_ERROR_HTTP_PROXY_HANDSHAKE_FAILED       | 7103  | Http proxy handshake failed       |
 | SWOOLE_ERROR_HTTP_PROXY_BAD_RESPONSE           | 7104  | Http proxy bad response           |
+| SWOOLE_ERROR_HTTP_CONFLICT_HEADER              | 7105  | Http conflict header              |
+| SWOOLE_ERROR_HTTP_CONTEXT_UNAVAILABLE          | 7106  | Http context unavailable          |
+| SWOOLE_ERROR_HTTP_COOKIE_UNAVAILABLE           | 7107  | Http cookie unavailable           |
 | -                                              |       |                                   |
 | SWOOLE_ERROR_WEBSOCKET_BAD_CLIENT              | 8501  | Websocket bad client              |
 | SWOOLE_ERROR_WEBSOCKET_BAD_OPCODE              | 8502  | Websocket bad opcode              |
 | SWOOLE_ERROR_WEBSOCKET_UNCONNECTED             | 8503  | Websocket unconnected             |
 | SWOOLE_ERROR_WEBSOCKET_HANDSHAKE_FAILED        | 8504  | Websocket handshake failed        |
 | SWOOLE_ERROR_WEBSOCKET_PACK_FAILED             | 8505  | Websocket pack failed             |
+| SWOOLE_ERROR_WEBSOCKET_UNPACK_FAILED           | 8506  | Websocket unpack failed           |
+| SWOOLE_ERROR_WEBSOCKET_INCOMPLETE_PACKET       | 8507  | Websocket incomplete packet       |
 | -                                              |       |                                   |
 | SWOOLE_ERROR_SERVER_MUST_CREATED_BEFORE_CLIENT | 9001  | Server must created before client |
 | SWOOLE_ERROR_SERVER_TOO_MANY_SOCKET            | 9002  | Server too many socket            |
@@ -247,6 +260,9 @@ echo swoole_strerror(SWOOLE_ERROR_MALLOC_FAIL, 9) . PHP_EOL;
 | SWOOLE_ERROR_SERVER_CONNECT_FAIL               | 9011  | Server connect fail               |
 | SWOOLE_ERROR_SERVER_INVALID_COMMAND            | 9012  | Server invalid command            |
 | SWOOLE_ERROR_SERVER_IS_NOT_REGULAR_FILE        | 9013  | Server is not regular file        |
+| SWOOLE_ERROR_SERVER_SEND_TO_WOKER_TIMEOUT      | 9014  | Server send to woker timeout      |
+| SWOOLE_ERROR_SERVER_INVALID_CALLBACK           | 9015  | Server invalid callback           |
+| SWOOLE_ERROR_SERVER_UNRELATED_THREAD           | 9016  | Server unrelated thread           |
 | -                                              |       |                                   |
 | SWOOLE_ERROR_SERVER_WORKER_EXIT_TIMEOUT        | 9101  | Server worker exit timeout        |
 | SWOOLE_ERROR_SERVER_WORKER_ABNORMAL_PIPE_DATA  | 9102  | Server worker abnormal pipe data  |
@@ -268,3 +284,6 @@ echo swoole_strerror(SWOOLE_ERROR_MALLOC_FAIL, 9) . PHP_EOL;
 | SWOOLE_ERROR_CO_DISABLED_MULTI_THREAD          | 10014 | Coroutine disabled multi thread   |
 | SWOOLE_ERROR_CO_CANNOT_CANCEL                  | 10015 | Coroutine cannot cancel           |
 | SWOOLE_ERROR_CO_NOT_EXISTS                     | 10016 | Coroutine not exists              |
+| SWOOLE_ERROR_CO_CANCELED                       | 10017 | Coroutine canceled                |
+| SWOOLE_ERROR_CO_TIMEDOUT                       | 10018 | Coroutine timedout                |
+| SWOOLE_ERROR_CO_SOCKET_CLOSE_WAIT              | 10019 | Coroutine socket close wait       |

@@ -454,8 +454,8 @@ function onFinish(Swoole\Server $server, int $task_id, mixed $data)
 
   * **注意**
 
-    !> - [task进程](/learn?id=taskworker进程)的[onTask](/server/events?id=ontask)事件中没有调用`finish`方法或者`return`结果，`worker`进程不会触发[onFinish](/server/events?id=onfinish)  
-    -执行[onFinish](/server/events?id=onfinish)逻辑的`worker`进程与下发`task`任务的`worker`进程是同一个进程
+    !> - 如果[task进程](/learn?id=taskworker进程)的[onTask](/server/events?id=ontask)事件中没有调用`finish`方法或者`return`结果，则`worker`进程不会触发[onFinish](/server/events?id=onfinish)  
+    - 执行[onFinish](/server/events?id=onfinish)逻辑的`worker`进程与下发`task`任务的`worker`进程是同一个进程
 
 ## onPipeMessage
 

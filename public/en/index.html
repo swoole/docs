@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Swoole Documents (English)</title>
@@ -56,10 +56,10 @@
                         page = window.location.hash.substr(1, window.location.hash.length)
                     }
                     if (page === '/') {
-                        page = 'README'
+                        page = '/README'
                     }
                     const issue =
-                        '📝 Updated at：{docsify-updated} ' + '，[Edit](https://github.com/swoole/docs/edit/main/public/en/' + page + '.md)\n';
+                        '📝 Updated at：{docsify-updated} ' + '，[Edit](https://github.com/swoole/docs/edit/main/public/en' + page + '.md)\n';
                     return issue + html
                 })
 
