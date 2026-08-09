@@ -7,4 +7,5 @@
     * [French](https://wiki.swoole.com/fr/)
     * [German](https://wiki.swoole.com/de/)
     * [Russian](https://wiki.swoole.com/ru/)
+    * [Indonesia](https://wiki.swoole.com/id/)
 
